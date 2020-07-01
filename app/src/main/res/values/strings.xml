@@ -3,4 +3,13 @@
     <string name="login_title">With shaper \nyou never \nforget</string>
     <string name="login_subtitle">Using shaper you can add and edit \nTo-Do lists and get reminded to \nmake sure you never forget them.</string>
     <string name="signin_with_google">Continue with Google</string>
+    <string name="l">lmk;</string>
+    <string name="activity_main_title">To-Do List</string>
+    <string name="day_mon">Mon</string>
+    <string name="day_sun">Sun</string>
+    <string name="day_sat">Sat</string>
+    <string name="day_fri">Fri</string>
+    <string name="day_thu">Thu</string>
+    <string name="day_wed">Wed</string>
+    <string name="day_tue">Tue</string>
 </resources>
