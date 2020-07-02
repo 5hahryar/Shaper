@@ -1,7 +1,10 @@
 package com.sloupycom.shaper.View
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.ToggleButton
 import com.google.android.material.chip.ChipGroup
@@ -15,7 +18,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     var mGeneral = General()
-
+    var dayBarList = mutableListOf<ToggleButton>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,47 +28,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-        populateDayBarList()
-
         textView_date.text = mGeneral.getDate("EEEE, MMM dd")
         textView_title.text = getString(R.string.activity_main_title)
 
         setupDayBar()
     }
 
-    private fun populateDayBarList() {
-
-    }
-
     private fun setupDayBar() {
+        dayBarList.addAll(listOf(chip1, chip2, chip3, chip4, chip5, chip6, chip7))
+        val dayNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
         var dayOfWeek: Int = mGeneral.getDate("F").toInt()
         var mondayGap: Int = mGeneral.getDate("F").toInt() - 1
         var mondayDate:Int = mGeneral.getDate("d").toInt() - mondayGap
 
-        chip1.textOn = "$mondayDate\n" + getString(R.string.day_mon)
-        chip2.textOn = "${mondayDate+1}\n" + getString(R.string.day_tue)
-        chip3.textOn = "${mondayDate+2}\n" + getString(R.string.day_wed)
-        chip4.textOn = "${mondayDate+3}\n" + getString(R.string.day_thu)
-        chip5.textOn = "${mondayDate+4}\n" + getString(R.string.day_fri)
-        chip6.textOn = "${mondayDate+5}\n" + getString(R.string.day_sat)
-        chip7.textOn = "${mondayDate+6}\n" + getString(R.string.day_sun)
-        chip1.textOff = "$mondayDate\n" + getString(R.string.day_mon)
-        chip2.textOff = "${mondayDate+1}\n" + getString(R.string.day_tue)
-        chip3.textOff = "${mondayDate+2}\n" + getString(R.string.day_wed)
-        chip4.textOff = "${mondayDate+3}\n" + getString(R.string.day_thu)
-        chip5.textOff = "${mondayDate+4}\n" + getString(R.string.day_fri)
-        chip6.textOff = "${mondayDate+5}\n" + getString(R.string.day_sat)
-        chip7.textOff = "${mondayDate+6}\n" + getString(R.string.day_sun)
-
-        chip1.isChecked = false
-        chip2.isChecked = false
-        chip3.isChecked = false
-        chip4.isChecked = false
-        chip5.isChecked = false
-        chip6.isChecked = false
-        chip7.isChecked = false
-
-        for (i in 1..7) {
+        val onChipStateChanged = View.OnClickListener { v: View? ->
+            val chip = v as ToggleButton
+            if (chip.isChecked) {
+                for (i in 0..6) {
+                    dayBarList[i].isChecked = false
+                }
+                for (i in 0..6) {
+                    if (dayBarList[i].id == chip.id) dayBarList[i].isChecked = true
+                }
+            }
+            else chip.isChecked = true
         }
+
+        for (i in 0..6) {
+            dayBarList[i].textOn = "${mondayDate + i}\n${dayNames[mondayDate + i + 1]}"
+            dayBarList[i].textOff = "${mondayDate + i}\n${dayNames[mondayDate + i + 1]}"
+            dayBarList[i].setOnClickListener(onChipStateChanged)
+        }
+
+        for (i in 0..6) {
+            if (i == dayOfWeek-1) dayBarList[i].isChecked = true
+            else dayBarList[i].isChecked = false
+        }
+
+
+    }
+
+
+
+    fun onClick(view: View) {
+
     }
 }
