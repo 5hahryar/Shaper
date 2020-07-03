@@ -1,55 +1,46 @@
 package com.sloupycom.shaper.View
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.sloupycom.shaper.Controller.FirebaseAuthController
+import com.google.firebase.auth.FirebaseUser
+import com.sloupycom.shaper.Controller.Constants
+import com.sloupycom.shaper.Controller.MyAuthController
 import com.sloupycom.shaper.R
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListener {
 
-    val RC_SIGN_IN = 10
-
-    lateinit var mFirebaseAuthController: FirebaseAuthController
+    lateinit var mMyAuthController: MyAuthController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        
-        mFirebaseAuthController = FirebaseAuthController(this)
-        Login()
+        mMyAuthController = MyAuthController(this, this)
     }
 
     fun onClick(view: View) {
-        if (view.id == R.id.button_login) Login()
+        if (view.id == R.id.button_login) mMyAuthController.signIn()
     }
 
-    private fun Login() {
-        val mAccount = mFirebaseAuthController.Authenticate()
-        if (mAccount==null) {
-            val signInIntent: Intent = mFirebaseAuthController.mGSC.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
-        else UpdateUi(mAccount)
-    }
-
+    @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN){
-            UpdateUi(mFirebaseAuthController.HandleSignInResult(data))
+        if (requestCode == Constants.RC_SIGN_IN){
+            mMyAuthController.onSignUpIntentResult(data)
         }
     }
 
-    private fun UpdateUi(account: GoogleSignInAccount?) {
-        if (account!=null){
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("intent", account)
-            startActivity(intent)
-            finish()
-        }
+    override fun onAuthSuccessful(account: FirebaseUser) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("intent", account)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onAuthFailed(error: String) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }
