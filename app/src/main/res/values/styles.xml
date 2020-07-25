@@ -27,7 +27,7 @@
         <item name="android:font" tools:targetApi="o">@font/googlesans_regular</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="TextSmall">
@@ -53,6 +53,24 @@
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:layout_marginStart">5dp</item>
         <item name="android:lineSpacingExtra">5dp</item>
+    </style>
+
+    <style name="BottomSheetSoftInput" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textAppearance">@style/TextTitle</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxStrokeColor">@color/colorPrimaryDark</item>
+        <item name="hintTextColor">@color/colorPrimaryDark</item>
     </style>
 
 

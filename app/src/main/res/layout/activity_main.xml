@@ -55,4 +55,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/textView_title" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_todayDue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/margin_end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dayBar" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_end"
+        android:layout_marginBottom="36dp"
+        android:onClick="mainActivityOnClick"
+        android:text="@string/add_task"
+        android:textAppearance="@style/TextButton"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:icon="@drawable/ic_add_24px"
+        app:iconTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shrinkMotionSpec="@animator/fab_motion" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
