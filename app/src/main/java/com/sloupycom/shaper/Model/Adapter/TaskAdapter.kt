@@ -23,7 +23,7 @@ class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<Task
     private var mList: ArrayList<Task> = arrayListOf()
 
     init {
-        mRepo.getTasks(this)
+        mRepo.getDueTasks(this)
 
     }
 
@@ -41,6 +41,7 @@ class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<Task
         when (mList[position].state){
             "DONE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.green))
             "OVERDUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.orange))
+            "DUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
             "ONGOING" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
         }
     }

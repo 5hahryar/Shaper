@@ -3,6 +3,7 @@ package com.sloupycom.shaper.Model
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
@@ -27,12 +28,15 @@ class Repo {
     }
 
 
-    fun getTasks(listener: OnDataChanged) {
+    fun getDueTasks(listener: OnDataChanged) {
         val tasks = ArrayList<Task>()
         runBlocking {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
+                .whereEqualTo("state", "OVERDUE")
+                .whereEqualTo("state", "DUE")
+                .orderBy("creation_date")
                 .addSnapshotListener { value, error ->
                     tasks.clear()
 
