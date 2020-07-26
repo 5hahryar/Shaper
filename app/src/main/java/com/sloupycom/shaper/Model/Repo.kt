@@ -34,8 +34,7 @@ class Repo {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereEqualTo("state", "OVERDUE")
-                .whereEqualTo("state", "DUE")
+                .whereIn("state", listOf("DUE","OVERDUE"))
                 .orderBy("creation_date")
                 .addSnapshotListener { value, error ->
                     tasks.clear()

@@ -23,6 +23,9 @@ import java.util.*
 class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     val mGeneral = General()
+    @RequiresApi(Build.VERSION_CODES.N)
+    val mCalendar: Calendar = Calendar.getInstance()
+    private val mRepo: Repo = Repo()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
             = BottomSheetDialog(requireContext(), theme)
@@ -40,17 +43,7 @@ class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSe
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setListeners(view: View) {
         view.button_add.setOnClickListener {
-            val task = hashMapOf(
-                "creation_date" to "General().",
-                "description" to editText_desc.text.toString(),
-                "name" to editText_name.text.toString(),
-                "next_due" to textView_date.text.toString(),
-                "owner_id" to "null",
-                "reminder" to "null",
-                "repetition" to "null",
-                "state" to "DUE"
-            )
-            Repo().addTask(task)
+            mRepo.addTask(buildTask())
             dismiss()
         }
 
@@ -62,15 +55,49 @@ class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSe
         }
     }
 
+    private fun buildTask(): HashMap<String, String> {
+        val creationDate = mCalendar.time.toString()
+        val desc = editText_desc.text.toString()
+        val name = editText_name.text.toString()
+        val nDue = textView_date.text.toString()
+        val owId = mRepo.mUser?.uid.toString()
+        val rem = ""
+        val rep = ""
+        var state = ""
+        state = if (textView_date.text == SimpleDateFormat("EEEE, MMM dd yyyy")
+                .format(java.util.Calendar.getInstance().time)) {
+            "DUE"
+        } else {
+            "ONGOING"
+        }
+
+        return hashMapOf(
+            "creation_date" to creationDate,
+            "description" to desc,
+            "name" to name,
+            "next_due" to nDue,
+            "owner_id" to owId,
+            "reminder" to rem,
+            "repetition" to rep,
+            "state" to state
+        )
+    }
+
     private fun setupUi(view: View) {
-        view.textView_date.text = General().getDate("EEEE, MMM dd")
+        view.textView_date.text = General().getDate("EEEE, MMM dd yyyy")
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        var date = Calendar.getInstance()
+        val date = Calendar.getInstance()
         date.set(year, month, dayOfMonth)
-        this.view?.textView_date?.text = SimpleDateFormat("EEEE, MMM dd")
-            .format(date.time)
+        if (year == mCalendar.time.year) {
+            this.view?.textView_date?.text = SimpleDateFormat("EEEE, MMM dd")
+                .format(date.time)
+        }
+        else {
+            this.view?.textView_date?.text = SimpleDateFormat("EEEE, MMM dd yyyy")
+                .format(date.time)
+        }
     }
 }
