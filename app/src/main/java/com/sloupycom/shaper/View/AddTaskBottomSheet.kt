@@ -64,6 +64,7 @@ class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSe
         val rem = ""
         val rep = ""
         var state = ""
+        var id = mCalendar.timeInMillis.toString()
         state = if (textView_date.text == SimpleDateFormat("EEEE, MMM dd yyyy")
                 .format(java.util.Calendar.getInstance().time)) {
             "DUE"
@@ -79,7 +80,8 @@ class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSe
             "owner_id" to owId,
             "reminder" to rem,
             "repetition" to rep,
-            "state" to state
+            "state" to state,
+            "id" to id
         )
     }
 

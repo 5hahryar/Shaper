@@ -7,4 +7,7 @@ data class Task(var creation_date: String?
                 ,var owner_id: String?
                 ,var reminder: String?
                 ,var repetition: String?
-                ,var state: String?)
+                ,var state: String?
+                ,var id: String) {
+
+}

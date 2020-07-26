@@ -34,6 +34,7 @@ class MyAuthController(private val context:Activity, val listener:OnAuthComplete
         if (mGSA!=null) {
             fetchFirebaseUser(mGSA)
         }
+        else listener.onAuthFailed("NO ACCOUNT FOUND")
     }
 
     private fun signupNewAccount() {

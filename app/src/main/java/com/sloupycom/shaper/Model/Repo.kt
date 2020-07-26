@@ -34,7 +34,7 @@ class Repo {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereIn("state", listOf("DUE","OVERDUE"))
+                .whereIn("state", listOf("DUE","OVERDUE","DONE"))
                 .orderBy("creation_date")
                 .addSnapshotListener { value, error ->
                     tasks.clear()
@@ -55,6 +55,7 @@ class Repo {
                                 , doc.get("reminder") as String?
                                 , doc.get("repetition") as String?
                                 , doc.get("state") as String?
+                                , doc.get("id") as String
                             )
                         )
                     }
@@ -96,9 +97,18 @@ class Repo {
         mDatabase.collection(COLLECTION_USERS)
             .document(mUser!!.uid)
             .collection(SUBCOLLECTION_TASKS)
-            .add(task)
+            .document(task.get("id").toString())
+            .set(task)
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
+    fun updateTask(task: Task, Id: String) {
+        mDatabase.collection(COLLECTION_USERS)
+            .document(mUser!!.uid)
+            .collection(SUBCOLLECTION_TASKS)
+            .document(Id)
+            .set(task)
     }
 
     interface OnDataChanged{

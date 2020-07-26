@@ -1,13 +1,10 @@
 package com.sloupycom.shaper.Model.Adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Color.green
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -15,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sloupycom.shaper.Model.Repo
 import com.sloupycom.shaper.Model.Task
 import com.sloupycom.shaper.R
+import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
 class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()
@@ -39,10 +37,24 @@ class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<Task
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = mList[position].name
         when (mList[position].state){
-            "DONE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.green))
+            "DONE" -> {holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.green))
+                holder.mCardView.alpha = 0.5f
+                holder.mCheckBox.isChecked = true
+            }
             "OVERDUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.orange))
             "DUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
             "ONGOING" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
+        }
+        setListeners(holder, position)
+    }
+
+    private fun setListeners(holder: TaskViewHolder, position: Int) {
+        holder.mCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (isChecked){
+                val task = mList[position]
+                task.state = "DONE"
+                Repo().updateTask(mList[position], task.id)
+            }
         }
     }
 
@@ -50,7 +62,7 @@ class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<Task
         var mCardView: CardView
         var mRelativeLayout: RelativeLayout
         var mTitle: TextView
-        var mCheckBox: CheckBox
+        var mCheckBox: CustomCheckBox
 
         init {
             mCardView = itemView.findViewById(R.id.cardView)

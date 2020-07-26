@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.Controller.Constants
 import com.sloupycom.shaper.Controller.MyAuthController
 import com.sloupycom.shaper.R
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListener {
@@ -19,6 +20,7 @@ class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        loading_layout.visibility = View.VISIBLE
         mMyAuthController = MyAuthController(this, this)
     }
 
@@ -41,6 +43,7 @@ class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListen
     }
 
     override fun onAuthFailed(error: String) {
+        loading_layout.visibility = View.GONE
         Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }
