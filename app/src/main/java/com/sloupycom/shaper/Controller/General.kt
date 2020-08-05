@@ -9,4 +9,9 @@ class General {
         return SimpleDateFormat(pattern)
             .format(Calendar.getInstance().time)
     }
+
+    fun getDate(pattern: String, time: Date): String {
+        return SimpleDateFormat(pattern)
+            .format(time)
+    }
 }

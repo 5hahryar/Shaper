@@ -15,14 +15,13 @@ import com.sloupycom.shaper.R
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
-class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()
+class TaskAdapter(val mRepo: Repo, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()
     , Repo.OnDataChanged {
 
     private var mList: ArrayList<Task> = arrayListOf()
 
     init {
         mRepo.getDueTasks(this)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -77,5 +76,9 @@ class TaskAdapter(mRepo: Repo, val context: Context) : RecyclerView.Adapter<Task
         mList.clear()
         mList.addAll(data)
         notifyDataSetChanged()
+    }
+
+    fun updateWithDate(day: String, month: String, year: String) {
+        mRepo.getDueTasksWithDate(day, month, year, this)
     }
 }

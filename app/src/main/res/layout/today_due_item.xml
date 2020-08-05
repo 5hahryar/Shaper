@@ -22,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            style="@style/TextSubTitle"/>
+            style="@style/TextSubTitle"
+            android:fontFamily="@font/googlesans_medium"/>
 
         <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/checkBox"

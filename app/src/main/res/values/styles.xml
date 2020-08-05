@@ -38,8 +38,8 @@
     </style>
 
     <style name="Widget.Button.Toggle" parent="android:Widget">
-        <item name="android:background">@drawable/date_chip_background</item>
-    </style>
+    <item name="android:background">@drawable/date_chip_background</item>
+</style>
 
     <style name="toggleButton" parent="Widget.Button.Toggle">
         <item name="android:layout_width">0dp</item>

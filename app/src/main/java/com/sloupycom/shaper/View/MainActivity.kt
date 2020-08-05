@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ToggleButton
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.Controller.General
 import com.sloupycom.shaper.Model.Adapter.TaskAdapter
@@ -19,13 +20,13 @@ class MainActivity : AppCompatActivity() {
     var mGeneral = General()
     var dayBarList = mutableListOf<ToggleButton>()
     private val mRepo = Repo()
+    private lateinit var taskAdapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
         setupUi()
-
     }
 
     private fun setupUi() {
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
         textView_title.text = getString(R.string.activity_main_title)
         setupDayBar()
         recyclerView_todayDue.layoutManager = LinearLayoutManager(this)
-        recyclerView_todayDue.adapter = TaskAdapter(mRepo, this)
+        taskAdapter = TaskAdapter(mRepo, this)
+        recyclerView_todayDue.adapter = taskAdapter
     }
 
     private fun setupDayBar() {
@@ -55,6 +57,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else chip.isChecked = true
+
+            taskAdapter.updateWithDate(chip.text.toString(),
+                mGeneral.getDate("MMM"),
+                mGeneral.getDate("yyyy"))
         }
 
         for (i in 0..6) {
