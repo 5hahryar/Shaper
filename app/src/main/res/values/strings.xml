@@ -17,4 +17,5 @@
     <string name="description">Description</string>
     <string name="no_reminder">No Reminder</string>
     <string name="add">Add</string>
+    <string name="to_do_list">To-Do List</string>
 </resources>

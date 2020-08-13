@@ -1,8 +1,7 @@
-package com.sloupycom.shaper.Controller
+package com.sloupycom.shaper.ViewModel
 
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.Pattern
 
 class General {
     fun getDate(pattern: String): String {

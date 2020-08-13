@@ -12,13 +12,12 @@ import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.sloupycom.shaper.Controller.General
+import com.sloupycom.shaper.ViewModel.General
 import com.sloupycom.shaper.Model.Repo
 import com.sloupycom.shaper.R
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.view.*
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.HashMap
 
 class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSetListener {

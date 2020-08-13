@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.chip.Chip
-import com.google.firebase.auth.FirebaseUser
-import com.sloupycom.shaper.Controller.General
+import androidx.databinding.DataBindingUtil
+import com.sloupycom.shaper.ViewModel.General
 import com.sloupycom.shaper.Model.Adapter.TaskAdapter
 import com.sloupycom.shaper.Model.Repo
 import com.sloupycom.shaper.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.sloupycom.shaper.ViewModel.MainActivityViewModel
+import com.sloupycom.shaper.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.day_chip.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,18 +22,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        
+
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        MainActivityViewModel()
+
         setupUi()
+
     }
 
     private fun setupUi() {
-        textView_date.text = mGeneral.getDate("EEEE, MMM dd")
-        textView_title.text = getString(R.string.activity_main_title)
+//        textView_date.text = mGeneral.getDate("EEEE, MMM dd")
+//        textView_title.text = getString(R.string.activity_main_title)
         setupDayBar()
-        recyclerView_todayDue.layoutManager = LinearLayoutManager(this)
-        taskAdapter = TaskAdapter(mRepo, this)
-        recyclerView_todayDue.adapter = taskAdapter
+//        recyclerView_todayDue.layoutManager = LinearLayoutManager(this)
+//        taskAdapter = TaskAdapter(mRepo, this)
+//        recyclerView_todayDue.adapter = taskAdapter
     }
 
     private fun setupDayBar() {

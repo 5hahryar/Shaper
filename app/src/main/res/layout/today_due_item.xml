@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="2dp"
-    android:layout_marginBottom="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+        <variable
+            name="task"
+            type="com.sloupycom.shaper.Model.Task" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp">
 
-        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/textView_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            style="@style/TextSubTitle"
-            android:fontFamily="@font/googlesans_medium"/>
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
 
-        <net.igenius.customcheckbox.CustomCheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            app:color_tick="@android:color/white"
-            app:color_checked="@color/colorPrimaryDark"
-            app:color_unchecked_stroke="@color/colorPrimaryDark"
-            app:color_unchecked="@android:color/transparent"/>
+            android:padding="16dp">
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/textView_title"
+                style="@style/TextSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/googlesans_medium"
+                android:text="@{task.name}"/>
+
+            <net.igenius.customcheckbox.CustomCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                app:color_checked="@color/colorPrimaryDark"
+                app:color_tick="@android:color/white"
+                app:color_unchecked="@android:color/transparent"
+                app:color_unchecked_stroke="@color/colorPrimaryDark" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

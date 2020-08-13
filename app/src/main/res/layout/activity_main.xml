@@ -1,87 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAccent"
-    android:backgroundTint="@color/colorAccent"
-    tools:context=".View.MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textView_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextSmall"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.sloupycom.shaper.ViewModel.MainActivityViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/textView_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="5dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_date" />
-
-    <ImageButton
-        android:id="@+id/imageButton_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="35dp"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:tint="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textView_title"
-        app:srcCompat="@drawable/ic_settings_24px" />
-
-    <include
-        android:id="@+id/dayBar"
-        layout="@layout/day_chip"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="@dimen/margin_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textView_title" />
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        tools:context=".View.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_todayDue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/margin_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dayBar" />
+        <TextView
+            android:id="@+id/textView_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="40dp"
+            android:text="@{viewModel.todayDate.toString()}"
+            android:textAppearance="@style/TextSmall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_end"
-        android:layout_marginBottom="36dp"
-        android:onClick="mainActivityOnClick"
-        android:text="@string/add_task"
-        android:textAppearance="@style/TextButton"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:icon="@drawable/ic_add_24px"
-        app:iconTint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:shrinkMotionSpec="@animator/fab_motion" />
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/to_do_list"
+            android:textAppearance="@style/TextTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_date" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/imageButton_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="35dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:tint="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textView_title"
+            app:srcCompat="@drawable/ic_settings_24px" />
+
+        <include
+            android:id="@+id/dayBar"
+            layout="@layout/day_chip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="@dimen/margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textView_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_todayDue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@dimen/margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dayBar"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:listData="@{viewModel.taskList}"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_end"
+            android:layout_marginBottom="36dp"
+            android:onClick="mainActivityOnClick"
+            android:text="@string/add_task"
+            android:textAppearance="@style/TextButton"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:icon="@drawable/ic_add_24px"
+            app:iconTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shrinkMotionSpec="@animator/fab_motion" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
