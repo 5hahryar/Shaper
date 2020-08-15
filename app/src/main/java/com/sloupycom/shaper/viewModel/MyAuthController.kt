@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.ViewModel
+package com.sloupycom.shaper.viewModel
 
 import android.app.Activity
 import android.content.Intent

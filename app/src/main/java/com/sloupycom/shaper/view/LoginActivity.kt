@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.View
+package com.sloupycom.shaper.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
-import com.sloupycom.shaper.ViewModel.Constants
-import com.sloupycom.shaper.ViewModel.MyAuthController
+import com.sloupycom.shaper.viewModel.Constants
+import com.sloupycom.shaper.viewModel.MyAuthController
 import com.sloupycom.shaper.R
 import kotlinx.android.synthetic.main.activity_login.*
 

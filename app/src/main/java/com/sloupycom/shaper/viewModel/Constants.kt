@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.ViewModel
+package com.sloupycom.shaper.viewModel
 
 class Constants {
     companion object {

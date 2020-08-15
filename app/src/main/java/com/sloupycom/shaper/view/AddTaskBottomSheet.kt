@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.View
+package com.sloupycom.shaper.view
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -12,8 +12,8 @@ import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.sloupycom.shaper.ViewModel.General
-import com.sloupycom.shaper.Model.Repo
+import com.sloupycom.shaper.viewModel.General
+import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.R
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.view.*

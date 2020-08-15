@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.Model
+package com.sloupycom.shaper.model
 
 data class Task(var creation_date: String?
                 ,var description: String?

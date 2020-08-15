@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
             android:layout_marginBottom="50dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:onClick="onClick"
-            android:text="@string/signin_with_google"
+            android:text="@string/sign_with_google"
             android:textAppearance="@style/TextButton"
             android:textColor="@color/colorAccent"
             app:cornerRadius="30dp"

@@ -1,16 +1,19 @@
-package com.sloupycom.shaper.View
+package com.sloupycom.shaper.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import com.sloupycom.shaper.ViewModel.General
-import com.sloupycom.shaper.Model.Adapter.TaskAdapter
-import com.sloupycom.shaper.Model.Repo
+import androidx.recyclerview.widget.RecyclerView
+import com.sloupycom.shaper.viewModel.General
+import com.sloupycom.shaper.model.adapter.TaskAdapter
+import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.ViewModel.MainActivityViewModel
+import com.sloupycom.shaper.viewModel.MainActivityViewModel
 import com.sloupycom.shaper.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.day_chip.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,18 +23,21 @@ class MainActivity : AppCompatActivity() {
     private val mRepo = Repo()
     private lateinit var taskAdapter: TaskAdapter
 
+    var binding: ActivityMainBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        MainActivityViewModel()
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding?.viewModel = MainActivityViewModel(this)
+        binding?.lifecycleOwner = this
         setupUi()
 
     }
 
     private fun setupUi() {
-//        textView_date.text = mGeneral.getDate("EEEE, MMM dd")
+//        binding?.todayDate = mGeneral.getDate("EEEE, MMM dd")
 //        textView_title.text = getString(R.string.activity_main_title)
         setupDayBar()
 //        recyclerView_todayDue.layoutManager = LinearLayoutManager(this)
@@ -84,4 +90,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+}
+@BindingAdapter(value = ["setAdapter"])
+fun setAdapter(recyclerView: RecyclerView, adapter: TaskAdapter) {
+    recyclerView.adapter = adapter
 }

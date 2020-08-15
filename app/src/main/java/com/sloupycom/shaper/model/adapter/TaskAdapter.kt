@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.Model.Adapter
+package com.sloupycom.shaper.model.adapter
 
 import android.content.Context
 import android.util.Log
@@ -9,8 +9,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.sloupycom.shaper.Model.Repo
-import com.sloupycom.shaper.Model.Task
+import com.sloupycom.shaper.model.Repo
+import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
