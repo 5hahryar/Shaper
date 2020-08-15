@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_end"
             android:layout_marginBottom="36dp"
-            android:onClick="@{() -> viewModel.onClick()}"
+            android:onClick="@{(view) -> viewModel.onClick(view)}"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
             android:textColor="@android:color/white"

@@ -37,12 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-//        binding?.todayDate = mGeneral.getDate("EEEE, MMM dd")
-//        textView_title.text = getString(R.string.activity_main_title)
         setupDayBar()
-//        recyclerView_todayDue.layoutManager = LinearLayoutManager(this)
-//        taskAdapter = TaskAdapter(mRepo, this)
-//        recyclerView_todayDue.adapter = taskAdapter
     }
 
     private fun setupDayBar() {
@@ -82,18 +77,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    fun mainActivityOnClick(view: View) {
-        when (view.id) {
-            R.id.floatingActionButton -> {
-                AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
-            }
-        }
-    }
-
-
-}
-@BindingAdapter(value = ["setAdapter"])
-fun setAdapter(recyclerView: RecyclerView, adapter: TaskAdapter) {
-    recyclerView.adapter = adapter
 }
