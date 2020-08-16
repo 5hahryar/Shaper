@@ -12,79 +12,68 @@
             type="com.sloupycom.shaper.model.adapter.TaskAdapter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
         android:backgroundTint="@color/colorAccent"
+        android:paddingStart="@dimen/margin_start"
+        android:paddingEnd="@dimen/margin_end"
         tools:context=".view.MainActivity">
 
         <TextView
             android:id="@+id/textView_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
             android:text="@{viewModel.todayDate.toString()}"
             android:textAppearance="@style/TextSmall"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:text="@string/to_do_list"
             android:textAppearance="@style/TextTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+            android:layout_below="@id/textView_date"/>
 
         <ImageButton
             android:id="@+id/imageButton_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="35dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@color/colorPrimaryDark"
             android:tint="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/textView_title"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/textView_date"
+            android:layout_marginTop="10dp"
             app:srcCompat="@drawable/ic_settings_24px" />
 
-        <include
+        <com.shahryar.daybar.DayBar
             android:id="@+id/dayBar"
-            layout="@layout/day_chip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="@dimen/margin_end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/textView_title" />
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/textView_title"
+            app:font="@font/googlesans_medium" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_todayDue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="@dimen/margin_end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dayBar"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{viewModel.adapter}"/>
+            android:layout_below="@id/dayBar"
+            app:setAdapter="@{viewModel.adapter}" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_end"
             android:layout_marginBottom="36dp"
             android:onClick="@{(view) -> viewModel.onClick(view)}"
             android:text="@string/add_task"
@@ -93,9 +82,9 @@
             app:backgroundTint="@color/colorPrimaryDark"
             app:icon="@drawable/ic_add_24px"
             app:iconTint="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             app:shrinkMotionSpec="@animator/fab_motion" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>

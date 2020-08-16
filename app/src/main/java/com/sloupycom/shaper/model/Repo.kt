@@ -10,11 +10,11 @@ import kotlinx.coroutines.runBlocking
 import kotlin.collections.HashMap
 
 class Repo {
+    /** Values **/
     private val TAG = "REPO"
     private val COLLECTION_USERS = "users"
     private val SUBCOLLECTION_TASKS = "tasks"
-
-    val mDatabase = Firebase.firestore
+    private val mDatabase = Firebase.firestore
     val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     init {
@@ -27,7 +27,9 @@ class Repo {
         mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, Any>)
     }
 
-
+    /**
+     * Get tasks that are due and overdue
+     */
     fun getDueTasks(listener: OnDataChanged) {
         runBlocking {
             mDatabase.collection(COLLECTION_USERS)
@@ -45,6 +47,9 @@ class Repo {
         }
     }
 
+    /**
+     * Add task to database
+     */
     fun addTask(task: HashMap<String, String>) {
         mDatabase.collection(COLLECTION_USERS)
             .document(mUser!!.uid)
@@ -55,19 +60,28 @@ class Repo {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun updateTask(task: Task, Id: String) {
+    /**
+     * Update a certain task
+     */
+    fun updateTask(task: Task) {
         mDatabase.collection(COLLECTION_USERS)
             .document(mUser!!.uid)
             .collection(SUBCOLLECTION_TASKS)
-            .document(Id)
+            .document(task.id)
             .set(task)
     }
 
+    /**
+     * Get tasks based on their due date
+     */
     fun getDueTasksWithDate(day: String, month: String, year: String, listener: OnDataChanged) {
         runBlocking {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
+                .whereEqualTo("next_due_day", day)
+                .whereEqualTo("next_due_month", month)
+                .whereEqualTo("next_due_year", year)
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w(TAG, "Listen failed.", error)
@@ -78,6 +92,9 @@ class Repo {
         }
     }
 
+    /**
+     * Bind snapshot data to task objects
+     */
     private fun getTasksFromSnapShot(value: QuerySnapshot?): ArrayList<Task> {
         val tasks = ArrayList<Task>()
         for (doc in value!!) {

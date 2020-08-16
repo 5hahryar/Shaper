@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -15,14 +16,9 @@ import com.sloupycom.shaper.R
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
-class TaskAdapter(val mRepo: Repo, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()
-    , Repo.OnDataChanged {
+class TaskAdapter(val context: Context, val taskStateListener: TaskStateListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private var mList: ArrayList<Task> = arrayListOf()
-
-    init {
-        mRepo.getDueTasks(this)
-    }
+    var mList: ArrayList<Task> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(LayoutInflater.from(parent.context)
@@ -40,20 +36,25 @@ class TaskAdapter(val mRepo: Repo, val context: Context) : RecyclerView.Adapter<
                 holder.mCardView.alpha = 0.5f
                 holder.mCheckBox.isChecked = true
             }
-            "OVERDUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.orange))
-            "DUE" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
-            "ONGOING" -> holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
-        }
-        setListeners(holder, position)
-    }
-
-    private fun setListeners(holder: TaskViewHolder, position: Int) {
-        holder.mCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (isChecked){
-                val task = mList[position]
-                task.state = "DONE"
-                Repo().updateTask(mList[position], task.id)
+            "OVERDUE" -> {
+                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.orange))
+                holder.mCardView.alpha = 1f
+                holder.mCheckBox.isChecked = false
             }
+            "DUE" -> {
+                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
+                holder.mCardView.alpha = 1f
+                holder.mCheckBox.isChecked = false
+            }
+            "ONGOING" -> {
+                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
+                holder.mCardView.alpha = 1f
+                holder.mCheckBox.isChecked = false
+            }
+        }
+
+        holder.mCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            taskStateListener.onTaskStateChanged(mList[position], isChecked)
         }
     }
 
@@ -61,9 +62,10 @@ class TaskAdapter(val mRepo: Repo, val context: Context) : RecyclerView.Adapter<
         var mCardView: CardView
         var mRelativeLayout: RelativeLayout
         var mTitle: TextView
-        var mCheckBox: CustomCheckBox
+        var mCheckBox: CheckBox
 
         init {
+            setIsRecyclable(false)
             mCardView = itemView.findViewById(R.id.cardView)
             mRelativeLayout = itemView.findViewById(R.id.relativeLayout)
             mTitle = itemView.findViewById(R.id.textView_title)
@@ -71,14 +73,7 @@ class TaskAdapter(val mRepo: Repo, val context: Context) : RecyclerView.Adapter<
         }
     }
 
-    override fun onDataChanged(data: ArrayList<Task>) {
-        Log.w("REPO", "onEvent")
-        mList.clear()
-        mList.addAll(data)
-        notifyDataSetChanged()
-    }
-
-    fun updateWithDate(day: String, month: String, year: String) {
-        mRepo.getDueTasksWithDate(day, month, year, this)
+    interface TaskStateListener {
+        fun onTaskStateChanged(task: Task, isDone: Boolean)
     }
 }

@@ -67,9 +67,9 @@ class AddTaskBottomSheet: BottomSheetDialogFragment(), DatePickerDialog.OnDateSe
             mGeneral.getDate("dd", mCalendar.time)
         }
         val nDueM: String = if (nextDue != null) {
-            mGeneral.getDate("MMM", nextDue!!.time)
+            mGeneral.getDate("MM", nextDue!!.time)
         } else {
-            mGeneral.getDate("MMM", mCalendar.time)
+            mGeneral.getDate("MM", mCalendar.time)
         }
         val nDueY: String = if (nextDue != null) {
             mGeneral.getDate("yyyy", nextDue!!.time)

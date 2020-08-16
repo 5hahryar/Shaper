@@ -7,4 +7,5 @@
     <color name="orange">#FF905F</color>
     <color name="colorAccent">#FFF9D9</color>
     <color name="colorOrange">#FFC85F</color>
+    <color name="day_bar_chip_text_color">@color/colorPrimaryDarkAlpha</color>
 </resources>

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="task"
             type="com.sloupycom.shaper.model.Task" />
@@ -34,15 +33,11 @@
                 android:fontFamily="@font/googlesans_medium"
                 android:text="@{task.name}"/>
 
-            <net.igenius.customcheckbox.CustomCheckBox
+            <CheckBox
                 android:id="@+id/checkBox"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                app:color_checked="@color/colorPrimaryDark"
-                app:color_tick="@android:color/white"
-                app:color_unchecked="@android:color/transparent"
-                app:color_unchecked_stroke="@color/colorPrimaryDark" />
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
