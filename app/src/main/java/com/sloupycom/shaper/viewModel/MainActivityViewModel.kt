@@ -72,8 +72,10 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
     /**
      * Called when state of a task changes
      */
-    override fun onTaskStateChanged(task: Task, isDone: Boolean) {
-        TODO("change state of task")
+    override fun onTaskStateChanged(task: Task) {
+        if (task.state != "DONE") task.state = "DONE"
+        else if (task.next_due_day.equals(mGeneral.getDate("dd"))) task.state = "DUE"
+        else task.state = "ONGOING"
         mRepo.updateTask(task)
     }
 }

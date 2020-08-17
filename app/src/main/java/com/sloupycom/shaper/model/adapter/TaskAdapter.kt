@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.model.adapter
 
 import android.content.Context
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,29 +33,22 @@ class TaskAdapter(val context: Context, val taskStateListener: TaskStateListener
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = mList[position].name
         when (mList[position].state){
-            "DONE" -> {holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.green))
+            "DONE" -> {holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 holder.mCardView.alpha = 0.5f
-                holder.mCheckBox.isChecked = true
             }
-            "OVERDUE" -> {
-                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.orange))
-                holder.mCardView.alpha = 1f
-                holder.mCheckBox.isChecked = false
-            }
-            "DUE" -> {
-                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
-                holder.mCardView.alpha = 1f
-                holder.mCheckBox.isChecked = false
-            }
-            "ONGOING" -> {
-                holder.mRelativeLayout.setBackgroundColor(context.getColor(R.color.colorPrimary))
-                holder.mCardView.alpha = 1f
-                holder.mCheckBox.isChecked = false
-            }
+//            "OVERDUE" -> {
+//                holder.mCardView.alpha = 1f
+//            }
+//            "DUE" -> {
+//                holder.mCardView.alpha = 1f
+//            }
+//            "ONGOING" -> {
+//                holder.mCardView.alpha = 1f
+//            }
         }
 
-        holder.mCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
-            taskStateListener.onTaskStateChanged(mList[position], isChecked)
+        holder.mRelativeLayout.setOnClickListener { v ->
+            taskStateListener.onTaskStateChanged(mList[position])
         }
     }
 
@@ -62,18 +56,16 @@ class TaskAdapter(val context: Context, val taskStateListener: TaskStateListener
         var mCardView: CardView
         var mRelativeLayout: RelativeLayout
         var mTitle: TextView
-        var mCheckBox: CheckBox
 
         init {
             setIsRecyclable(false)
             mCardView = itemView.findViewById(R.id.cardView)
             mRelativeLayout = itemView.findViewById(R.id.relativeLayout)
             mTitle = itemView.findViewById(R.id.textView_title)
-            mCheckBox = itemView.findViewById(R.id.checkBox)
         }
     }
 
     interface TaskStateListener {
-        fun onTaskStateChanged(task: Task, isDone: Boolean)
+        fun onTaskStateChanged(task: Task)
     }
 }

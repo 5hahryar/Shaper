@@ -12,17 +12,18 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="2dp">
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
 
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:id="@+id/textView_title"
@@ -31,13 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:fontFamily="@font/googlesans_medium"
-                android:text="@{task.name}"/>
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true" />
+                android:textSize="17sp"
+                android:text="@{task.name}" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
