@@ -17,7 +17,7 @@ import com.sloupycom.shaper.R
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
-class TaskAdapter(val context: Context, val taskStateListener: TaskStateListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val taskStateListener: TaskStateListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     var mList: ArrayList<Task> = arrayListOf()
 
@@ -32,19 +32,9 @@ class TaskAdapter(val context: Context, val taskStateListener: TaskStateListener
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = mList[position].name
-        when (mList[position].state){
-            "DONE" -> {holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                holder.mCardView.alpha = 0.5f
-            }
-//            "OVERDUE" -> {
-//                holder.mCardView.alpha = 1f
-//            }
-//            "DUE" -> {
-//                holder.mCardView.alpha = 1f
-//            }
-//            "ONGOING" -> {
-//                holder.mCardView.alpha = 1f
-//            }
+        if (mList[position].state == "DONE"){
+            holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.mCardView.alpha = 0.5f
         }
 
         holder.mRelativeLayout.setOnClickListener { v ->

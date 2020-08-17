@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.viewModel
+package com.sloupycom.shaper.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

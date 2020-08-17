@@ -3,35 +3,35 @@ package com.sloupycom.shaper.view
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseUser
-import com.sloupycom.shaper.viewModel.Constants
-import com.sloupycom.shaper.viewModel.MyAuthController
+import com.sloupycom.shaper.utils.Constants
+import com.sloupycom.shaper.viewModel.LoginActivityViewModel
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.databinding.ActivityLoginBinding
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListener {
+class LoginActivity : AppCompatActivity(), LoginActivityViewModel.OnAuthCompleteListener {
 
-    lateinit var mMyAuthController: MyAuthController
+    /** Values **/
+    var binding: ActivityLoginBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        loading_layout.visibility = View.VISIBLE
-        mMyAuthController = MyAuthController(this, this)
-    }
-
-    fun onClick(view: View) {
-        if (view.id == R.id.button_login) mMyAuthController.signIn()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding?.loadingLayout?.visibility = View.VISIBLE
+        binding?.viewModel = LoginActivityViewModel(this, this)
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.RC_SIGN_IN){
-            mMyAuthController.onSignUpIntentResult(data)
+            binding?.viewModel?.onSignUpIntentResult(data)
         }
     }
 
@@ -44,6 +44,6 @@ class LoginActivity : AppCompatActivity(), MyAuthController.OnAuthCompleteListen
 
     override fun onAuthFailed(error: String) {
         loading_layout.visibility = View.GONE
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+        Log.d("TAG", error)
     }
 }

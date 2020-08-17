@@ -1,6 +1,5 @@
 package com.sloupycom.shaper.viewModel
 
-import android.content.Context
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
@@ -11,11 +10,10 @@ import com.sloupycom.shaper.R
 import com.sloupycom.shaper.model.adapter.TaskAdapter
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.model.Task
+import com.sloupycom.shaper.utils.General
 import com.sloupycom.shaper.view.AddTaskBottomSheet
 import com.sloupycom.shaper.view.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.runBlocking
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -30,7 +28,7 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
     private val mRepo = Repo()
     var todayDate: String = mGeneral.getDate("EEEE, MMM dd")
     var adapter: TaskAdapter
-    var dayBar: DayBar? = null
+    private var dayBar: DayBar? = null
 
     /**
      * Initialize class
@@ -38,7 +36,7 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
     init {
         dayBar = activity.dayBar
         dayBar?.dayChangedListener = this
-        adapter = TaskAdapter(activity, this)
+        adapter = TaskAdapter(this)
         mRepo.getDueTasks(this)
     }
 
