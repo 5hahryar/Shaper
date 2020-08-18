@@ -51,7 +51,8 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@id/textView_date"
             android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/ic_settings_24px" />
+            app:srcCompat="@drawable/ic_settings_24px"
+            android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
         <com.shahryar.daybar.DayBar
             android:id="@+id/dayBar"

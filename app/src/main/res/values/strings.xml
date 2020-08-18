@@ -18,4 +18,6 @@
     <string name="no_reminder">No Reminder</string>
     <string name="add">Add</string>
     <string name="to_do_list">To-Do List</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="reminder">Reminder</string>
 </resources>

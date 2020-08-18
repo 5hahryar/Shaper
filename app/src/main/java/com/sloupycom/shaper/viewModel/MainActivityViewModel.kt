@@ -13,6 +13,7 @@ import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.General
 import com.sloupycom.shaper.view.AddTaskBottomSheet
 import com.sloupycom.shaper.view.MainActivity
+import com.sloupycom.shaper.view.SettingsBottomSheet
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -56,6 +57,9 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
         when (view.id) {
             R.id.floatingActionButton -> {
                 AddTaskBottomSheet().show(activity.supportFragmentManager, "AddTaskBottomSheet")
+            }
+            R.id.imageButton_settings -> {
+                SettingsBottomSheet().show(activity.supportFragmentManager, "SettingsBottomSheet")
             }
         }
     }

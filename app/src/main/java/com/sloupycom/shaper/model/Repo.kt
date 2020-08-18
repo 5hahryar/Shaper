@@ -15,7 +15,7 @@ class Repo {
     private val COLLECTION_USERS = "users"
     private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
-    val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     init {
         val user = hashMapOf(
@@ -115,6 +115,10 @@ class Repo {
             )
         }
         return tasks
+    }
+
+    fun getUserCredentials(): FirebaseUser? {
+        return mUser
     }
 
     interface OnDataChanged{

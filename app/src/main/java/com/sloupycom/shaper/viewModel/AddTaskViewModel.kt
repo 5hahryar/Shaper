@@ -65,7 +65,7 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
         } else {
             mGeneral.getDate("yyyy", mCalendar.time)
         }
-        val owId = mRepo.mUser?.uid.toString()
+        val owId = mRepo.getUserCredentials()?.uid.toString()
         val rem = ""
         val rep = ""
         var state = ""
