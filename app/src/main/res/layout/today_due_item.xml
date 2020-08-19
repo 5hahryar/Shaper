@@ -11,17 +11,19 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardElevation="0dp">
+        android:layout_height="45dp"
+        android:layout_marginBottom="15dp"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="7dp"
+        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginEnd="@dimen/margin_end"
+        app:cardBackgroundColor="@color/colorPrimary">
 
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
@@ -31,7 +33,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:text="@{task.name}" />
+
+            <net.igenius.customcheckbox.CustomCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:color_tick="@color/colorPrimaryDark"
+                app:color_unchecked_stroke="@color/colorPrimaryDark"
+                app:color_unchecked="@android:color/transparent"
+                app:color_checked="@android:color/transparent"
+                app:duration="500"/>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

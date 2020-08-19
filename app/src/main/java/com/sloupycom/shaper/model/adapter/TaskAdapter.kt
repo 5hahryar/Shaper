@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.model.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,12 +33,25 @@ class TaskAdapter(private val taskStateListener: TaskStateListener) : RecyclerVi
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = mList[position].name
-        if (mList[position].state == "DONE"){
-            holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            holder.mCardView.alpha = 0.5f
+        when (mList[position].state){
+            "DONE" -> {
+                holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                holder.mCardView.setCardBackgroundColor(Color.parseColor("#8DF48D"))
+                holder.mCardView.alpha = 0.5f
+                holder.mCheckBox.isChecked = true
+            }
+            "OVERDUE" -> {
+                holder.mCardView.setCardBackgroundColor(Color.parseColor("#FF905F"))
+                holder.mCardView.alpha = 0.1f
+            }
+
         }
 
         holder.mRelativeLayout.setOnClickListener { v ->
+            //Open Task Overview
+        }
+
+        holder.mCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
             taskStateListener.onTaskStateChanged(mList[position])
         }
     }
@@ -46,12 +60,14 @@ class TaskAdapter(private val taskStateListener: TaskStateListener) : RecyclerVi
         var mCardView: CardView
         var mRelativeLayout: RelativeLayout
         var mTitle: TextView
+        var mCheckBox: CustomCheckBox
 
         init {
             setIsRecyclable(false)
             mCardView = itemView.findViewById(R.id.cardView)
             mRelativeLayout = itemView.findViewById(R.id.relativeLayout)
             mTitle = itemView.findViewById(R.id.textView_title)
+            mCheckBox = itemView.findViewById(R.id.checkbox)
         }
     }
 

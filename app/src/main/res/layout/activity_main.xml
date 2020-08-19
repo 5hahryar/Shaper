@@ -68,22 +68,20 @@
             android:id="@+id/dayBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_below="@id/relativeLayout_1"
-            app:font="@font/googlesans_medium"
+            app:font="@font/googlesans_regular"
             android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end"/>
+            android:layout_marginEnd="@dimen/margin_end" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_todayDue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="25dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_below="@id/dayBar"
-            app:setAdapter="@{viewModel.adapter}"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end"/>
+            app:setAdapter="@{viewModel.adapter}" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
