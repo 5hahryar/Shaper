@@ -17,50 +17,62 @@
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
         android:backgroundTint="@color/colorAccent"
-        android:paddingStart="@dimen/margin_start"
-        android:paddingEnd="@dimen/margin_end"
         tools:context=".view.MainActivity">
 
-        <TextView
-            android:id="@+id/textView_date"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/relativeLayout_1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="15dp"
-            android:text="@{viewModel.todayDate.toString()}"
-            android:textAppearance="@style/TextSmall"
-            android:layout_alignParentStart="true" />
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_end">
 
-        <TextView
-            android:id="@+id/textView_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/to_do_list"
-            android:textAppearance="@style/TextTitle"
-            android:layout_below="@id/textView_date"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:tint="@color/colorPrimaryDark"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/textView_date"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/ic_settings_24px"
-            android:onClick="@{(view) -> viewModel.onClick(view)}"/>
+                <TextView
+                    android:id="@+id/textView_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.todayDate.toString()}"
+                    android:textAppearance="@style/TextOverLine" />
+
+                <TextView
+                    android:id="@+id/textView_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/to_do_list"
+                    android:textAppearance="@style/TextH5" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/imageButton_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/colorPrimaryDark"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/ic_settings_24px"
+                android:layout_centerVertical="true"
+                android:onClick="@{(view) -> viewModel.onClick(view)}" />
+
+        </RelativeLayout>
 
         <com.shahryar.daybar.DayBar
             android:id="@+id/dayBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@id/textView_title"
-            app:font="@font/googlesans_medium" />
+            android:layout_below="@id/relativeLayout_1"
+            app:font="@font/googlesans_medium"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_end"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_todayDue"
@@ -69,13 +81,17 @@
             android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_below="@id/dayBar"
-            app:setAdapter="@{viewModel.adapter}" />
+            app:setAdapter="@{viewModel.adapter}"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_end"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_end"
             android:onClick="@{(view) -> viewModel.onClick(view)}"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"

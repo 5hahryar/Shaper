@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@{viewModel.name}"
-                android:textAppearance="@style/TextSubTitle" />
+                android:textAppearance="@style/TextBody1" />
 
             <TextView
                 android:id="@+id/textView_email"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@{viewModel.email}"
-                android:textAppearance="@style/TextSmall"
+                android:textAppearance="@style/TextOverLine"
                 android:textColor="@color/colorPrimaryDarkAlpha" />
 
         </LinearLayout>
@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextSubTitle"
+                    android:textAppearance="@style/TextBody1"
                     android:layout_alignParentStart="true"
                     android:text="@string/night_mode"/>
 
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextSubTitle"
+                    android:textAppearance="@style/TextBody1"
                     android:layout_alignParentStart="true"
                     android:text="@string/reminder"/>
 

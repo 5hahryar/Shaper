@@ -14,52 +14,49 @@
         android:layout_height="match_parent"
         tools:context=".view.LoginActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFFFFF">
 
             <ImageView
                 android:id="@+id/imageView_background"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/login_background" />
 
             <TextView
                 android:id="@+id/textView_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="60dp"
                 android:text="@string/login_title"
-                android:textAppearance="@style/TextTitle"
-                app:layout_constraintStart_toStartOf="@+id/imageView_background"
-                app:layout_constraintTop_toTopOf="@+id/imageView_background" />
+                android:textAppearance="@style/TextH5"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/login_subtitle"
-                android:textAppearance="@style/TextSubTitle"
-                app:layout_constraintStart_toStartOf="@+id/imageView_background"
-                app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+                android:textAppearance="@style/TextBody1"
+                android:layout_below="@id/textView_title"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:lineSpacingExtra="2dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:layout_marginBottom="50dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:onClick="@{(view) -> viewModel.onClick(view)}"
@@ -67,10 +64,7 @@
                 android:textAppearance="@style/TextButton"
                 android:textColor="@color/colorAccent"
                 app:cornerRadius="30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_background"
-                app:layout_constraintEnd_toEndOf="@+id/imageView_background"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/imageView_background" />
+                android:layout_alignParentBottom="true" />
 
             <ImageView
                 android:id="@+id/imageView_illustration"
@@ -78,24 +72,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="63dp"
                 android:layout_marginEnd="64dp"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="70dp"
                 android:scaleType="fitXY"
-                app:layout_constraintBottom_toTopOf="@+id/button_login"
-                app:layout_constraintEnd_toEndOf="@+id/imageView_background"
-                app:layout_constraintStart_toStartOf="@+id/imageView_background"
+                android:layout_above="@id/button_login"
                 app:srcCompat="@drawable/login_illustration" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone">
 
             <ProgressBar
