@@ -2,9 +2,12 @@ package com.sloupycom.shaper.viewModel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.view.SettingsBottomSheet
+import kotlinx.android.synthetic.main.bottom_sheet_settings.*
+import kotlinx.android.synthetic.main.bottom_sheet_settings.view.*
 
 class SettingsViewModel(bottomSheet: SettingsBottomSheet): ViewModel() {
 
@@ -16,6 +19,7 @@ class SettingsViewModel(bottomSheet: SettingsBottomSheet): ViewModel() {
 
     init {
         name = mRepo.getUserCredentials()?.displayName
+        Glide.with(bottomSheet).load(profileImage).into(bottomSheet.binding?.root?.imageView_profile!!)
     }
 
 }

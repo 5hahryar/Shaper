@@ -20,4 +20,6 @@
     <string name="to_do_list">To-Do List</string>
     <string name="night_mode">Night Mode</string>
     <string name="reminder">Reminder</string>
+    <string name="support">Support</string>
+    <string name="logout">Logout</string>
 </resources>

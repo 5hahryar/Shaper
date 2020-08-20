@@ -13,6 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomSheetSettingsBinding
 import com.sloupycom.shaper.viewModel.SettingsViewModel
+import kotlinx.android.synthetic.main.bottom_sheet_settings.*
+import kotlinx.android.synthetic.main.bottom_sheet_settings.view.*
 
 class SettingsBottomSheet: BottomSheetDialogFragment() {
 
