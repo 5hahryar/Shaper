@@ -45,6 +45,9 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      * Method is called when data set changes
      */
     override fun onDataChanged(data: ArrayList<Task>) {
+        activity.shimmer.hideShimmer()
+        if (data.isEmpty()) activity.recyclerView_empty.visibility = View.VISIBLE
+        else activity.recyclerView_empty.visibility = View.GONE
         adapter.mList.clear()
         adapter.mList.addAll(data)
         adapter.notifyDataSetChanged()

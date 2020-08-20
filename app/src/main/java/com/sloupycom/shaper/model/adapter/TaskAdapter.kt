@@ -12,6 +12,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
@@ -20,7 +22,7 @@ import kotlin.collections.ArrayList
 
 class TaskAdapter(private val taskStateListener: TaskStateListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    var mList: ArrayList<Task> = arrayListOf()
+    var mList: ArrayList<Task> = arrayListOf(Task(), Task())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(LayoutInflater.from(parent.context)
