@@ -53,7 +53,7 @@
                 android:id="@+id/imageButton_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:tint="@color/colorPrimaryDark"
                 android:layout_alignParentEnd="true"

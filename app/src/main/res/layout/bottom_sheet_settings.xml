@@ -11,9 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_bottom_sheet_background"
-        android:maxHeight="500dp"
-        android:paddingBottom="@dimen/margin_end">
+        android:background="@drawable/round_bottom_sheet_background" android:paddingBottom="@dimen/margin_end">
 
         <ImageView
             android:id="@+id/indicator"
@@ -150,6 +148,7 @@
                 android:orientation="vertical"
                 android:clickable="true"
                 android:focusable="true"
+                android:background="@drawable/ripple_effect"
                 android:gravity="center">
 
                 <ImageView
@@ -175,6 +174,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
+                android:background="@drawable/ripple_effect"
                 android:layout_toEndOf="@id/supportButton"
                 android:layout_marginStart="100dp">
 
