@@ -71,7 +71,8 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      * Called when selected day from DayBar changes
      */
     override fun onSelectedDayChanged(date: HashMap<String, String>, chip: DayBarChip) {
-        mRepo.getDueTasksWithDate(date[DayBarChip.DAY]!!, date[DayBarChip.MONTH]!!, date[DayBarChip.YEAR]!!, this)
+        if (date[DayBarChip.DAY] == mGeneral.getDate("dd")) mRepo.getDueTasks(this)
+        else mRepo.getDueTasksWithDate(date[DayBarChip.DAY]!!, date[DayBarChip.MONTH]!!, date[DayBarChip.YEAR]!!, this)
     }
 
     /**

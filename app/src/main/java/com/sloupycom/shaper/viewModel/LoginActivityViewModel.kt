@@ -24,7 +24,6 @@ class LoginActivityViewModel(private val activity:LoginActivity,
     private var mGSA: GoogleSignInAccount?
     private var mAuth: FirebaseAuth
     private var mGSO: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(activity.getString(R.string.default_web_client_id))
         .requestProfile()
         .requestEmail()
         .build()
@@ -37,8 +36,8 @@ class LoginActivityViewModel(private val activity:LoginActivity,
     }
 
     private fun signInExistingAccount() {
-        if (mGSA!=null) {
-            fetchFirebaseUser(mGSA)
+        if (mAuth.currentUser!=null) {
+            listener.onAuthSuccessful(mAuth.currentUser!!)
         }
         else listener.onAuthFailed("NO ACCOUNT FOUND")
     }
