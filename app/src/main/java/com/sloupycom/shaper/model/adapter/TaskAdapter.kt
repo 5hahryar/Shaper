@@ -44,7 +44,7 @@ class TaskAdapter(private val taskStateListener: TaskStateListener) : RecyclerVi
             }
             "OVERDUE" -> {
                 holder.mCardView.setCardBackgroundColor(Color.parseColor("#FF905F"))
-                holder.mCardView.alpha = 0.1f
+                holder.mCardView.alpha = 1f
             }
 
         }

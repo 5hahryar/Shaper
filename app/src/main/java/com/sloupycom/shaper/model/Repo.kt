@@ -103,14 +103,12 @@ class Repo {
                     doc.get("creation_date") as String?,
                     doc.get("description") as String?,
                     doc.get("name") as String?,
-                    doc.get("next_due_day") as String?,
-                    doc.get("next_due_month") as String?,
-                    doc.get("next_due_year") as String?,
                     doc.get("owner_id") as String?,
                     doc.get("reminder") as String?,
                     doc.get("repetition") as String?,
                     doc.get("state") as String?,
-                    doc.get("id") as String
+                    doc.get("id") as String,
+                    doc.get("next_due") as String?
                 )
             )
         }

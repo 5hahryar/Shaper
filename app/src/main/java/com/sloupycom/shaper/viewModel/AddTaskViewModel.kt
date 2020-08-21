@@ -14,6 +14,8 @@ import com.sloupycom.shaper.view.AddTaskBottomSheet
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_task.view.*
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel(), DatePickerDialog.OnDateSetListener {
 
@@ -23,7 +25,7 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
     val date = General().getDate("EEEE, MMM dd yyyy")
     private val mRepo: Repo = Repo()
     private val mGeneral = General()
-    private var nextDue: Calendar? = null
+    private var nextDue: String? = null
 
     /**
      * Set onClick method for buttons
@@ -47,24 +49,10 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
      * Build a Task object
      */
     private fun buildTask(): HashMap<String, String> {
-        val creationDate = mCalendar.time.toString()
+        val creationDate = mGeneral.getDate("EEE MMM dd yyyy", mCalendar.time)
         val desc = bottomSheet.editText_desc.text.toString()
         val name = bottomSheet.editText_name.text.toString()
-        val nDueD: String = if (nextDue != null) {
-            mGeneral.getDate("dd", nextDue!!.time)
-        } else {
-            mGeneral.getDate("dd", mCalendar.time)
-        }
-        val nDueM: String = if (nextDue != null) {
-            mGeneral.getDate("MM", nextDue!!.time)
-        } else {
-            mGeneral.getDate("MM", mCalendar.time)
-        }
-        val nDueY: String = if (nextDue != null) {
-            mGeneral.getDate("yyyy", nextDue!!.time)
-        } else {
-            mGeneral.getDate("yyyy", mCalendar.time)
-        }
+        if (nextDue == null) nextDue = SimpleDateFormat("EEE MMM dd yyyy").format(Calendar.getInstance().time)
         val owId = mRepo.getUserCredentials()?.uid.toString()
         val rem = ""
         val rep = ""
@@ -82,12 +70,10 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
             "name" to name,
             "description" to desc,
             "creation_date" to creationDate,
-            "next_due_day" to nDueD,
-            "next_due_month" to nDueM,
-            "next_due_year" to nDueY,
             "reminder" to rem,
             "repetition" to rep,
-            "state" to state
+            "state" to state,
+            "next_due" to nextDue!!
         )
     }
 
@@ -106,6 +92,6 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
             bottomSheet.textView_date?.text = SimpleDateFormat("EEEE, MMM dd yyyy")
                 .format(date.time)
         }
-        this.nextDue = date
+        this.nextDue = SimpleDateFormat("EEE MMM dd yyyy").format(date.time)
     }
 }

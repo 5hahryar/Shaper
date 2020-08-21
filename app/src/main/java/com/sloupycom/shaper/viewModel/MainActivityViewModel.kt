@@ -1,6 +1,8 @@
 package com.sloupycom.shaper.viewModel
 
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,8 @@ import com.sloupycom.shaper.view.AddTaskBottomSheet
 import com.sloupycom.shaper.view.MainActivity
 import com.sloupycom.shaper.view.SettingsBottomSheet
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -79,9 +83,14 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      * Called when state of a task changes
      */
     override fun onTaskStateChanged(task: Task) {
-        if (task.state != "DONE") task.state = "DONE"
-        else if (task.next_due_day.equals(mGeneral.getDate("dd"))) task.state = "DUE"
-        else task.state = "ONGOING"
+        val taskDue: Date = SimpleDateFormat("EEE MMM dd yyyy").parse(task.next_due)
+        val today = SimpleDateFormat("EEE MMM dd yyyy").parse(mGeneral.getDate("EEE MMM dd yyyy"))
+        when {
+            task.state != "DONE" -> task.state = "DONE"
+            taskDue.after(today) -> task.state = "ONGOING"
+            taskDue.before(today) -> task.state = "OVERDUE"
+            else -> task.state = "DUE"
+        }
         mRepo.updateTask(task)
     }
 }
