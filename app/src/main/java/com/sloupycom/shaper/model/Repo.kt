@@ -34,25 +34,47 @@ class Repo {
             "name" to mUser.displayName
         )
         mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, Any>)
+        deleteObsoleteTasks()
+    }
+
+    private fun deleteObsoleteTasks() {
+        runBlocking {
+            mDatabase.collection(COLLECTION_USERS)
+                .document(mUser!!.uid)
+                .collection(SUBCOLLECTION_TASKS)
+                .whereLessThan("next_due_index", todayIndex)
+                .whereEqualTo("state", "DONE")
+                .addSnapshotListener { value, error ->
+                    if (value != null) {
+                        for (doc in value) {
+                            mDatabase.collection(COLLECTION_USERS)
+                                .document(mUser.uid)
+                                .collection(SUBCOLLECTION_TASKS)
+                                .document(doc.id)
+                                .delete()
+                        }
+                    }
+                }
+        }
     }
 
     /**
      * Get tasks that are due and overdue
      */
     fun getDueTasks(listener: OnDataChanged) {
-        mDatabase.collection(COLLECTION_USERS)
-            .document(mUser!!.uid)
-            .collection(SUBCOLLECTION_TASKS)
-            .whereLessThanOrEqualTo("next_due_index", todayIndex)
-            .whereIn("state", listOf("DUE","OVERDUE", "DONE"))
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w(TAG, "Listen failed.", error)
-                    return@addSnapshotListener
-                }
-                listener.onDataChanged(getTasksFromSnapShot(value))
-            }
         runBlocking {
+            mDatabase.collection(COLLECTION_USERS)
+                .document(mUser!!.uid)
+                .collection(SUBCOLLECTION_TASKS)
+                .whereLessThanOrEqualTo("next_due_index", todayIndex)
+                .whereIn("state", listOf("DUE","OVERDUE", "DONE"))
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+                    listener.onDataChanged(getTasksFromSnapShot(value))
+                }
         }
     }
 
