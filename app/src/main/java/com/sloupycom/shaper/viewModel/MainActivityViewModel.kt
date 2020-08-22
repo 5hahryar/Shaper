@@ -3,6 +3,7 @@ package com.sloupycom.shaper.viewModel
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -33,14 +34,14 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
     private val mRepo = Repo()
     var todayDate: String = mGeneral.getDate("EEEE, MMM dd")
     var adapter: TaskAdapter
-    private var dayBar: DayBar? = null
+    private var mDayBar: DayBar? = null
 
     /**
      * Initialize class
      */
     init {
-        dayBar = activity.dayBar
-        dayBar?.dayChangedListener = this
+        mDayBar = activity.dayBar
+        mDayBar?.dayChangedListener = this
         adapter = TaskAdapter(this)
         mRepo.getDueTasks(this)
     }
@@ -76,7 +77,7 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      */
     override fun onSelectedDayChanged(date: HashMap<String, String>, chip: DayBarChip) {
         if (date[DayBarChip.DAY] == mGeneral.getDate("dd")) mRepo.getDueTasks(this)
-        else mRepo.getDueTasksWithDate(date[DayBarChip.DAY]!!, date[DayBarChip.MONTH]!!, date[DayBarChip.YEAR]!!, this)
+        else mRepo.getDueTasksWithDate(date[DayBarChip.DAY]!!.toInt(), date[DayBarChip.MONTH]!!.toInt(), date[DayBarChip.YEAR]!!.toInt(), this)
     }
 
     /**

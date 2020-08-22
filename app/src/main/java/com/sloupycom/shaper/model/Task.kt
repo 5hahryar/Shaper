@@ -8,4 +8,5 @@ data class Task(var creation_date: String? = ""
                 ,var repetition: String? = ""
                 ,var state: String? = ""
                 ,var id: String = ""
-                ,var next_due: String? = "")
+                ,var next_due: String? = ""
+                ,var next_due_index: List<Int>? = listOf())

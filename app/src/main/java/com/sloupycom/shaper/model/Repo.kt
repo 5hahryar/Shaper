@@ -7,6 +7,10 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
+import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Repo {
@@ -16,6 +20,11 @@ class Repo {
     private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
     private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private val todayIndex = listOf<Int>(
+        SimpleDateFormat("dd").format(Calendar.getInstance().time).toInt(),
+        SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt(),
+        SimpleDateFormat("yyyy").format(Calendar.getInstance().time).toInt()
+    )
 
     init {
         val user = hashMapOf(
@@ -31,26 +40,26 @@ class Repo {
      * Get tasks that are due and overdue
      */
     fun getDueTasks(listener: OnDataChanged) {
-        runBlocking {
-            mDatabase.collection(COLLECTION_USERS)
-                .document(mUser!!.uid)
-                .collection(SUBCOLLECTION_TASKS)
-                .whereIn("state", listOf("DUE","OVERDUE","DONE"))
-                .orderBy("creation_date")
-                .addSnapshotListener { value, error ->
-                    if (error != null) {
-                        Log.w(TAG, "Listen failed.", error)
-                        return@addSnapshotListener
-                    }
-                    listener.onDataChanged(getTasksFromSnapShot(value))
+        mDatabase.collection(COLLECTION_USERS)
+            .document(mUser!!.uid)
+            .collection(SUBCOLLECTION_TASKS)
+            .whereLessThanOrEqualTo("next_due_index", todayIndex)
+            .whereIn("state", listOf("DUE","OVERDUE", "DONE"))
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed.", error)
+                    return@addSnapshotListener
                 }
+                listener.onDataChanged(getTasksFromSnapShot(value))
+            }
+        runBlocking {
         }
     }
 
     /**
      * Add task to database
      */
-    fun addTask(task: HashMap<String, String>) {
+    fun addTask(task: HashMap<String, Any>) {
         mDatabase.collection(COLLECTION_USERS)
             .document(mUser!!.uid)
             .collection(SUBCOLLECTION_TASKS)
@@ -74,14 +83,12 @@ class Repo {
     /**
      * Get tasks based on their due date
      */
-    fun getDueTasksWithDate(day: String, month: String, year: String, listener: OnDataChanged) {
+    fun getDueTasksWithDate(day: Int, month: Int, year: Int, listener: OnDataChanged) {
         runBlocking {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereEqualTo("next_due_day", day)
-                .whereEqualTo("next_due_month", month)
-                .whereEqualTo("next_due_year", year)
+                .whereEqualTo("next_due_index", listOf(day, month, year))
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w(TAG, "Listen failed.", error)
@@ -108,7 +115,8 @@ class Repo {
                     doc.get("repetition") as String?,
                     doc.get("state") as String?,
                     doc.get("id") as String,
-                    doc.get("next_due") as String?
+                    doc.get("next_due") as String?,
+                    doc.get("next_due_index") as List<Int>?
                 )
             )
         }
