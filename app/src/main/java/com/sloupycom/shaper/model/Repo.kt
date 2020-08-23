@@ -6,25 +6,22 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.sloupycom.shaper.utils.General
 import kotlinx.coroutines.runBlocking
-import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Repo {
+
     /** Values **/
     private val TAG = "REPO"
     private val COLLECTION_USERS = "users"
     private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
     private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private val todayIndex = listOf<Int>(
-        SimpleDateFormat("dd").format(Calendar.getInstance().time).toInt(),
-        SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt(),
-        SimpleDateFormat("yyyy").format(Calendar.getInstance().time).toInt()
-    )
+    private val todayDateIndex = General().getTodayDateIndex()
 
     init {
         val user = hashMapOf(
@@ -37,12 +34,15 @@ class Repo {
         deleteObsoleteTasks()
     }
 
+    /**
+     * Remove all previous tasks that are DONE from firestore
+     */
     private fun deleteObsoleteTasks() {
         runBlocking {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereLessThan("next_due_index", todayIndex)
+                .whereLessThan("next_due_index", todayDateIndex)
                 .whereEqualTo("state", "DONE")
                 .addSnapshotListener { value, error ->
                     if (value != null) {
@@ -66,8 +66,7 @@ class Repo {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereLessThanOrEqualTo("next_due_index", todayIndex)
-                .whereIn("state", listOf("DUE","OVERDUE", "DONE"))
+                .whereLessThanOrEqualTo("next_due", todayDateIndex)
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w(TAG, "Listen failed.", error)
@@ -110,7 +109,7 @@ class Repo {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereEqualTo("next_due_index", listOf(day, month, year))
+                .whereEqualTo("next_due", listOf(day, month, year))
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w(TAG, "Listen failed.", error)
@@ -129,16 +128,13 @@ class Repo {
         for (doc in value!!) {
             tasks.add(
                 Task(
-                    doc.get("creation_date") as String?,
-                    doc.get("description") as String?,
-                    doc.get("name") as String?,
-                    doc.get("owner_id") as String?,
-                    doc.get("reminder") as String?,
-                    doc.get("repetition") as String?,
-                    doc.get("state") as String?,
                     doc.get("id") as String,
-                    doc.get("next_due") as String?,
-                    doc.get("next_due_index") as List<Int>?
+                    doc.get("owner_id") as String,
+                    doc.get("name") as String,
+                    doc.get("description") as String?,
+                    doc.get("creation_date") as String,
+                    doc.get("next_due") as List<Int>,
+                    doc.get("state") as String
                 )
             )
         }

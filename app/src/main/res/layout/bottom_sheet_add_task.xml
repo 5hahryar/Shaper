@@ -36,7 +36,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_below="@id/indicator"
             android:layout_marginEnd="@dimen/margin_end"
-            android:text="@{viewModel.date}"
+            android:text="@{viewModel.MDate}"
             android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
         <com.google.android.material.textfield.TextInputLayout

@@ -23,4 +23,5 @@
     <string name="support">Support</string>
     <string name="logout">Logout</string>
     <string name="empty_tasks">There are no tasks for the day</string>
+    <string name="today">Today</string>
 </resources>

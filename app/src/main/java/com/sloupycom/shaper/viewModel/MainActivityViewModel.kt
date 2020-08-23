@@ -1,9 +1,6 @@
 package com.sloupycom.shaper.viewModel
 
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +15,6 @@ import com.sloupycom.shaper.view.AddTaskBottomSheet
 import com.sloupycom.shaper.view.MainActivity
 import com.sloupycom.shaper.view.SettingsBottomSheet
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -77,21 +72,20 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      */
     override fun onSelectedDayChanged(date: HashMap<String, String>, chip: DayBarChip) {
         if (date[DayBarChip.DAY] == mGeneral.getDate("dd")) mRepo.getDueTasks(this)
-        else mRepo.getDueTasksWithDate(date[DayBarChip.DAY]!!.toInt(), date[DayBarChip.MONTH]!!.toInt(), date[DayBarChip.YEAR]!!.toInt(), this)
+        else mRepo.getDueTasksWithDate(
+            date[DayBarChip.DAY]!!.toInt(),
+            date[DayBarChip.MONTH]!!.toInt(),
+            date[DayBarChip.YEAR]!!.toInt(),
+            this
+        )
     }
 
     /**
      * Called when state of a task changes
      */
     override fun onTaskStateChanged(task: Task) {
-        val taskDue: Date = SimpleDateFormat("EEE MMM dd yyyy").parse(task.next_due)
-        val today = SimpleDateFormat("EEE MMM dd yyyy").parse(mGeneral.getDate("EEE MMM dd yyyy"))
-        when {
-            task.state != "DONE" -> task.state = "DONE"
-            taskDue.after(today) -> task.state = "ONGOING"
-            taskDue.before(today) -> task.state = "OVERDUE"
-            else -> task.state = "DUE"
-        }
+        if (task.state != "DONE") task.state = "DONE"
+        else task.state = "ONGOING"
         mRepo.updateTask(task)
     }
 }
