@@ -20,7 +20,7 @@ class Repo {
     private val COLLECTION_USERS = "users"
     private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
-    private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val todayDateIndex = General().getTodayDateIndex()
 
     init {

@@ -179,6 +179,7 @@
                 android:orientation="vertical"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{(view) -> viewModel.onClick(view)}"
                 android:gravity="center"
                 android:background="@drawable/ripple_effect"
                 android:layout_toEndOf="@id/supportButton"

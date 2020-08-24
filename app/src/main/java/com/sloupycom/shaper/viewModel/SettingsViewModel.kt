@@ -1,5 +1,6 @@
 package com.sloupycom.shaper.viewModel
 
+import android.content.Intent
 import android.net.Uri
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -8,10 +9,16 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.model.Repo
+import com.sloupycom.shaper.view.MainActivity
 import com.sloupycom.shaper.view.SettingsBottomSheet
 import kotlinx.android.synthetic.main.bottom_sheet_settings.*
 import kotlinx.android.synthetic.main.bottom_sheet_settings.view.*
@@ -41,6 +48,9 @@ class SettingsViewModel(private val bottomSheet: SettingsBottomSheet): ViewModel
                 popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
                 popup.show()
                 popup.setOnMenuItemClickListener(this)
+            }
+            R.id.logoutButton -> {
+                //LOGOUT USER
             }
         }
 

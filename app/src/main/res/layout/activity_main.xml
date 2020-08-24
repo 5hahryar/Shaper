@@ -58,6 +58,7 @@
                 android:tint="@color/colorPrimaryDark"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
+                android:padding="5dp"
                 app:srcCompat="@drawable/ic_settings_24px"
                 android:layout_centerVertical="true"
                 android:onClick="@{(view) -> viewModel.onClick(view)}" />
