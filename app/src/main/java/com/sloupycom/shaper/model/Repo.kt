@@ -42,7 +42,7 @@ class Repo {
             mDatabase.collection(COLLECTION_USERS)
                 .document(mUser!!.uid)
                 .collection(SUBCOLLECTION_TASKS)
-                .whereLessThan("next_due_index", todayDateIndex)
+                .whereLessThan("next_due", todayDateIndex)
                 .whereEqualTo("state", "DONE")
                 .addSnapshotListener { value, error ->
                     if (value != null) {

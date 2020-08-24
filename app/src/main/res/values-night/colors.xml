@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FCBF49</color>
-    <color name="colorPrimaryDark">#003049</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorPrimaryDarkAlpha">#809591</color>
     <color name="green">#8DF48D</color>
     <color name="orange">#FF905F</color>
-    <color name="colorAccent">#FFF9D9</color>
+    <color name="colorAccent">#121212</color>
     <color name="colorOrange">#FFC85F</color>
-    <color name="day_bar_chip_text_color">@color/colorPrimaryDarkAlpha</color>
+    <color name="day_bar_chip_text_color">#FFFFFF</color>
     <color name="day_bar_chip_text_color_selected">@color/colorAccent</color>
-    <color name="colorIndicator">#D1CCB0</color>
-    <color name="colorTextButton">@color/colorAccent</color>
-    <color name="colorSeperator">#F1ECCD</color>
+    <color name="colorIndicator">#414141</color>
+    <color name="colorTextButton">#121212</color>
+    <color name="colorSeperator">#222222</color>
+
 </resources>

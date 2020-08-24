@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add"
                 android:textAppearance="@style/TextButton"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTextButton"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 app:cornerRadius="30dp"

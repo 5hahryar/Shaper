@@ -112,10 +112,10 @@
             android:onClick="@{(view) -> viewModel.onClick(view)}"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorTextButton"
             app:backgroundTint="@color/colorPrimaryDark"
             app:icon="@drawable/ic_add_24px"
-            app:iconTint="@android:color/white"
+            app:iconTint="@color/colorTextButton"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             app:shrinkMotionSpec="@animator/fab_motion" />

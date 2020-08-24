@@ -63,7 +63,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/userLayout"
             android:layout_marginTop="20dp"
-            android:background="#F1ECCD" />
+            android:background="@color/colorSeperator" />
 
         <LinearLayout
             android:id="@+id/settingsLayout"
@@ -95,7 +95,8 @@
                     android:layout_height="10dp"
                     android:layout_alignParentEnd="true"
                     app:trackTint="@color/colorPrimaryDarkAlpha"
-                    app:thumbTint="@color/colorPrimaryDark" />
+                    app:thumbTint="@color/colorPrimaryDark"
+                    android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
             </RelativeLayout>
 
@@ -132,7 +133,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/settingsLayout"
             android:layout_marginTop="@dimen/margin_start"
-            android:background="#F1ECCD" />
+            android:background="@color/colorSeperator" />
 
         <RelativeLayout
             android:layout_width="match_parent"
