@@ -1,7 +1,10 @@
 package com.sloupycom.shaper.viewModel
 
 import android.net.Uri
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
@@ -13,13 +16,15 @@ import com.sloupycom.shaper.view.SettingsBottomSheet
 import kotlinx.android.synthetic.main.bottom_sheet_settings.*
 import kotlinx.android.synthetic.main.bottom_sheet_settings.view.*
 
-class SettingsViewModel(bottomSheet: SettingsBottomSheet): ViewModel() {
+class SettingsViewModel(private val bottomSheet: SettingsBottomSheet): ViewModel(),
+    PopupMenu.OnMenuItemClickListener {
 
     private val mRepo: Repo = Repo()
     private val mUser: FirebaseUser? = mRepo.getUserCredentials()
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email
     var profileImage: Uri? = mUser?.photoUrl
+    var nightMode: String = "Auto"
 
     init {
         name = mRepo.getUserCredentials()?.displayName
@@ -31,12 +36,24 @@ class SettingsViewModel(bottomSheet: SettingsBottomSheet): ViewModel() {
 
     fun onClick(view: View) {
         when(view.id) {
-            R.id.switchNightMode -> {
-                if ((view as SwitchMaterial).isChecked) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            R.id.textView_nightMode -> {
+                val popup = PopupMenu(bottomSheet.context, view)
+                popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
+                popup.show()
+                popup.setOnMenuItemClickListener(this)
             }
         }
 
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item!!.itemId){
+            R.id.night_auto -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            R.id.night_on -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            R.id.night_off -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            else -> return false
+        }
+        return true
     }
 
 }

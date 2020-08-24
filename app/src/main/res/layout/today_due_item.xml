@@ -8,7 +8,7 @@
             type="com.sloupycom.shaper.model.Task" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -17,7 +17,9 @@
         app:cardCornerRadius="7dp"
         android:layout_marginStart="@dimen/margin_start"
         android:layout_marginEnd="@dimen/margin_end"
-        app:cardBackgroundColor="@color/colorPrimary">
+        app:cardBackgroundColor="@color/task_item_background_due"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/task_item_stroke_due">
 
 
         <RelativeLayout
@@ -50,5 +52,5 @@
                 app:duration="500"/>
 
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

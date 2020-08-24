@@ -12,4 +12,10 @@
     <color name="colorIndicator">#D1CCB0</color>
     <color name="colorTextButton">@color/colorAccent</color>
     <color name="colorSeperator">#F1ECCD</color>
+    <color name="task_item_background_done">#8DF48D</color>
+    <color name="task_item_stroke_done">#8DF48D</color>
+    <color name="task_item_background_overdue">#FF905F</color>
+    <color name="task_item_stroke_overdue">#FF905F</color>
+    <color name="task_item_background_due">#FFC85F</color>
+    <color name="task_item_stroke_due">#FFC85F</color>
 </resources>

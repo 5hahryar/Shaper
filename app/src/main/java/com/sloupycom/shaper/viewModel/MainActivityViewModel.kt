@@ -37,7 +37,7 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
     init {
         mDayBar = activity.dayBar
         mDayBar?.dayChangedListener = this
-        adapter = TaskAdapter(this)
+        adapter = TaskAdapter(activity, this)
         mRepo.getDueTasks(this)
     }
 

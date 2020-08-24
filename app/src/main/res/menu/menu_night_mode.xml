@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/night_auto" android:title="@string/auto" />
+    <item android:id="@+id/night_on" android:title="@string/on" />
+    <item android:id="@+id/night_off" android:title="@string/off" />
+</menu>

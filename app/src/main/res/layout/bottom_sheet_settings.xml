@@ -89,14 +89,19 @@
                     android:text="@string/night_mode"
                     android:layout_centerVertical="true"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switchNightMode"
+                <TextView
+                    android:id="@+id/textView_nightMode"
                     android:layout_width="wrap_content"
-                    android:layout_height="10dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextH5"
                     android:layout_alignParentEnd="true"
-                    app:trackTint="@color/colorPrimaryDarkAlpha"
-                    app:thumbTint="@color/colorPrimaryDark"
-                    android:onClick="@{(view) -> viewModel.onClick(view)}"/>
+                    android:textSize="18sp"
+                    android:text="@{viewModel.nightMode}"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/ripple_effect"
+                    android:onClick="@{(view) -> viewModel.onClick(view)}"
+                    android:textColor="@color/colorPrimaryDarkAlpha"/>
 
             </RelativeLayout>
 
@@ -117,11 +122,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextH5"
                     android:layout_alignParentEnd="true"
-                    android:textSize="18sp"
                     android:text="10:00 AM"
-                    android:textColor="@color/colorPrimaryDarkAlpha"/>
+                    android:textAppearance="@style/TextH5"
+                    android:textColor="@color/colorPrimaryDarkAlpha"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 

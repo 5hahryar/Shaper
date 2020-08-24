@@ -24,4 +24,7 @@
     <string name="logout">Logout</string>
     <string name="empty_tasks">There are no tasks for the day</string>
     <string name="today">Today</string>
+    <string name="auto">Auto</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
 </resources>

@@ -12,5 +12,10 @@
     <color name="colorIndicator">#414141</color>
     <color name="colorTextButton">#121212</color>
     <color name="colorSeperator">#222222</color>
+    <color name="task_item_background_done">@android:color/transparent</color>
+    <color name="task_item_stroke_done">#8DF48D</color>
+    <color name="task_item_background_overdue">@android:color/transparent</color>
+    <color name="task_item_stroke_overdue">#FF905F</color>
+    <color name="task_item_background_due">@android:color/transparent</color>
 
 </resources>
