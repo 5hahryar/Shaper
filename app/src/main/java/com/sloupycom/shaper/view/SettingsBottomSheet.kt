@@ -1,5 +1,6 @@
 package com.sloupycom.shaper.view
 
+import android.app.Application
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
@@ -27,7 +28,7 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_settings, container, false)
-        binding?.viewModel = SettingsViewModel(this)
+        binding?.viewModel = SettingsViewModel(activity!!.application)
 
         return binding?.root
     }

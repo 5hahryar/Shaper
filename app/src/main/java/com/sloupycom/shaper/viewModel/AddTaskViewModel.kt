@@ -1,12 +1,14 @@
 package com.sloupycom.shaper.viewModel
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import android.view.View
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.model.Repo
@@ -16,12 +18,13 @@ import kotlinx.android.synthetic.main.bottom_sheet_add_task.*
 import java.text.SimpleDateFormat
 import kotlin.collections.HashMap
 
-class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel(), DatePickerDialog.OnDateSetListener {
+class AddTaskViewModel(application: Application): AndroidViewModel(application), DatePickerDialog.OnDateSetListener {
 
     /** Values **/
+    private val context = getApplication<android.app.Application>().applicationContext
     @RequiresApi(Build.VERSION_CODES.N)
     val mCalendar: Calendar = Calendar.getInstance()
-    var mDate = bottomSheet.resources.getString(R.string.today)
+    var mDate = context.resources.getString(R.string.today)
     private val mRepo: Repo = Repo()
     private val mGeneral = General()
     private var index: List<Int>? = null
@@ -36,7 +39,7 @@ class AddTaskViewModel(private val bottomSheet: AddTaskBottomSheet): ViewModel()
                 bottomSheet.dismiss()
             }
             R.id.textView_date -> {
-                val picker = DatePickerDialog(bottomSheet.context!!)
+                val picker = DatePickerDialog(context)
                 picker.datePicker.minDate = Calendar.getInstance().timeInMillis
                 picker.show()
                 picker.setOnDateSetListener(this)

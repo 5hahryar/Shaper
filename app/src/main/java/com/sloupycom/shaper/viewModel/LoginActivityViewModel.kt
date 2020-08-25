@@ -1,9 +1,11 @@
 package com.sloupycom.shaper.viewModel
 
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -17,21 +19,21 @@ import com.sloupycom.shaper.utils.Constants
 import com.sloupycom.shaper.view.LoginActivity
 import kotlinx.coroutines.runBlocking
 
-class LoginActivityViewModel(private val activity:LoginActivity,
-                             private val listener:OnAuthCompleteListener): ViewModel() {
+class LoginActivityViewModel(application: Application, private val listener:OnAuthCompleteListener): AndroidViewModel(application) {
 
+    private val context = getApplication<android.app.Application>().applicationContext
     private var mGSC: GoogleSignInClient
     private var mGSA: GoogleSignInAccount?
     private var mAuth: FirebaseAuth
     private var mGSO: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(activity.getString(R.string.default_web_client_id))
+        .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestProfile()
         .requestEmail()
         .build()
 
     init {
-        mGSC = GoogleSignIn.getClient(activity, mGSO)
-        mGSA = GoogleSignIn.getLastSignedInAccount(activity)
+        mGSC = GoogleSignIn.getClient(context, mGSO)
+        mGSA = GoogleSignIn.getLastSignedInAccount(context)
         mAuth = FirebaseAuth.getInstance()
         signInExistingAccount()
     }
@@ -45,7 +47,7 @@ class LoginActivityViewModel(private val activity:LoginActivity,
 
     private fun signupNewAccount() {
         val signInIntent: Intent = mGSC.signInIntent
-        activity.startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
+        context.startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
     }
 
     private fun fetchFirebaseUser(googleAccount: GoogleSignInAccount?) {

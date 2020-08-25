@@ -8,11 +8,27 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
-class Application: Application() {
+object Application {
+
+    private var INSTANCE: App? = null
+
+    fun getInstance(): App{
+        if (INSTANCE == null) {
+            INSTANCE = App()
+        }
+        return INSTANCE!!
+    }
+
+}
+
+class App: Application() {
 
     private var prefs: SharedPreferences? = null
     var nightMode: Int? = null
 
+    init {
+        onCreate()
+    }
     override fun onCreate() {
         super.onCreate()
 

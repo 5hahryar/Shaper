@@ -5,42 +5,37 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModel
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.AndroidViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.Application
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.utils.General
-import com.sloupycom.shaper.view.SettingsBottomSheet
-import kotlinx.android.synthetic.main.bottom_sheet_settings.view.*
-import javax.inject.Inject
+import de.hdodenhof.circleimageview.CircleImageView
 
-class SettingsViewModel(private val bottomSheet: SettingsBottomSheet): ViewModel(),
-    PopupMenu.OnMenuItemClickListener {
 
+class SettingsViewModel(application: android.app.Application): AndroidViewModel(application), PopupMenu.OnMenuItemClickListener {
+
+    private val context = getApplication<android.app.Application>().applicationContext
     private val mRepo: Repo = Repo()
-    var application = Application()
     private val mUser: FirebaseUser? = mRepo.getUserCredentials()
-    private var profileImage: Uri? = mUser?.photoUrl
+    var imageUri: String? = mUser?.photoUrl.toString()
     private val mGeneral = General()
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email
-    var nightMode: String? = application.getNightMode()
+    var nightMode: String? = "k"
 
     init {
-
         name = mRepo.getUserCredentials()?.displayName
-        Glide.with(bottomSheet)
-            .load(profileImage)
-            .placeholder(R.drawable.ic_account_circle_24px)
-            .into(bottomSheet.binding?.root?.imageView_profile!!)
     }
 
     fun onClick(view: View) {
         when(view.id) {
             R.id.textView_nightMode -> {
-                val popup = PopupMenu(bottomSheet.context, view)
+                val popup = PopupMenu(context, view)
                 popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
                 popup.show()
                 popup.setOnMenuItemClickListener(this)
@@ -71,4 +66,12 @@ class SettingsViewModel(private val bottomSheet: SettingsBottomSheet): ViewModel
         return true
     }
 
+}
+
+@BindingAdapter("loadImage")
+fun loadImage(imageView: CircleImageView, imageUrl: String?) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .placeholder(R.drawable.ic_account_circle_24px)
+        .into(imageView)
 }

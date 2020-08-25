@@ -1,7 +1,9 @@
 package com.sloupycom.shaper.viewModel
 
+import android.app.Application
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.daybar.DayBar
@@ -19,12 +21,13 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
+class MainActivityViewModel(application: Application) : AndroidViewModel(application),
     Repo.OnDataChanged,
     DayBar.OnDayChangedListener,
     TaskAdapter.TaskStateListener{
 
     /** Values **/
+    private val context = getApplication<android.app.Application>().applicationContext
     private val mGeneral = General()
     private val mRepo = Repo()
     var todayDate: String = mGeneral.getDate("EEEE, MMM dd")
@@ -35,9 +38,9 @@ class MainActivityViewModel(private val activity: MainActivity) : ViewModel(),
      * Initialize class
      */
     init {
-        mDayBar = activity.dayBar
+        mDayBar = context.dayBar
         mDayBar?.dayChangedListener = this
-        adapter = TaskAdapter(activity, this)
+        adapter = TaskAdapter(context, this)
         mRepo.getDueTasks(this)
     }
 
