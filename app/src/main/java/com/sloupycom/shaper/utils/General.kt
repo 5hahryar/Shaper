@@ -1,11 +1,13 @@
 package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import com.sloupycom.shaper.model.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
-class General {
+class General: android.app.Application(){
 
     private val mCalendar: Calendar = Calendar.getInstance()
 
@@ -44,5 +46,10 @@ class General {
     fun getDate(pattern: String, time: Date): String {
         return SimpleDateFormat(pattern)
             .format(time)
+    }
+
+    fun writePreference(key: String, value: Int) {
+        val prefs = getSharedPreferences("application", Context.MODE_PRIVATE)
+        prefs.edit().putInt(key, value).apply()
     }
 }
