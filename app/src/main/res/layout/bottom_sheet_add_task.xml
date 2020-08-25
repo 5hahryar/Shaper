@@ -52,7 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:maxEms="50"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:maxEms="240" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,29 +86,6 @@
             android:layout_marginBottom="@dimen/margin_top"
             android:clickable="true"
             android:focusable="true">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@drawable/ripple_effect"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:src="@drawable/ic_alarm_24px"
-                    app:tint="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_reminder"
-                    android:textAppearance="@style/TextOverLine" />
-            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_add"
