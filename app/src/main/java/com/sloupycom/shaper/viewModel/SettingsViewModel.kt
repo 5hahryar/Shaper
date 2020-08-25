@@ -1,6 +1,8 @@
 package com.sloupycom.shaper.viewModel
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -31,7 +33,7 @@ class SettingsViewModel(private val bottomSheet: SettingsBottomSheet): ViewModel
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email
     var profileImage: Uri? = mUser?.photoUrl
-    var nightMode: String = "Auto"
+    var nightMode: String = bottomSheet.activity?.getSharedPreferences("dark_mode", Context.MODE_PRIVATE).toString()
 
     init {
         name = mRepo.getUserCredentials()?.displayName
