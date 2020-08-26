@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_bottom_sheet_background"
-
-        android:minHeight="300dp">
+        android:minHeight="300dp"
+        tools:context=".view.AddTaskBottomSheet">
 
         <ImageView
             android:id="@+id/indicator"
@@ -36,8 +37,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_below="@id/indicator"
             android:layout_marginEnd="@dimen/margin_end"
-            android:text="@{viewModel.MDate}"
-            android:onClick="@{(view) -> viewModel.onClick(view)}"/>
+            android:text="@{viewModel.textDate}" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextLayout_name"
@@ -97,8 +97,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 app:cornerRadius="30dp"
-                app:backgroundTint="@color/colorPrimaryDark"
-                android:onClick="@{(view) -> viewModel.onClick(view)}"/>
+                app:backgroundTint="@color/colorPrimaryDark" />
 
         </RelativeLayout>
 

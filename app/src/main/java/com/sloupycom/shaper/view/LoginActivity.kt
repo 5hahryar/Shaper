@@ -25,7 +25,18 @@ class LoginActivity : AppCompatActivity(), LoginActivityViewModel.OnAuthComplete
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding?.loadingLayout?.visibility = View.VISIBLE
-        binding?.viewModel = LoginActivityViewModel(this, this)
+        binding?.viewModel = LoginActivityViewModel(application, this)
+    }
+
+    fun onClick(view: View) {
+        when(view.id) {
+            R.id.button_login -> signupNewAccount()
+        }
+    }
+
+    private fun signupNewAccount() {
+        val signInIntent: Intent = binding?.viewModel?.mGSC?.signInIntent!!
+        startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
     }
 
     @SuppressLint("MissingSuperCall")

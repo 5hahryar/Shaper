@@ -1,19 +1,18 @@
 package com.sloupycom.shaper.model
 
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.sloupycom.shaper.utils.General
+import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class Repo {
+class Repo (application: android.app.Application): AndroidViewModel(application){
 
     /** Values **/
     private val TAG = "REPO"
@@ -21,7 +20,7 @@ class Repo {
     private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
     val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private val todayDateIndex = General().getTodayDateIndex()
+    private val todayDateIndex = Util(application).getTodayDateIndex()
 
     init {
         val user = hashMapOf(

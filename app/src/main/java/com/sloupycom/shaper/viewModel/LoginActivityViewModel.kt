@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 class LoginActivityViewModel(application: Application, private val listener:OnAuthCompleteListener): AndroidViewModel(application) {
 
     private val context = getApplication<android.app.Application>().applicationContext
-    private var mGSC: GoogleSignInClient
+    var mGSC: GoogleSignInClient
     private var mGSA: GoogleSignInAccount?
     private var mAuth: FirebaseAuth
     private var mGSO: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -45,10 +45,7 @@ class LoginActivityViewModel(application: Application, private val listener:OnAu
         else listener.onAuthFailed("NO ACCOUNT FOUND")
     }
 
-    private fun signupNewAccount() {
-        val signInIntent: Intent = mGSC.signInIntent
-        context.startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
-    }
+
 
     private fun fetchFirebaseUser(googleAccount: GoogleSignInAccount?) {
         runBlocking {
@@ -68,12 +65,6 @@ class LoginActivityViewModel(application: Application, private val listener:OnAu
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         mGSA = task.result
         fetchFirebaseUser(mGSA)
-    }
-
-    fun onClick(view: View) {
-        when(view.id) {
-            R.id.button_login -> signupNewAccount()
-        }
     }
 
     interface OnAuthCompleteListener {

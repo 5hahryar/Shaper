@@ -36,7 +36,7 @@
                     android:id="@+id/textView_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.todayDate.toString()}"
+                    android:text="@{viewModel.textDate}"
                     android:textAppearance="@style/TextOverLine" />
 
                 <TextView
@@ -61,7 +61,7 @@
                 android:padding="5dp"
                 app:srcCompat="@drawable/ic_settings_24px"
                 android:layout_centerVertical="true"
-                android:onClick="@{(view) -> viewModel.onClick(view)}" />
+                android:onClick="onClick" />
 
         </RelativeLayout>
 
@@ -75,11 +75,12 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dayBar">
+<!--        <com.facebook.shimmer.ShimmerFrameLayout-->
+<!--            android:id="@+id/shimmer"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/dayBar"-->
+<!--            app:shimmer_auto_start="false">-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_todayDue"
@@ -90,7 +91,7 @@
             android:layout_below="@id/dayBar"
             app:setAdapter="@{viewModel.adapter}" />
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+<!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
 
         <TextView
             android:id="@+id/recyclerView_empty"
@@ -110,7 +111,7 @@
             android:layout_marginBottom="36dp"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end"
-            android:onClick="@{(view) -> viewModel.onClick(view)}"
+            android:onClick="onClick"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
             android:textColor="@color/colorTextButton"
