@@ -43,7 +43,7 @@ class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClic
 
     private fun setListeners() {
         textView_nightMode.setOnClickListener{
-            val popup = PopupMenu(context, view)
+            val popup = PopupMenu(context, it)
             popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
             popup.show()
             popup.setOnMenuItemClickListener(this)
