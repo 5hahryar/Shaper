@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.viewModel = MainActivityViewModel(application)
         binding?.lifecycleOwner = this
-
         dayBar?.dayChangedListener = this
 
 

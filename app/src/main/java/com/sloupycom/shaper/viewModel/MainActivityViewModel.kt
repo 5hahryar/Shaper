@@ -1,7 +1,10 @@
 package com.sloupycom.shaper.viewModel
 
 import android.app.Application
+import android.database.Observable
+import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -23,23 +26,25 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val mRepo = Repo(application)
     var textDate: ObservableField<String> = ObservableField(mGeneral.getDate("EEEE, MMM dd"))
     var adapter: ObservableField<TaskAdapter> = ObservableField()
+    var emptyViewVisibility: ObservableField<Int> = ObservableField(View.GONE)
+    var isEmpty: ObservableBoolean = ObservableBoolean(true)
+    var isLoading: ObservableBoolean = ObservableBoolean(true)
 
     /**
      * Initialize class
      */
     init {
-
         adapter.set(TaskAdapter(application, this))
         mRepo.getDueTasks(this)
+        Int
     }
 
     /**
      * Method is called when data set changes
      */
     override fun onDataChanged(data: ArrayList<Task>) {
-//        activity.shimmer.hideShimmer()
-//        if (data.isEmpty()) activity.recyclerView_empty.visibility = View.VISIBLE
-//        else activity.recyclerView_empty.visibility = View.GONE
+        isLoading.set(false)
+        isEmpty.set(data.isEmpty())
         adapter.get()?.mList?.clear()
         adapter.get()?.mList?.addAll(data)
         adapter.get()?.notifyDataSetChanged()
@@ -55,6 +60,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun dayChanged(date: java.util.HashMap<String, String>, chip: DayBarChip) {
+        isLoading.set(true)
         if (date[DayBarChip.DAY] == mGeneral.getDate("dd")) mRepo.getDueTasks(this)
         else mRepo.getDueTasksWithDate(
             date[DayBarChip.DAY]!!.toInt(),
