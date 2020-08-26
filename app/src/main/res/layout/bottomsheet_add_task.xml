@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.sloupycom.shaper.viewModel.AddTaskViewModel" />
+            type="com.sloupycom.shaper.viewmodel.AddTaskViewModel" />
     </data>
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bottom_sheet_indicator"
+            android:background="@drawable/ic_indicator"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp" />

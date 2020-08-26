@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.viewModel
+package com.sloupycom.shaper.viewmodel
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
@@ -16,8 +16,8 @@ class SettingsViewModel(application: android.app.Application): AndroidViewModel(
 
     private val mRepo: Repo = Repo(application)
     private val mUser: FirebaseUser? = mRepo.getUserCredentials()
-    var imageUri: String? = mUser?.photoUrl.toString()
     private val mGeneral = Util(application)
+    var imageUri: String? = mUser?.photoUrl.toString()
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email
     var nightMode: ObservableField<String> = ObservableField(mGeneral.getNightMode())

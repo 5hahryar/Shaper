@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.sloupycom.shaper.viewModel.MainActivityViewModel" />
+            type="com.sloupycom.shaper.viewmodel.MainActivityViewModel" />
 
         <variable
             name="adapter"

@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.viewModel
+package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -18,16 +18,15 @@ import kotlin.collections.HashMap
 class AddTaskViewModel(application: Application): AndroidViewModel(application), DatePickerDialog.OnDateSetListener {
 
     /** Values **/
-    private val context = getApplication<android.app.Application>().applicationContext
-    @RequiresApi(Build.VERSION_CODES.N)
-    val mCalendar: Calendar = Calendar.getInstance()
-    var textDate: ObservableField<String> = ObservableField("")
+    private val mContext = getApplication<Application>().applicationContext
+    @RequiresApi(Build.VERSION_CODES.N) private val mCalendar: Calendar = Calendar.getInstance()
     private val mRepo: Repo = Repo(application)
     private val mGeneral = Util(application)
-    private var index: List<Int>? = null
+    private var mDateIndex: List<Int>? = null
+    var textDate: ObservableField<String> = ObservableField("")
 
     init {
-        textDate.set(context.getString(R.string.today))
+        textDate.set(mContext.getString(R.string.today))
     }
 
     /**
@@ -36,8 +35,8 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
     @SuppressLint("SimpleDateFormat")
     private fun buildTask(name: String, desc: String): HashMap<String, Any> {
         val creationDate = mGeneral.getDate("EEE MMM dd yyyy", mCalendar.time)
-        if (index == null) {
-            index = listOf(
+        if (mDateIndex == null) {
+            mDateIndex = listOf(
                 SimpleDateFormat("dd").format(mCalendar.time).toInt(),
                 SimpleDateFormat("MM").format(mCalendar.time).toInt(),
                 SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
@@ -57,7 +56,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
             "name" to name,
             "description" to desc,
             "creation_date" to creationDate,
-            "next_due" to index!!,
+            "next_due" to mDateIndex!!,
             "state" to state
         )
     }
@@ -71,7 +70,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
         val date = Calendar.getInstance()
         date.set(year, month, dayOfMonth)
         textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
-        this.index = listOf(
+        this.mDateIndex = listOf(
             SimpleDateFormat("dd").format(date.time).toInt(),
             SimpleDateFormat("MM").format(date.time).toInt(),
             SimpleDateFormat("yyyy").format(date.time).toInt())

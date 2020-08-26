@@ -21,7 +21,7 @@ class TaskAdapter(val application: android.app.Application, private val taskStat
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.today_due_item, parent, false))
+            .inflate(R.layout.item_task, parent, false))
     }
 
     override fun getItemCount(): Int {

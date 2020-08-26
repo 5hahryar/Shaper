@@ -1,8 +1,6 @@
-package com.sloupycom.shaper.viewModel
+package com.sloupycom.shaper.viewmodel
 
 import android.app.Application
-import android.database.Observable
-import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -21,12 +19,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     TaskAdapter.TaskStateListener{
 
     /** Values **/
-    private val context = getApplication<Application>().applicationContext
+    private val mContext = getApplication<Application>().applicationContext
     private val mGeneral = Util(application)
     private val mRepo = Repo(application)
     var textDate: ObservableField<String> = ObservableField(mGeneral.getDate("EEEE, MMM dd"))
     var adapter: ObservableField<TaskAdapter> = ObservableField()
-    var emptyViewVisibility: ObservableField<Int> = ObservableField(View.GONE)
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
     var isLoading: ObservableBoolean = ObservableBoolean(true)
 

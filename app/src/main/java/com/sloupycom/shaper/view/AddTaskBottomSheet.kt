@@ -13,13 +13,13 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.databinding.BottomSheetAddTaskBinding
-import com.sloupycom.shaper.viewModel.AddTaskViewModel
-import kotlinx.android.synthetic.main.bottom_sheet_add_task.*
+import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
+import com.sloupycom.shaper.viewmodel.AddTaskViewModel
+import kotlinx.android.synthetic.main.bottomsheet_add_task.*
 
 class AddTaskBottomSheet: BottomSheetDialogFragment() {
 
-    private var binding: BottomSheetAddTaskBinding? = null
+    private var mBinding: BottomsheetAddTaskBinding? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
             = BottomSheetDialog(requireContext(), theme)
@@ -27,10 +27,10 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_add_task, container, false)
-        binding?.viewModel = AddTaskViewModel(activity!!.application)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_add_task, container, false)
+        mBinding?.viewModel = AddTaskViewModel(activity!!.application)
 
-        return binding?.root
+        return mBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,11 +44,11 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
             val picker = DatePickerDialog(context!!)
             picker.datePicker.minDate = Calendar.getInstance().timeInMillis
             picker.show()
-            picker.setOnDateSetListener(binding?.viewModel)
+            picker.setOnDateSetListener(mBinding?.viewModel)
         }
 
         button_add.setOnClickListener {
-            binding?.viewModel?.addTask(editText_name.text.toString(),
+            mBinding?.viewModel?.addTask(editText_name.text.toString(),
                 editText_desc.text.toString())
             dismiss()
         }
