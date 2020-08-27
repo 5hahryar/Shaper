@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 
 class TaskAdapter(val application: android.app.Application, private val taskStateListener: TaskStateListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    var mList: ArrayList<Task> = arrayListOf(Task(), Task())
+    var mList: ArrayList<Task> = arrayListOf()
     private val mUtil: Util = Util(application)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

@@ -2,18 +2,19 @@ package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.FirebaseAuth
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.model.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Util(application: android.app.Application): AndroidViewModel(application) {
 
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val context = getApplication<android.app.Application>().applicationContext
+    private val mContext = getApplication<android.app.Application>().applicationContext
 
     @SuppressLint("SimpleDateFormat")
     fun getTodayDateIndex(): List<Int> {
@@ -53,18 +54,19 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
     }
 
     fun getNightMode(): String {
-        when (context.getSharedPreferences("application", Context.MODE_PRIVATE)
+        when (mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
             .getInt("night_mode", -1)
             ) {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return context.getString(R.string.auto)
-            AppCompatDelegate.MODE_NIGHT_YES -> return context.getString(R.string.on)
-            AppCompatDelegate.MODE_NIGHT_NO -> return context.getString(R.string.off)
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return mContext.getString(R.string.auto)
+            AppCompatDelegate.MODE_NIGHT_YES -> return mContext.getString(R.string.on)
+            AppCompatDelegate.MODE_NIGHT_NO -> return mContext.getString(R.string.off)
         }
         return "NOT SUPPORTED"
     }
 
     fun writePreference(key: String, value: Int) {
-        val prefs = context.getSharedPreferences("application", Context.MODE_PRIVATE)
+        val prefs = mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
     }
+
 }

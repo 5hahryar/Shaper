@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.view
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetSettingsBinding
+import com.sloupycom.shaper.utils.AuthHelper
+import com.sloupycom.shaper.utils.Util
 import com.sloupycom.shaper.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.bottomsheet_settings.*
 
@@ -47,7 +50,9 @@ class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClic
             popup.setOnMenuItemClickListener(this)
         }
         logoutButton.setOnClickListener {
-            //LOGOUT
+            AuthHelper(activity!!.application).signout()
+            startActivity(Intent(activity, LoginActivity::class.java))
+            activity!!.finish()
         }
     }
 
