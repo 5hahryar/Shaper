@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
         //Setup databinding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mBinding?.viewModel = MainActivityViewModel(application)
+        mBinding?.viewModel = MainActivityViewModel(application, baseContext)
         mBinding?.lifecycleOwner = this
         dayBar?.dayChangedListener = this
 
