@@ -40,9 +40,9 @@
             android:text="@{viewModel.textDate}" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextLayout_name"
+            android:id="@+id/editTextLayout_title"
             style="@style/TextInputLayout"
-            android:hint="@string/name"
+            android:hint="@string/title"
             android:layout_below="@id/textView_date"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end">
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
                 android:textColor="@color/colorPrimaryDark"
-                android:maxLength="100"/>
+                android:maxLength="100" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/description"
             android:layout_marginBottom="16dp"
-            android:layout_below="@id/editTextLayout_name"
+            android:layout_below="@id/editTextLayout_title"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end">
 

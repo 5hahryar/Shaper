@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.utils.Constants
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.utils.AuthHelper
+import com.sloupycom.shaper.utils.Util
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -23,6 +25,7 @@ class LoginActivity : AppCompatActivity(), AuthHelper.OnAuthCompleteListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        AppCompatDelegate.setDefaultNightMode(Util(application).getNightModeCon())
         mAuthHelper = AuthHelper(application)
         mAuthHelper.signInExistingAccount(this)
     }

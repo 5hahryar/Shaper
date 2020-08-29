@@ -1,12 +1,11 @@
 package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.firebase.auth.FirebaseAuth
 import com.sloupycom.shaper.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +17,7 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
 
     @SuppressLint("SimpleDateFormat")
     fun getTodayDateIndex(): List<Int> {
-        return listOf (
+        return listOf(
             SimpleDateFormat("dd").format(mCalendar.time).toInt(),
             SimpleDateFormat("MM").format(mCalendar.time).toInt(),
             SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
@@ -43,7 +42,11 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
             .replace("]", "")
             .replace(",", "")
         val dateFormat = SimpleDateFormat("dd MM yyyy").parse(dateString)
-        val today = SimpleDateFormat("dd MM yyyy").parse(SimpleDateFormat("dd MM yyyy").format(mCalendar.time))
+        val today = SimpleDateFormat("dd MM yyyy").parse(
+            SimpleDateFormat("dd MM yyyy").format(
+                mCalendar.time
+            )
+        )
         return dateFormat.before(today)
     }
 
@@ -62,6 +65,20 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
             AppCompatDelegate.MODE_NIGHT_NO -> return mContext.getString(R.string.off)
         }
         return "NOT SUPPORTED"
+    }
+
+    fun getNightModeCon(): Int {
+        return mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
+            .getInt("night_mode", -1)
+    }
+
+    fun isNightMode(application: Application): Boolean {
+        val nightModeFlags = application.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)
+        when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> return true
+            Configuration.UI_MODE_NIGHT_NO -> return false
+        }
+        return false
     }
 
     fun writePreference(key: String, value: Int) {

@@ -27,4 +27,7 @@
     <string name="auto">Auto</string>
     <string name="on">On</string>
     <string name="off">Off</string>
+    <string name="support_email">Contact me at\n<a href="shahryar.kh78@gmail.com">shahryar.kh78@gmail.com</a></string>
+    <string name="support_repo">Shaper repository on <a href="https://github.com/5hahryar">github</a></string>
+    <string name="title">Title</string>
 </resources>

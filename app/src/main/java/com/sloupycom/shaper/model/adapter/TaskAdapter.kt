@@ -1,5 +1,6 @@
 package com.sloupycom.shaper.model.adapter
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View

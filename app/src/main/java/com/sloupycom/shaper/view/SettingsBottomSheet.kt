@@ -12,6 +12,7 @@ import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
@@ -25,8 +26,9 @@ class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClic
 
     private var mBinding: BottomsheetSettingsBinding? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
-            = BottomSheetDialog(requireContext(), theme)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext(), theme)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,6 +55,9 @@ class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClic
             AuthHelper(activity!!.application).signout()
             startActivity(Intent(activity, LoginActivity::class.java))
             activity!!.finish()
+        }
+        supportButton.setOnClickListener {
+            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
         }
     }
 

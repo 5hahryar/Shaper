@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
@@ -21,8 +23,10 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
 
     private var mBinding: BottomsheetAddTaskBinding? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
-            = BottomSheetDialog(requireContext(), theme)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AddTaskBottomSheet)
+        return BottomSheetDialog(requireContext(), theme)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
