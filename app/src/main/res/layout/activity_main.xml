@@ -114,7 +114,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="30dp"
             android:onClick="onClick"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
