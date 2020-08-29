@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/login_background" />
+                app:srcCompat="@drawable/login_back" />
 
             <TextView
                 android:id="@+id/textView_title"
@@ -69,7 +69,7 @@
                 android:scaleType="centerInside"
                 android:layout_below="@id/textView_subtitle"
                 android:layout_above="@id/button_login"
-                app:srcCompat="@drawable/login_illustration" />
+                app:srcCompat="@drawable/login_illus" />
 
         </RelativeLayout>
 

@@ -40,7 +40,8 @@ class LoginActivity : AppCompatActivity(), AuthHelper.OnAuthCompleteListener {
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.RC_SIGN_IN && resultCode == RESULT_OK){
-           mAuthHelper.fetchFirebaseUser(GoogleSignIn.getSignedInAccountFromIntent(data).result, this)
+            mAuthHelper.fetchFirebaseUser(GoogleSignIn.getSignedInAccountFromIntent(data).result, this)
+            loading_layout.visibility = View.VISIBLE
         }
     }
 

@@ -35,7 +35,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.mTitle.text = mList[position].name
+        holder.mTitle.text = mList[position].title
 
         if (mList[position].state == "DONE") {
             holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG

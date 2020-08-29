@@ -129,8 +129,7 @@ class Repo (application: android.app.Application): AndroidViewModel(application)
             tasks.add(
                 Task(
                     doc.get("id") as String,
-                    doc.get("owner_id") as String,
-                    doc.get("name") as String,
+                    doc.get("title") as String,
                     doc.get("description") as String?,
                     doc.get("creation_date") as String,
                     doc.get("next_due") as List<Int>,
