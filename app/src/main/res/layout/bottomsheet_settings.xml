@@ -53,7 +53,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@{viewModel.email}"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDarkAlpha" />
+                android:textColor="@color/colorOnPrimaryAlpha" />
 
         </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/userLayout"
             android:layout_marginTop="20dp"
-            android:background="@color/colorSeperator" />
+            android:background="@color/colorSeparator" />
 
         <LinearLayout
             android:id="@+id/settingsLayout"
@@ -100,7 +100,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="@drawable/ripple_effect"
-                    android:textColor="@color/colorPrimaryDarkAlpha"/>
+                    android:textColor="@color/colorOnPrimaryAlpha"/>
 
             </RelativeLayout>
 
@@ -124,7 +124,7 @@
                     android:layout_alignParentEnd="true"
                     android:text="10:00 AM"
                     android:textAppearance="@style/TextH5"
-                    android:textColor="@color/colorPrimaryDarkAlpha"
+                    android:textColor="@color/colorOnPrimaryAlpha"
                     android:textSize="18sp" />
 
             </RelativeLayout>
@@ -137,7 +137,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/settingsLayout"
             android:layout_marginTop="@dimen/margin_start"
-            android:background="@color/colorSeperator" />
+            android:background="@color/colorSeparator" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -160,14 +160,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_help_outline_24px"
-                    app:tint="@color/colorPrimaryDarkAlpha" />
+                    app:tint="@color/colorOnPrimaryAlpha" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/support"
                     android:textAppearance="@style/TextButton"
-                    android:textColor="@color/colorPrimaryDarkAlpha"
+                    android:textColor="@color/colorOnPrimaryAlpha"
                     android:layout_marginTop="5dp"/>
             </LinearLayout>
 
@@ -187,14 +187,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_login_24px"
-                    app:tint="@color/colorPrimaryDarkAlpha" />
+                    app:tint="@color/colorOnPrimaryAlpha" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/logout"
                     android:textAppearance="@style/TextButton"
-                    android:textColor="@color/colorPrimaryDarkAlpha"
+                    android:textColor="@color/colorOnPrimaryAlpha"
                     android:layout_marginTop="5dp"/>
             </LinearLayout>
 

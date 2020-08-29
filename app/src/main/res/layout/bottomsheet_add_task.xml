@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorSecondary"
                 android:maxLength="100" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorSecondary"
                 android:maxLength="100"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,11 +93,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add"
                 android:textAppearance="@style/TextButton"
-                android:textColor="@color/colorTextButton"
+                android:textColor="@color/colorOnSecondary"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 app:cornerRadius="30dp"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="@color/colorSecondary" />
 
         </RelativeLayout>
 

@@ -3,10 +3,10 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Login" parent="AppTheme">
@@ -16,14 +16,14 @@
     <style name="TextH5" parent="TextAppearance.AppCompat">
         <item name="android:font" tools:targetApi="o">@font/googlesans_medium</item>
         <item name="android:fontFamily">@font/googlesans_medium</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <style name="TextBody1" parent="TextAppearance.AppCompat">
         <item name="android:font" tools:targetApi="o">@font/googlesans_regular</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -32,13 +32,13 @@
         <item name="android:fontFamily">@font/googlesans_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/colorTextButton</item>
+        <item name="android:textColor">@color/colorOnSecondary</item>
     </style>
 
     <style name="TextOverLine">
         <item name="android:font" tools:targetApi="o">@font/googlesans_regular</item>
         <item name="android:fontFamily">@font/googlesans_regular</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textSize">11sp</item>
     </style>
 
@@ -65,13 +65,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:textAppearance">@style/TextH5</item>
-        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/colorSecondary</item>
         <item name="boxCornerRadiusBottomEnd">10dp</item>
         <item name="boxCornerRadiusBottomStart">10dp</item>
         <item name="boxCornerRadiusTopEnd">10dp</item>
         <item name="boxCornerRadiusTopStart">10dp</item>
-        <item name="boxStrokeColor">@color/colorPrimaryDark</item>
-        <item name="hintTextColor">@color/colorPrimaryDark</item>
+        <item name="boxStrokeColor">@color/colorSecondary</item>
+        <item name="hintTextColor">@color/colorSecondary</item>
     </style>
 
     <style name="AddTaskBottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">

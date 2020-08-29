@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="colorPrimary">#FCBF49</color>
-    <color name="colorPrimaryDark">#003049</color>
-    <color name="colorPrimaryDarkAlpha">#809591</color>
-    <color name="green">#8DF48D</color>
-    <color name="orange">#FF905F</color>
-    <color name="colorAccent">#FFF9D9</color>
-    <color name="colorOrange">#FFC85F</color>
-    <color name="day_bar_chip_text_color">@color/colorPrimaryDarkAlpha</color>
-    <color name="day_bar_chip_text_color_selected">@color/colorAccent</color>
-    <color name="colorIndicator">#D1CCB0</color>
-    <color name="colorTextButton">@color/colorAccent</color>
-    <color name="colorSeperator">#F1ECCD</color>
+    <color name="colorPrimary">#FFF9D9</color>
+    <color name="colorSecondary">#003049</color>
+    <color name="colorAccent">#FCBF49</color>
+    <color name="colorOnPrimary">@color/colorSecondary</color>
+    <color name="colorOnPrimaryAlpha">#809591</color>
+    <color name="colorGreen">#8DF48D</color>
+    <color name="colorOrange">#FF905F</color>
+    <color name="day_bar_chip_text_color">@color/colorOnPrimaryAlpha</color>
+    <color name="day_bar_chip_text_color_selected">@color/colorPrimary</color>
+    <color name="colorIndicatorOnPrimary">#D1CCB0</color>
+    <color name="colorOnSecondary">@color/colorPrimary</color>
+    <color name="colorSeparator">#F1ECCD</color>
     <color name="task_item_background_done">#B6FFB6</color>
     <color name="task_item_stroke_done">@color/task_item_background_done</color>
     <color name="task_item_background_overdue">#FF905F</color>
-    <color name="task_item_stroke_overdue">#FF905F</color>
-    <color name="task_item_background_due">#FFC85F</color>
-    <color name="task_item_stroke_due">#FFC85F</color>
-    <color name="bottom_sheet_corner">#666457</color>
-    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">@color/colorIndicator</color>
+    <color name="task_item_stroke_overdue">@color/task_item_background_overdue</color>
+    <color name="task_item_background_due">@color/colorAccent</color>
+    <color name="task_item_stroke_due">@color/task_item_background_due</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">@color/colorIndicatorOnPrimary</color>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimary"
     android:padding="30dp">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextBody1"
-        android:textColorLink="@color/colorPrimaryDark"
+        android:textColorLink="@color/colorSecondary"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
         android:autoLink="email"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextBody1"
         android:layout_marginTop="20dp"
-        android:textColorLink="@color/colorPrimaryDark"
+        android:textColorLink="@color/colorSecondary"
         android:gravity="center"
         android:text="@string/support_repo"/>
 
