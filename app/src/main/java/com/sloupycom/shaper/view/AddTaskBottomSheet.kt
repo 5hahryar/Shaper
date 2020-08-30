@@ -19,8 +19,9 @@ import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
 import kotlinx.android.synthetic.main.bottomsheet_add_task.*
 
-class AddTaskBottomSheet: BottomSheetDialogFragment() {
+class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
+    /**Values**/
     private var mBinding: BottomsheetAddTaskBinding? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -29,9 +30,14 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_add_task, container, false)
+        mBinding =
+            DataBindingUtil.inflate(inflater, R.layout.bottomsheet_add_task, container, false)
         mBinding?.viewModel = AddTaskViewModel(activity!!.application)
 
         return mBinding?.root
@@ -54,12 +60,10 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
         }
 
         button_add.setOnClickListener {
-            if (editText_name.text.toString() == "") editTextLayout_title.error = "Title can't be empty"
+            if (editText_name.text.toString() == "") editTextLayout_title.error =
+                context!!.getString(R.string.empty_title)
             else {
-                mBinding?.viewModel?.addTask(
-                    editText_name.text.toString(),
-                    editText_desc.text.toString()
-                )
+                mBinding?.viewModel?.addTask(editText_name.text.toString())
                 dismiss()
             }
         }

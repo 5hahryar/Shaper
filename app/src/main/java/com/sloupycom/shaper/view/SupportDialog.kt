@@ -9,7 +9,7 @@ import com.sloupycom.shaper.R
 import kotlinx.android.synthetic.main.dialog_support.*
 import kotlinx.android.synthetic.main.dialog_support.view.*
 
-class SupportDialog: DialogFragment() {
+class SupportDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

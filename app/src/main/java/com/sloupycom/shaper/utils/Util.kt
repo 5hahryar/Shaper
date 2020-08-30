@@ -10,11 +10,15 @@ import com.sloupycom.shaper.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Util(application: android.app.Application): AndroidViewModel(application) {
+class Util(application: Application) : AndroidViewModel(application) {
 
+    /**Values**/
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val mContext = getApplication<android.app.Application>().applicationContext
+    private val mContext = getApplication<Application>().applicationContext
 
+    /**
+     * Get date in a list, format: [dd, MM, yyyy]
+     */
     @SuppressLint("SimpleDateFormat")
     fun getTodayDateIndex(): List<Int> {
         return listOf(
@@ -24,17 +28,18 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getTodayDate(): Date {
-        return SimpleDateFormat("dd MM yyyy").parse(mCalendar.time.toString())!!
-    }
-
+    /**
+     * Get date in a string by custom format
+     */
     @SuppressLint("SimpleDateFormat")
     fun getDate(pattern: String): String {
         return SimpleDateFormat(pattern)
             .format(Calendar.getInstance().time)
     }
 
+    /**
+     * @input List<Int> format: [dd, MM, yyyy]
+     */
     @SuppressLint("SimpleDateFormat")
     fun isDateBeforeToday(dateIndex: List<Int>): Boolean {
         val dateString = dateIndex.toString()
@@ -50,15 +55,21 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
         return dateFormat.before(today)
     }
 
+    /**
+     * Get date using custom time and format
+     */
     @SuppressLint("SimpleDateFormat")
     fun getDate(pattern: String, time: Date): String {
         return SimpleDateFormat(pattern)
             .format(time)
     }
 
+    /**
+     * Get night mode string
+     */
     fun getNightMode(): String {
-        when (mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
-            .getInt("night_mode", -1)
+        when (mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
             ) {
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return mContext.getString(R.string.auto)
             AppCompatDelegate.MODE_NIGHT_YES -> return mContext.getString(R.string.on)
@@ -67,22 +78,19 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
         return "NOT SUPPORTED"
     }
 
-    fun getNightModeCon(): Int {
-        return mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
-            .getInt("night_mode", -1)
+    /**
+     * Get night mode config
+     */
+    fun getNightModeConfig(): Int {
+        return mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
     }
 
-    fun isNightMode(application: Application): Boolean {
-        val nightModeFlags = application.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)
-        when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> return true
-            Configuration.UI_MODE_NIGHT_NO -> return false
-        }
-        return false
-    }
-
+    /**
+     * Write data to shared preferences
+     */
     fun writePreference(key: String, value: Int) {
-        val prefs = mContext.getSharedPreferences("application", Context.MODE_PRIVATE)
+        val prefs = mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
     }
 

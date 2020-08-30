@@ -17,17 +17,19 @@ import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
 class TaskAdapter(
-    val application: Application,
+    application: Application,
     private val taskStateListener: TaskStateListener,
-    val activityContext: Context
+    private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     var mList: ArrayList<Task> = arrayListOf()
     private val mUtil: Util = Util(application)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_task, parent, false))
+        return TaskViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_task, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -37,6 +39,7 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = mList[position].title
 
+        //Change item colors based on state
         if (mList[position].state == "DONE") {
             holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
@@ -45,12 +48,9 @@ class TaskAdapter(
             holder.mCheckBox.isChecked = true
         } else if (mUtil.isDateBeforeToday(mList[position].next_due)) {
             holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
-            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
+            holder.mCardView.strokeColor =
+                activityContext.getColor(R.color.task_item_stroke_overdue)
             holder.mCardView.alpha = 1f
-        }
-
-        holder.mRelativeLayout.setOnClickListener { v ->
-            //Open Task Overview
         }
 
         holder.mCheckBox.setOnCheckedChangeListener { _, _ ->

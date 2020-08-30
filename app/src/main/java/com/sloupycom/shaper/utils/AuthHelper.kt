@@ -13,10 +13,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.sloupycom.shaper.R
 import kotlinx.coroutines.runBlocking
 
-class AuthHelper(application: Application): AndroidViewModel(application) {
+class AuthHelper(application: Application) : AndroidViewModel(application) {
 
+    /**Values**/
     private val mContext = getApplication<Application>().applicationContext
-    var mGSC: GoogleSignInClient
+    private var mGSC: GoogleSignInClient
     private var mGSA: GoogleSignInAccount?
     private var mAuth: FirebaseAuth
     private var mGSO: GoogleSignInOptions =
@@ -32,18 +33,24 @@ class AuthHelper(application: Application): AndroidViewModel(application) {
         mAuth = FirebaseAuth.getInstance()
     }
 
+    /**
+     * Sign-in with existing account
+     */
     fun signInExistingAccount(listener: OnAuthCompleteListener) {
-        if (mAuth.currentUser!=null) {
+        if (mAuth.currentUser != null) {
             listener.onAuthSuccessful(mAuth.currentUser!!)
-        }
-        else listener.onAuthFailed("NO ACCOUNT FOUND")
+        } else listener.onAuthFailed("NO ACCOUNT FOUND")
     }
 
+    /**
+     * Get firebase credentials of an account
+     */
     fun fetchFirebaseUser(googleAccount: GoogleSignInAccount?, listener: OnAuthCompleteListener) {
         runBlocking {
             if (googleAccount != null) {
                 mAuth.signInWithCredential(
-                    GoogleAuthProvider.getCredential(googleAccount.idToken, null))
+                    GoogleAuthProvider.getCredential(googleAccount.idToken, null)
+                )
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             listener.onAuthSuccessful(mAuth.currentUser!!)
@@ -53,7 +60,7 @@ class AuthHelper(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun signout() {
+    fun signOut() {
         runBlocking {
             mAuth.signOut()
             mGSC.signOut()

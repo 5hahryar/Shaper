@@ -34,7 +34,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
      */
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
-    private fun buildTask(title: String, desc: String): HashMap<String, Any> {
+    private fun buildTask(title: String): HashMap<String, Any> {
         val creationDate = mGeneral.getDate("EEE MMM dd yyyy", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
@@ -54,7 +54,6 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
         return hashMapOf(
             "id" to id,
             "title" to title,
-            "description" to desc,
             "creation_date" to creationDate,
             "next_due" to mDateIndex!!,
             "state" to state
@@ -77,7 +76,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun addTask(name: String, desc: String) {
-        mRepo.addTask(buildTask(name, desc))
+    fun addTask(name: String) {
+        mRepo.addTask(buildTask(name))
     }
 }

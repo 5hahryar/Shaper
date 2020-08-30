@@ -13,14 +13,17 @@ import kotlinx.coroutines.runBlocking
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class Repo (application: android.app.Application): AndroidViewModel(application){
+class Repo(application: android.app.Application) : AndroidViewModel(application) {
+
+    companion object {
+        const val TAG = "REPO"
+        const val COLLECTION_USERS = "users"
+        const val SUBCOLLECTION_TASKS = "tasks"
+    }
 
     /** Values **/
-    private val TAG = "REPO"
-    private val COLLECTION_USERS = "users"
-    private val SUBCOLLECTION_TASKS = "tasks"
     private val mDatabase = Firebase.firestore
-    val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val todayDateIndex = Util(application).getTodayDateIndex()
 
     init {
@@ -130,7 +133,6 @@ class Repo (application: android.app.Application): AndroidViewModel(application)
                 Task(
                     doc.get("id") as String,
                     doc.get("title") as String,
-                    doc.get("description") as String?,
                     doc.get("creation_date") as String,
                     doc.get("next_due") as List<Int>,
                     doc.get("state") as String
@@ -144,7 +146,7 @@ class Repo (application: android.app.Application): AndroidViewModel(application)
         return mUser
     }
 
-    interface OnDataChanged{
+    interface OnDataChanged {
         fun onDataChanged(data: ArrayList<Task>)
     }
 
