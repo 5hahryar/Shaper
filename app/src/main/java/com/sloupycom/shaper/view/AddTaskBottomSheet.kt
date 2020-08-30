@@ -37,12 +37,14 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
         return mBinding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setListeners()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun setListeners() {
         textView_date.setOnClickListener {
             val picker = DatePickerDialog(context!!)
@@ -52,9 +54,14 @@ class AddTaskBottomSheet: BottomSheetDialogFragment() {
         }
 
         button_add.setOnClickListener {
-            mBinding?.viewModel?.addTask(editText_name.text.toString(),
-                editText_desc.text.toString())
-            dismiss()
+            if (editText_name.text.toString() == "") editTextLayout_title.error = "Title can't be empty"
+            else {
+                mBinding?.viewModel?.addTask(
+                    editText_name.text.toString(),
+                    editText_desc.text.toString()
+                )
+                dismiss()
+            }
         }
 
     }
