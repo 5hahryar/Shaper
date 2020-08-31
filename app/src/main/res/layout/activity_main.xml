@@ -77,7 +77,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="@dimen/margin_end"
-            app:font="@font/googlesans_regular" />
+            app:font="@font/roboto_regular" />
 
         <ProgressBar
             android:layout_width="wrap_content"
