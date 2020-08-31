@@ -1,7 +1,6 @@
 package com.sloupycom.shaper.view
 
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
@@ -56,9 +54,6 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
             popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
             popup.show()
             popup.setOnMenuItemClickListener(this)
-        }
-        textView_alarm.setOnClickListener{
-            TimePickerDialog(context, mBinding?.viewModel, 0, 0, true).show()
         }
         logoutButton.setOnClickListener {
             AuthHelper(activity!!.application).signOut()
