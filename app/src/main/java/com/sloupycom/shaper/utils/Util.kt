@@ -1,9 +1,11 @@
 package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Context
-import android.content.res.Configuration
+import android.content.Intent
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
@@ -92,6 +94,33 @@ class Util(application: Application) : AndroidViewModel(application) {
     fun writePreference(key: String, value: Int) {
         val prefs = mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
+    }
+
+    fun setAlarm(time: Calendar) {
+//        val pendingIntent =
+//            PendingIntent.getService(mContext, 10,
+//                Intent(mContext, AlarmReciever::class.java),
+//                PendingIntent.FLAG_NO_CREATE)
+
+//        val alarmIntent = Intent(mContext, MyAlarmReceiver::class.java).let { intent ->
+//            PendingIntent.getBroadcast(mContext, 0, intent, 0)
+//        }
+
+        val alarmIntent = PendingIntent.getBroadcast(mContext.applicationContext, 11, Intent(mContext.applicationContext, MyAlarmReceiver::class.java), 0)
+
+        cancelAlarm(alarmIntent)
+
+        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            time.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent)
+    }
+
+    fun cancelAlarm(intent: PendingIntent) {
+        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(intent)
     }
 
 }

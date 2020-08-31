@@ -1,5 +1,8 @@
 package com.sloupycom.shaper.viewmodel
 
+import android.app.TimePickerDialog
+import android.widget.CalendarView
+import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
@@ -10,9 +13,11 @@ import com.sloupycom.shaper.R
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.utils.Util
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 
-class SettingsViewModel(application: android.app.Application): AndroidViewModel(application) {
+class SettingsViewModel(application: android.app.Application): AndroidViewModel(application),
+    TimePickerDialog.OnTimeSetListener {
 
     private val mRepo: Repo = Repo(application)
     private val mUser: FirebaseUser? = mRepo.getUserCredentials()
@@ -29,6 +34,15 @@ class SettingsViewModel(application: android.app.Application): AndroidViewModel(
     fun setNightMode(mode: Int) {
         AppCompatDelegate.setDefaultNightMode(mode)
         mGeneral.writePreference("night_mode", mode)
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, hourOfDay)
+            set(Calendar.MINUTE, minute)
+        }
+        mGeneral.setAlarm(calendar)
     }
 }
 
