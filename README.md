@@ -36,3 +36,7 @@ service cloud.firestore {
 }
 ```
 
+## Support
+Reach out to me at shahryar.kh78@gmail.com
+
+Feel free to make any contributions.
