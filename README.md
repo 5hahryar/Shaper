@@ -1,6 +1,8 @@
 # Shaper
 Shaper is a simple cloud-based Todo app
 
+![alt text](https://github.com/5hahryar/Shaper/blob/master/Shaper.png?raw=true)
+
 ## Setup your own Firebase project
 Shaper uses Firebase Authentication and Firestore to maintain user data.
 
