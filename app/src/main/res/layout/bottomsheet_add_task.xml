@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_bottom_sheet_background"
-        android:minHeight="300dp"
         tools:context=".view.AddTaskBottomSheet">
 
         <ImageView
@@ -40,47 +39,28 @@
             android:text="@{viewModel.textDate}" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextLayout_name"
+            android:id="@+id/editTextLayout_title"
             style="@style/TextInputLayout"
-            android:hint="@string/name"
+            android:hint="@string/title"
             android:layout_below="@id/textView_date"
             android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end">
+            android:layout_marginEnd="@dimen/margin_end"
+            app:errorEnabled="true"
+            app:boxStrokeErrorColor="@color/design_default_color_error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorSecondary"
                 android:maxLength="100"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editText_descLayout"
-            style="@style/TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/description"
-            android:layout_marginBottom="16dp"
-            android:layout_below="@id/editTextLayout_name"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorPrimaryDark"
-                android:maxLength="100"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editText_descLayout"
+            android:layout_below="@id/editTextLayout_title"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end"
             android:layout_marginBottom="@dimen/margin_top"
@@ -93,11 +73,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add"
                 android:textAppearance="@style/TextButton"
-                android:textColor="@color/colorTextButton"
+                android:textColor="@color/colorOnSecondary"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 app:cornerRadius="30dp"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="@color/colorSecondary" />
 
         </RelativeLayout>
 

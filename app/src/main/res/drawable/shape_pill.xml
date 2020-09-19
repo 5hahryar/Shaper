@@ -4,5 +4,5 @@
         android:bottomRightRadius="@dimen/dayChipRadius"
         android:topLeftRadius="@dimen/dayChipRadius"
         android:topRightRadius="@dimen/dayChipRadius"/>
-    <solid android:color="@color/colorPrimaryDark"/>
+    <solid android:color="@color/colorSecondary"/>
 </shape>

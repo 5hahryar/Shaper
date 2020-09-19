@@ -1,40 +1,45 @@
 package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.model.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Util(application: android.app.Application): AndroidViewModel(application) {
+class Util(application: Application) : AndroidViewModel(application) {
 
+    /**Values**/
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val context = getApplication<android.app.Application>().applicationContext
+    private val mContext = getApplication<Application>().applicationContext
 
+    /**
+     * Get date in a list, format: [dd, MM, yyyy]
+     */
     @SuppressLint("SimpleDateFormat")
     fun getTodayDateIndex(): List<Int> {
-        return listOf (
+        return listOf(
             SimpleDateFormat("dd").format(mCalendar.time).toInt(),
             SimpleDateFormat("MM").format(mCalendar.time).toInt(),
             SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getTodayDate(): Date {
-        return SimpleDateFormat("dd MM yyyy").parse(mCalendar.time.toString())!!
-    }
-
+    /**
+     * Get date in a string by custom format
+     */
     @SuppressLint("SimpleDateFormat")
     fun getDate(pattern: String): String {
         return SimpleDateFormat(pattern)
             .format(Calendar.getInstance().time)
     }
 
+    /**
+     * @input List<Int> format: [dd, MM, yyyy]
+     */
     @SuppressLint("SimpleDateFormat")
     fun isDateBeforeToday(dateIndex: List<Int>): Boolean {
         val dateString = dateIndex.toString()
@@ -42,29 +47,51 @@ class Util(application: android.app.Application): AndroidViewModel(application) 
             .replace("]", "")
             .replace(",", "")
         val dateFormat = SimpleDateFormat("dd MM yyyy").parse(dateString)
-        val today = SimpleDateFormat("dd MM yyyy").parse(SimpleDateFormat("dd MM yyyy").format(mCalendar.time))
+        val today = SimpleDateFormat("dd MM yyyy").parse(
+            SimpleDateFormat("dd MM yyyy").format(
+                mCalendar.time
+            )
+        )
         return dateFormat.before(today)
     }
 
+    /**
+     * Get date using custom time and format
+     */
     @SuppressLint("SimpleDateFormat")
     fun getDate(pattern: String, time: Date): String {
         return SimpleDateFormat(pattern)
             .format(time)
     }
 
+    /**
+     * Get night mode string
+     */
     fun getNightMode(): String {
-        when (context.getSharedPreferences("application", Context.MODE_PRIVATE)
-            .getInt("night_mode", -1)
+        when (mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
             ) {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return context.getString(R.string.auto)
-            AppCompatDelegate.MODE_NIGHT_YES -> return context.getString(R.string.on)
-            AppCompatDelegate.MODE_NIGHT_NO -> return context.getString(R.string.off)
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return mContext.getString(R.string.auto)
+            AppCompatDelegate.MODE_NIGHT_YES -> return mContext.getString(R.string.on)
+            AppCompatDelegate.MODE_NIGHT_NO -> return mContext.getString(R.string.off)
         }
         return "NOT SUPPORTED"
     }
 
+    /**
+     * Get night mode config
+     */
+    fun getNightModeConfig(): Int {
+        return mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
+    }
+
+    /**
+     * Write data to shared preferences
+     */
     fun writePreference(key: String, value: Int) {
-        val prefs = context.getSharedPreferences("application", Context.MODE_PRIVATE)
+        val prefs = mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
     }
+
 }

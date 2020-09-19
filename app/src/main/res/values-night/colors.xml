@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#FCBF49</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorPrimaryDarkAlpha">#D6D6D6</color>
-    <color name="green">#8DF48D</color>
-    <color name="orange">#FF905F</color>
-    <color name="colorAccent">#121212</color>
-    <color name="colorOrange">#FFC85F</color>
-    <color name="day_bar_chip_text_color">#FFFFFF</color>
-    <color name="day_bar_chip_text_color_selected">@color/colorAccent</color>
-    <color name="colorIndicator">#414141</color>
-    <color name="colorTextButton">#121212</color>
-    <color name="colorSeperator">#222222</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#121212</color>
+    <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorAccent">@color/colorIndicatorOnPrimary</color>
+    <color name="colorOnPrimary">@color/colorSecondary</color>
+    <color name="colorOnPrimaryAlpha">#E7E7E7</color>
+    <color name="colorGreen">#8DF48D</color>
+    <color name="colorOrange">#FF905F</color>
+    <color name="day_bar_chip_text_color">@color/colorOnPrimaryAlpha</color>
+    <color name="day_bar_chip_text_color_selected">@color/colorPrimary</color>
+    <color name="colorIndicatorOnPrimary">#414141</color>
+    <color name="colorOnSecondary">@color/colorPrimary</color>
+    <color name="colorSeparator">#222222</color>
     <color name="task_item_background_done">@android:color/transparent</color>
     <color name="task_item_stroke_done">#8DF48D</color>
     <color name="task_item_background_overdue">@android:color/transparent</color>
     <color name="task_item_stroke_overdue">#FF905F</color>
     <color name="task_item_background_due">@android:color/transparent</color>
-
+    <color name="task_item_stroke_due">@color/colorOrange</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">@color/colorIndicatorOnPrimary</color>
 </resources>

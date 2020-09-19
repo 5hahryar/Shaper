@@ -6,58 +6,50 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseUser
-import com.sloupycom.shaper.utils.Constants
-import com.sloupycom.shaper.viewmodel.LoginActivityViewModel
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.databinding.ActivityLoginBinding
+import com.sloupycom.shaper.utils.AuthHelper
+import com.sloupycom.shaper.utils.Constant
+import com.sloupycom.shaper.utils.Util
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-class LoginActivity : AppCompatActivity(), LoginActivityViewModel.OnAuthCompleteListener {
+class LoginActivity : AppCompatActivity(), AuthHelper.OnAuthCompleteListener {
 
     /** Values **/
-    private lateinit var mBinding: ActivityLoginBinding
+    private lateinit var mAuthHelper: AuthHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /** Init data binding **/
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        mBinding.loadingLayout.visibility = View.VISIBLE
-        mBinding.viewModel = LoginActivityViewModel(application, this)
+        setContentView(R.layout.activity_login)
+
+        AppCompatDelegate.setDefaultNightMode(Util(application).getNightModeConfig())
+        mAuthHelper = AuthHelper(application)
+        mAuthHelper.signInExistingAccount(this)
     }
 
-    /**
-     * set onClick for views
-     */
     fun onClick(view: View) {
-        when(view.id) {
-            R.id.button_login -> signupNewAccount()
+        when (view.id) {
+            R.id.button_login -> startActivityForResult(
+                mAuthHelper.getSignIntent(),
+                Constant.RC_SIGN_IN
+            )
         }
     }
 
-    /**
-     * Open google sign-in intent
-     */
-    private fun signupNewAccount() {
-        val signInIntent: Intent = mBinding.viewModel?.mGSC?.signInIntent!!
-        startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
-    }
-
-    /**
-     * Get sign-in results from intent
-     */
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.RC_SIGN_IN){
-            mBinding.viewModel?.onSignUpIntentResult(data)
+        if (requestCode == Constant.RC_SIGN_IN && resultCode == RESULT_OK) {
+            mAuthHelper.fetchFirebaseUser(
+                GoogleSignIn.getSignedInAccountFromIntent(data).result,
+                this
+            )
+            loading_layout.visibility = View.VISIBLE
         }
     }
 
-    /**
-     * Triggered when authentication is successful
-     */
     override fun onAuthSuccessful(account: FirebaseUser) {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("intent", account)
@@ -65,9 +57,6 @@ class LoginActivity : AppCompatActivity(), LoginActivityViewModel.OnAuthComplete
         finish()
     }
 
-    /**
-     * Triggered when authentication is failed
-     */
     override fun onAuthFailed(error: String) {
         loading_layout.visibility = View.GONE
         Log.d("TAG", error)

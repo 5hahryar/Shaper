@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -14,7 +15,7 @@ import com.sloupycom.shaper.utils.Util
 import kotlin.collections.ArrayList
 
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application),
+class MainActivityViewModel(application: Application, activityContext: Context) : AndroidViewModel(application),
     Repo.OnDataChanged,
     TaskAdapter.TaskStateListener{
 
@@ -31,7 +32,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
      * Initialize class
      */
     init {
-        adapter.set(TaskAdapter(application, this))
+        adapter.set(TaskAdapter(application, this, activityContext))
         mRepo.getDueTasks(this)
         Int
     }

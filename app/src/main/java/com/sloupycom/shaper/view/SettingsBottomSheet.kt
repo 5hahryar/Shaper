@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.view
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,20 +16,28 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetSettingsBinding
+import com.sloupycom.shaper.utils.AuthHelper
 import com.sloupycom.shaper.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.bottomsheet_settings.*
 
-class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClickListener {
+class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemClickListener {
 
+    /**Values**/
     private var mBinding: BottomsheetSettingsBinding? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
-            = BottomSheetDialog(requireContext(), theme)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext(), theme)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_settings, container, false)
+        mBinding =
+            DataBindingUtil.inflate(inflater, R.layout.bottomsheet_settings, container, false)
         mBinding?.viewModel = SettingsViewModel(activity!!.application)
 
         return mBinding?.root
@@ -40,19 +49,24 @@ class SettingsBottomSheet: BottomSheetDialogFragment(), PopupMenu.OnMenuItemClic
     }
 
     private fun setListeners() {
-        textView_nightMode.setOnClickListener{
+        textView_nightMode.setOnClickListener {
             val popup = PopupMenu(context, it)
             popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
             popup.show()
             popup.setOnMenuItemClickListener(this)
         }
         logoutButton.setOnClickListener {
-            //LOGOUT
+            AuthHelper(activity!!.application).signOut()
+            startActivity(Intent(activity, LoginActivity::class.java))
+            activity!!.finish()
+        }
+        supportButton.setOnClickListener {
+            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
         }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item!!.itemId){
+        when (item!!.itemId) {
             R.id.night_auto -> {
                 mBinding?.viewModel?.setNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }

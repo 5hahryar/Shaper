@@ -19,8 +19,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
+        android:background="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"
         tools:context=".view.MainActivity">
 
         <RelativeLayout
@@ -61,10 +61,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/ripple_effect"
-                android:backgroundTint="@color/colorPrimaryDark"
+                android:backgroundTint="@color/colorSecondary"
                 android:onClick="onClick"
                 android:padding="5dp"
-                android:tint="@color/colorPrimaryDark"
+                android:tint="@color/colorSecondary"
                 app:srcCompat="@drawable/ic_settings_24px" />
 
         </RelativeLayout>
@@ -77,12 +77,13 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="@dimen/margin_end"
-            app:font="@font/googlesans_regular" />
+            app:font="@font/roboto_regular" />
 
-        <com.google.android.material.progressindicator.ProgressIndicator
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            style="?android:attr/progressBarStyle"
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -103,7 +104,7 @@
             android:gravity="center"
             android:text="@string/empty_tasks"
             android:textAppearance="@style/TextBody1"
-            android:textColor="@color/colorPrimaryDarkAlpha"
+            android:textColor="@color/colorOnPrimaryAlpha"
             android:visibility="@{viewModel.isEmpty() ? View.VISIBLE : View.GONE}" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -114,14 +115,14 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="30dp"
             android:onClick="onClick"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
-            android:textColor="@color/colorTextButton"
-            app:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/colorOnSecondary"
+            app:backgroundTint="@color/colorSecondary"
             app:icon="@drawable/ic_add_24px"
-            app:iconTint="@color/colorTextButton"
+            app:iconTint="@color/colorOnSecondary"
             app:shrinkMotionSpec="@animator/fab_motion" />
 
     </RelativeLayout>

@@ -43,7 +43,7 @@
                 android:gravity="center_vertical"
                 android:layout_toStartOf="@id/checkbox"
                 android:layout_marginEnd="@dimen/margin_top"
-                android:text="@{task.name}" />
+                android:text="@{task.title}" />
 
             <net.igenius.customcheckbox.CustomCheckBox
                 android:id="@+id/checkbox"
@@ -51,8 +51,8 @@
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:color_tick="@color/colorPrimaryDark"
-                app:color_unchecked_stroke="@color/colorPrimaryDark"
+                app:color_tick="@color/colorSecondary"
+                app:color_unchecked_stroke="@color/colorSecondary"
                 app:color_unchecked="@android:color/transparent"
                 app:color_checked="@android:color/transparent"
                 app:duration="500"/>
