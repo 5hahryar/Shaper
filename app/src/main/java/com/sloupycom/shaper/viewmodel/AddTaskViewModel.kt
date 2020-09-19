@@ -12,7 +12,6 @@ import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.model.Repo
-import com.sloupycom.shaper.utils.Util
 import java.text.SimpleDateFormat
 import kotlin.collections.HashMap
 

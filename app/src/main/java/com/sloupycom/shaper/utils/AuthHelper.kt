@@ -2,7 +2,6 @@ package com.sloupycom.shaper.utils
 
 import android.app.Application
 import android.content.Intent
-import androidx.lifecycle.AndroidViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
