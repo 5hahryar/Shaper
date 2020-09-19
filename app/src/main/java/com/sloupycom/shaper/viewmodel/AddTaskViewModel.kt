@@ -19,16 +19,16 @@ import kotlin.collections.HashMap
 class AddTaskViewModel(application: Application): AndroidViewModel(application), DatePickerDialog.OnDateSetListener {
 
     /** Values **/
+    @RequiresApi(Build.VERSION_CODES.N) private val mCalendar: Calendar = Calendar.getInstance()
     private val mComponent = DaggerDependencyComponent.create()
     private val mRepo: Repo = mComponent.getRepo()
     private val mUtil = mComponent.getUtil()
-    private val mContext = getApplication<Application>().applicationContext
-    @RequiresApi(Build.VERSION_CODES.N) private val mCalendar: Calendar = Calendar.getInstance()
+
     private var mDateIndex: List<Int>? = null
     var textDate: ObservableField<String> = ObservableField("")
 
     init {
-        textDate.set(mContext.getString(R.string.today))
+        textDate.set(application.getString(R.string.today))
     }
 
     /**

@@ -13,10 +13,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.sloupycom.shaper.R
 import kotlinx.coroutines.runBlocking
 
-class AuthHelper(application: Application) : AndroidViewModel(application) {
+class AuthHelper(application: Application) {
 
     /**Values**/
-    private val mContext = getApplication<Application>().applicationContext
+    private val mContext = application.applicationContext
     private var mGSC: GoogleSignInClient
     private var mGSA: GoogleSignInAccount?
     private var mAuth: FirebaseAuth

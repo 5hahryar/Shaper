@@ -21,19 +21,16 @@ class MainActivityViewModel(application: Application, activityContext: Context) 
 
     /** Values **/
     private val mComponent = DaggerDependencyComponent.create()
-    private val mContext = getApplication<Application>().applicationContext
     private val mUtil = mComponent.getUtil()
     private val mRepo = mComponent.getRepo()
+
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var adapter: ObservableField<TaskAdapter> = ObservableField()
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
     var isLoading: ObservableBoolean = ObservableBoolean(true)
 
-    /**
-     * Initialize class
-     */
     init {
-        adapter.set(TaskAdapter(application, this, activityContext))
+        adapter.set(TaskAdapter(this, activityContext))
         mRepo.getDueTasks(this)
         Int
     }

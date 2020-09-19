@@ -18,8 +18,9 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
     /** Values **/
     private val mComponent = DaggerDependencyComponent.create()
     private val mRepo: Repo = mComponent.getRepo()
-    private val mUser: FirebaseUser? = mRepo.getUserCredentials()
     private val mUtil = mComponent.getUtil()
+    private val mUser: FirebaseUser? = mRepo.getUserCredentials()
+
     var imageUri: String? = mUser?.photoUrl.toString()
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email

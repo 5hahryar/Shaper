@@ -18,14 +18,14 @@ import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
 class TaskAdapter(
-    application: Application,
     private val taskStateListener: TaskStateListener,
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val mComponent = DaggerDependencyComponent.create()
-    var mList: ArrayList<Task> = arrayListOf()
     private val mUtil: Util = mComponent.getUtil()
+
+    var mList: ArrayList<Task> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
