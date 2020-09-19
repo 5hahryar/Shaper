@@ -15,7 +15,7 @@ class GetDueWorker (val application: Application, workerParams: WorkerParameters
     private var mData: ArrayList<Task>? = null
 
     override fun doWork(): Result {
-        Repo(application).getDueTasks(this)
+        Repo().getDueTasks(this)
         return if (isWorkDone && mData != null) Result.success()
         else Result.retry()
     }

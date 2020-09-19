@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(), AuthHelper.OnAuthCompleteListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        AppCompatDelegate.setDefaultNightMode(Util(application).getNightModeConfig())
+        AppCompatDelegate.setDefaultNightMode(Util().getNightModeConfig(applicationContext))
         mAuthHelper = AuthHelper(application)
         mAuthHelper.signInExistingAccount(this)
     }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Util
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
@@ -22,8 +23,9 @@ class TaskAdapter(
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
+    private val mComponent = DaggerDependencyComponent.create()
     var mList: ArrayList<Task> = arrayListOf()
-    private val mUtil: Util = Util(application)
+    private val mUtil: Util = mComponent.getUtil()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(

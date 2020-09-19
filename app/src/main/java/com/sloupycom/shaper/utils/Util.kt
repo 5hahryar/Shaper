@@ -1,20 +1,17 @@
 package com.sloupycom.shaper.utils
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class Util(application: Application) : AndroidViewModel(application) {
+class Util @Inject constructor(){
 
     /**Values**/
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val mContext = getApplication<Application>().applicationContext
 
     /**
      * Get date in a list, format: [dd, MM, yyyy]
@@ -67,13 +64,13 @@ class Util(application: Application) : AndroidViewModel(application) {
     /**
      * Get night mode string
      */
-    fun getNightMode(): String {
-        when (mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+    fun getNightMode(context: Context): String {
+        when (context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
             .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
             ) {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return mContext.getString(R.string.auto)
-            AppCompatDelegate.MODE_NIGHT_YES -> return mContext.getString(R.string.on)
-            AppCompatDelegate.MODE_NIGHT_NO -> return mContext.getString(R.string.off)
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> return context.getString(R.string.auto)
+            AppCompatDelegate.MODE_NIGHT_YES -> return context.getString(R.string.on)
+            AppCompatDelegate.MODE_NIGHT_NO -> return context.getString(R.string.off)
         }
         return "NOT SUPPORTED"
     }
@@ -81,16 +78,16 @@ class Util(application: Application) : AndroidViewModel(application) {
     /**
      * Get night mode config
      */
-    fun getNightModeConfig(): Int {
-        return mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+    fun getNightModeConfig(context: Context): Int {
+        return context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
             .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
     }
 
     /**
      * Write data to shared preferences
      */
-    fun writePreference(key: String, value: Int) {
-        val prefs = mContext.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+    fun writePreference(context: Context, key: String, value: Int) {
+        val prefs = context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
     }
 
