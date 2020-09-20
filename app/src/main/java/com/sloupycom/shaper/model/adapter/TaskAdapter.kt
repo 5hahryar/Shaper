@@ -1,6 +1,5 @@
 package com.sloupycom.shaper.model.adapter
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -12,18 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Util
 import net.igenius.customcheckbox.CustomCheckBox
 import kotlin.collections.ArrayList
 
 class TaskAdapter(
-    application: Application,
     private val taskStateListener: TaskStateListener,
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
+    private val mComponent = DaggerDependencyComponent.create()
+    private val mUtil: Util = mComponent.getUtil()
+
     var mList: ArrayList<Task> = arrayListOf()
-    private val mUtil: Util = Util(application)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(

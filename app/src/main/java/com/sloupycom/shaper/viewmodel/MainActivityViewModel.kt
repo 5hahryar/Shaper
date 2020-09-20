@@ -8,10 +8,10 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.daybar.DayBarChip
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.model.adapter.TaskAdapter
 import com.sloupycom.shaper.model.Repo
 import com.sloupycom.shaper.model.Task
-import com.sloupycom.shaper.utils.Util
 import kotlin.collections.ArrayList
 
 
@@ -20,19 +20,17 @@ class MainActivityViewModel(application: Application, activityContext: Context) 
     TaskAdapter.TaskStateListener{
 
     /** Values **/
-    private val mContext = getApplication<Application>().applicationContext
-    private val mGeneral = Util(application)
-    private val mRepo = Repo(application)
-    var textDate: ObservableField<String> = ObservableField(mGeneral.getDate("EEEE, MMM dd"))
+    private val mComponent = DaggerDependencyComponent.create()
+    private val mUtil = mComponent.getUtil()
+    private val mRepo = mComponent.getRepo()
+
+    var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var adapter: ObservableField<TaskAdapter> = ObservableField()
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
     var isLoading: ObservableBoolean = ObservableBoolean(true)
 
-    /**
-     * Initialize class
-     */
     init {
-        adapter.set(TaskAdapter(application, this, activityContext))
+        adapter.set(TaskAdapter(this, activityContext))
         mRepo.getDueTasks(this)
         Int
     }
@@ -59,7 +57,7 @@ class MainActivityViewModel(application: Application, activityContext: Context) 
 
     fun dayChanged(date: java.util.HashMap<String, String>, chip: DayBarChip) {
         isLoading.set(true)
-        if (date[DayBarChip.DAY] == mGeneral.getDate("dd")) mRepo.getDueTasks(this)
+        if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mRepo.getDueTasks(this)
         else mRepo.getDueTasksWithDate(
             date[DayBarChip.DAY]!!.toInt(),
             date[DayBarChip.MONTH]!!.toInt(),

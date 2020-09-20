@@ -10,23 +10,24 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.model.Repo
-import com.sloupycom.shaper.utils.Util
 import java.text.SimpleDateFormat
 import kotlin.collections.HashMap
 
 class AddTaskViewModel(application: Application): AndroidViewModel(application), DatePickerDialog.OnDateSetListener {
 
     /** Values **/
-    private val mContext = getApplication<Application>().applicationContext
     @RequiresApi(Build.VERSION_CODES.N) private val mCalendar: Calendar = Calendar.getInstance()
-    private val mRepo: Repo = Repo(application)
-    private val mGeneral = Util(application)
+    private val mComponent = DaggerDependencyComponent.create()
+    private val mRepo: Repo = mComponent.getRepo()
+    private val mUtil = mComponent.getUtil()
+
     private var mDateIndex: List<Int>? = null
     var textDate: ObservableField<String> = ObservableField("")
 
     init {
-        textDate.set(mContext.getString(R.string.today))
+        textDate.set(application.getString(R.string.today))
     }
 
     /**
@@ -35,7 +36,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     private fun buildTask(title: String): HashMap<String, Any> {
-        val creationDate = mGeneral.getDate("EEE MMM dd yyyy", mCalendar.time)
+        val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
                 SimpleDateFormat("dd").format(mCalendar.time).toInt(),

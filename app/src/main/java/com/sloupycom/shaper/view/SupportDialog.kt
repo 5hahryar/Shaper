@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import androidx.fragment.app.DialogFragment
 import com.sloupycom.shaper.R
-import kotlinx.android.synthetic.main.dialog_support.*
 import kotlinx.android.synthetic.main.dialog_support.view.*
 
 class SupportDialog : DialogFragment() {
@@ -15,7 +14,7 @@ class SupportDialog : DialogFragment() {
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater;
+            val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_support, null)
             view.textView_repo.movementMethod = LinkMovementMethod.getInstance()
             view.textView_email.movementMethod = LinkMovementMethod.getInstance()

@@ -1,5 +1,6 @@
 package com.sloupycom.shaper.viewmodel
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
@@ -7,20 +8,23 @@ import androidx.lifecycle.AndroidViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.model.Repo
-import com.sloupycom.shaper.utils.Util
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class SettingsViewModel(application: android.app.Application): AndroidViewModel(application) {
+class SettingsViewModel(application: Application): AndroidViewModel(application) {
 
-    private val mRepo: Repo = Repo(application)
+    /** Values **/
+    private val mComponent = DaggerDependencyComponent.create()
+    private val mRepo: Repo = mComponent.getRepo()
+    private val mUtil = mComponent.getUtil()
     private val mUser: FirebaseUser? = mRepo.getUserCredentials()
-    private val mGeneral = Util(application)
+
     var imageUri: String? = mUser?.photoUrl.toString()
     var name: String? = mUser?.displayName
     var email: String? = mUser?.email
-    var nightMode: ObservableField<String> = ObservableField(mGeneral.getNightMode())
+    var nightMode: ObservableField<String> = ObservableField(mUtil.getNightMode(application.applicationContext))
 
     init {
         name = mRepo.getUserCredentials()?.displayName
@@ -28,7 +32,7 @@ class SettingsViewModel(application: android.app.Application): AndroidViewModel(
 
     fun setNightMode(mode: Int) {
         AppCompatDelegate.setDefaultNightMode(mode)
-        mGeneral.writePreference("night_mode", mode)
+        mUtil.writePreference(getApplication(), "night_mode", mode)
     }
 }
 

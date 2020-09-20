@@ -1,19 +1,21 @@
 package com.sloupycom.shaper.model
 
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Util
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class Repo(application: android.app.Application) : AndroidViewModel(application) {
+@Singleton
+class Repo @Inject constructor(){
 
     companion object {
         const val TAG = "REPO"
@@ -24,7 +26,8 @@ class Repo(application: android.app.Application) : AndroidViewModel(application)
     /** Values **/
     private val mDatabase = Firebase.firestore
     private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private val todayDateIndex = Util(application).getTodayDateIndex()
+    private val mUtil: Util = DaggerDependencyComponent.create().getUtil()
+    private val todayDateIndex = mUtil.getTodayDateIndex()
 
     init {
         val user = hashMapOf(
@@ -33,7 +36,7 @@ class Repo(application: android.app.Application) : AndroidViewModel(application)
             "last_name" to mUser.displayName,
             "name" to mUser.displayName
         )
-        mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, Any>)
+        mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, String?>)
         deleteObsoleteTasks()
     }
 
