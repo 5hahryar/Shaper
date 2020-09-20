@@ -7,7 +7,9 @@ import com.sloupycom.shaper.R
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class Util @Inject constructor(){
 
     /**Values**/

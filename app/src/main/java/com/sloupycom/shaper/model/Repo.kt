@@ -10,9 +10,11 @@ import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+@Singleton
 class Repo @Inject constructor(){
 
     companion object {
