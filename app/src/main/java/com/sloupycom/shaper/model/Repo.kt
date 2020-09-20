@@ -36,7 +36,7 @@ class Repo @Inject constructor(){
             "last_name" to mUser.displayName,
             "name" to mUser.displayName
         )
-        mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, Any>)
+        mDatabase.collection(COLLECTION_USERS).document(mUser.uid).update(user as Map<String, String?>)
         deleteObsoleteTasks()
     }
 
