@@ -4,83 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.sloupycom.shaper.viewmodel.AddTaskViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_bottom_sheet_background"
-        tools:context=".view.AddTaskBottomSheet">
-
-        <ImageView
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_indicator"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/textView_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
-            android:clickable="true"
-            android:focusable="true"
-            android:textAppearance="@style/TextH5"
-            android:background="@drawable/ripple_effect"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_below="@id/indicator"
-            android:layout_marginEnd="@dimen/margin_end"
-            android:text="@{viewModel.textDate}" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextLayout_title"
-            style="@style/TextInputLayout"
-            android:hint="@string/title"
-            android:layout_below="@id/textView_date"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end"
-            app:errorEnabled="true"
-            app:boxStrokeErrorColor="@color/design_default_color_error">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorSecondary"
-                android:maxLength="100"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="220dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextLayout_title"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end"
-            android:layout_marginBottom="@dimen/margin_top"
-            android:clickable="true"
-            android:focusable="true">
+            android:background="@drawable/round_bottom_sheet_background"
+            tools:context=".view.AddTaskBottomSheet">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_add"
+            <ImageView
+                android:id="@+id/indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add"
-                android:textAppearance="@style/TextButton"
-                android:textColor="@color/colorOnSecondary"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:cornerRadius="30dp"
-                app:backgroundTint="@color/colorSecondary" />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_indicator" />
 
+            <TextView
+                android:id="@+id/textView_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/indicator"
+                android:layout_marginStart="@dimen/margin_start"
+                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginEnd="@dimen/margin_end"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@{viewModel.textDate}"
+                android:textAppearance="@style/TextH5" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextLayout_title"
+                style="@style/TextInputLayout"
+                android:layout_below="@id/textView_date"
+                android:layout_marginStart="@dimen/margin_start"
+                android:layout_marginEnd="@dimen/margin_end"
+                android:hint="@string/title"
+                app:boxStrokeErrorColor="@color/design_default_color_error"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="100"
+                    android:textAppearance="@style/TextBody1"
+                    android:textColor="@color/colorSecondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextLayout_title"
+                android:layout_marginStart="@dimen/margin_start"
+                android:layout_marginEnd="@dimen/margin_end"
+                android:layout_marginBottom="@dimen/margin_top"
+                android:clickable="true"
+                android:focusable="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add"
+                    android:textAppearance="@style/TextButton"
+                    android:textColor="@color/colorOnSecondary"
+                    app:backgroundTint="@color/colorSecondary"
+                    app:cornerRadius="30dp" />
+
+            </RelativeLayout>
         </RelativeLayout>
-
-
-    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
