@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.daybar.DayBarChip
@@ -28,22 +29,24 @@ class MainActivityViewModel(application: Application, activityContext: Context) 
     var adapter: ObservableField<TaskAdapter> = ObservableField()
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
     var isLoading: ObservableBoolean = ObservableBoolean(true)
+    var busyDays: ObservableField<List<Int>> = ObservableField(mutableListOf())
 
     init {
         adapter.set(TaskAdapter(this, activityContext))
         mRepo.getDueTasks(this)
-        Int
     }
 
     /**
      * Method is called when data set changes
      */
-    override fun onDataChanged(data: ArrayList<Task>) {
+    override fun onDataChanged(data: ArrayList<Task>, busyDays: List<Int>) {
         isLoading.set(false)
         isEmpty.set(data.isEmpty())
         adapter.get()?.mList?.clear()
         adapter.get()?.mList?.addAll(data)
         adapter.get()?.notifyDataSetChanged()
+        this.busyDays.set(busyDays)
+        this.busyDays.notifyChange()
     }
 
     /**

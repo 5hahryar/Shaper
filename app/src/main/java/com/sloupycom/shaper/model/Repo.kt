@@ -78,9 +78,18 @@ class Repo @Inject constructor(){
                         Log.w(TAG, "Listen failed.", error)
                         return@addSnapshotListener
                     }
-                    listener.onDataChanged(getTasksFromSnapShot(value))
+                    val tasks = getTasksFromSnapShot(value)
+                    listener.onDataChanged(tasks, getBusyDays(tasks))
                 }
         }
+    }
+
+    private fun getBusyDays(tasks: ArrayList<Task>): List<Int> {
+        val busyDays: MutableList<Int> = mutableListOf()
+        for (task in tasks) {
+            if (!busyDays.contains(task.next_due[0])) busyDays.add(task.next_due[0])
+        }
+        return busyDays
     }
 
     /**
@@ -121,7 +130,8 @@ class Repo @Inject constructor(){
                         Log.w(TAG, "Listen failed.", error)
                         return@addSnapshotListener
                     }
-                    listener.onDataChanged(getTasksFromSnapShot(value))
+                    val tasks = getTasksFromSnapShot(value)
+                    listener.onDataChanged(tasks, getBusyDays(tasks))
                 }
         }
     }
@@ -150,7 +160,7 @@ class Repo @Inject constructor(){
     }
 
     interface OnDataChanged {
-        fun onDataChanged(data: ArrayList<Task>)
+        fun onDataChanged(data: ArrayList<Task>, busyDays: List<Int>)
     }
 
 }

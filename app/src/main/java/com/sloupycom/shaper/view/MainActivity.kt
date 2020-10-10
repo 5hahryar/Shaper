@@ -6,6 +6,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import com.shahryar.daybar.DayBar
 import com.shahryar.daybar.DayBarChip
 import com.sloupycom.shaper.R
@@ -24,8 +26,13 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mBinding?.viewModel = MainActivityViewModel(application, baseContext)
         mBinding?.lifecycleOwner = this
-        dayBar?.dayChangedListener = this
+        dayBar?.setOnDayChangedListener(this)
 
+        mBinding?.viewModel?.busyDays?.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                dayBar?.setIndicationByDay((sender as ObservableField<List<Int>>).get()!!)
+            }
+        })
     }
 
     /**
