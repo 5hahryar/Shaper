@@ -79,13 +79,6 @@
             android:layout_marginEnd="@dimen/margin_end"
             app:font="@font/roboto_regular" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_todayDue"
                 android:layout_width="match_parent"
@@ -106,6 +99,14 @@
             android:textAppearance="@style/TextBody1"
             android:textColor="@color/colorOnPrimaryAlpha"
             android:visibility="@{viewModel.isEmpty() ? View.VISIBLE : View.GONE}" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="?android:attr/progressBarStyle"
+            android:indeterminateTint="@color/colorOnPrimary"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
