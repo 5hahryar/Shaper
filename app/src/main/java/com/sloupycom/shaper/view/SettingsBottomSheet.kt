@@ -1,6 +1,6 @@
 package com.sloupycom.shaper.view
 
-import android.app.Dialog
+import android.app.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -17,8 +17,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetSettingsBinding
 import com.sloupycom.shaper.utils.AuthHelper
+import com.sloupycom.shaper.utils.Constant
+import com.sloupycom.shaper.utils.ReminderBroadCast
 import com.sloupycom.shaper.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.bottomsheet_settings.*
+import java.util.*
 
 class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemClickListener {
 
@@ -43,9 +46,11 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
         return mBinding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        createNotificationChannel()
     }
 
     private fun setListeners() {
@@ -61,8 +66,28 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
             activity!!.finish()
         }
         supportButton.setOnClickListener {
-            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
+            setReminder()
+//            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
         }
+    }
+
+    private fun setReminder() {
+        // Set the alarm to start at approximately 10:00 a.m.
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 20)
+            set(Calendar.MINUTE, 0)
+        }
+        val intent = Intent(activity, ReminderBroadCast::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, 100, intent, 0)
+        val alarmManager = activity?.getSystemService(Service.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_HOUR,
+            pendingIntent
+        )
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -79,6 +104,23 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
             else -> return false
         }
         return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        val name: CharSequence = "Reminder"
+        val description = "Daily reminder of tasks"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(Constant.ID_NOTIFICATION_CHANNEL, name, importance)
+        channel.description = description
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        val notificationManager = context?.getSystemService(
+            NotificationManager::class.java
+        )
+        notificationManager?.createNotificationChannel(channel)
     }
 
 }

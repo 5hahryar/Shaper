@@ -122,6 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="1dp"
                     android:text="10:00 AM"
                     android:textAppearance="@style/TextH5"
                     android:textColor="@color/colorOnPrimaryAlpha"
