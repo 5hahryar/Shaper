@@ -84,6 +84,10 @@ class Repo @Inject constructor(){
         }
     }
 
+    /**
+     * Get days of week that contain tasks
+     * @return List<Int> with dd pattern
+     */
     private fun getBusyDays(tasks: ArrayList<Task>): List<Int> {
         val busyDays: MutableList<Int> = mutableListOf()
         for (task in tasks) {

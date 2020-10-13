@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -43,7 +44,7 @@ class ReminderBroadCast: BroadcastReceiver(), Repo.OnDataChanged {
                 text += "\n${task.title}"
             }
             createNotification(text)
-        }
+        } else createNotification("No tasks for today!")
 
     }
 

@@ -1,32 +1,39 @@
 package com.sloupycom.shaper.view
 
 import android.app.*
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.databinding.BottomsheetSettingsBinding
 import com.sloupycom.shaper.utils.AuthHelper
 import com.sloupycom.shaper.utils.Constant
 import com.sloupycom.shaper.utils.ReminderBroadCast
 import com.sloupycom.shaper.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.bottomsheet_settings.*
+import java.sql.Time
 import java.util.*
 
 class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemClickListener {
 
     /**Values**/
     private var mBinding: BottomsheetSettingsBinding? = null
+    private val mUtil = DaggerDependencyComponent.create().getUtil()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), theme)
@@ -50,7 +57,6 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        createNotificationChannel()
     }
 
     private fun setListeners() {
@@ -66,26 +72,57 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
             activity!!.finish()
         }
         supportButton.setOnClickListener {
-            setReminder()
-//            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
+            SupportDialog().show(activity!!.supportFragmentManager, "fragment_support")
+        }
+        textView_reminder.setOnClickListener {
+            val text = textView_reminder.text.toString()
+            if (text != "Off" && text != "On") openTimePicker(text.substringBefore(":").toInt(),
+                text.substringAfter(":").toInt())
+            else openTimePicker(0, 0)
         }
     }
 
-    private fun setReminder() {
+    /**
+     * Open TimePickerDialog and listen for it's events
+     */
+    private fun openTimePicker(hour: Int, minute: Int) {
+        val timePicker = TimePickerDialog(context, { timePicker: TimePicker, i: Int, i1: Int ->
+            //Time is set
+            textView_reminder.text = "$i:$i1"
+            setReminder(i, i1)
+            mUtil.writePreference(context!!, Constant.SHARED_PREFS_REMINDER, "$i:$i1")
+        }, hour, minute, false)
+        timePicker.setButton(TimePickerDialog.BUTTON_NEGATIVE, "Turn Off") { dialogInterface: DialogInterface, i: Int ->
+            //Negative button pressed
+            textView_reminder.text = getString(R.string.off)
+            cancelReminder()
+            mUtil.writePreference(context!!, Constant.SHARED_PREFS_REMINDER, getString(R.string.off))
+        }
+        timePicker.show()
+    }
+
+    private fun cancelReminder() {
+        val intent = Intent(activity, ReminderBroadCast::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, 100, intent, 0)
+        val alarmManager = activity?.getSystemService(Service.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+    }
+
+    private fun setReminder(hour: Int, minute: Int) {
         // Set the alarm to start at approximately 10:00 a.m.
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 20)
-            set(Calendar.MINUTE, 0)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
         }
         val intent = Intent(activity, ReminderBroadCast::class.java)
         val pendingIntent = PendingIntent.getBroadcast(activity, 100, intent, 0)
         val alarmManager = activity?.getSystemService(Service.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
-        alarmManager.setInexactRepeating(
+        alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_HOUR,
+            AlarmManager.INTERVAL_HALF_HOUR,
             pendingIntent
         )
     }
@@ -104,23 +141,6 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
             else -> return false
         }
         return true
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        val name: CharSequence = "Reminder"
-        val description = "Daily reminder of tasks"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(Constant.ID_NOTIFICATION_CHANNEL, name, importance)
-        channel.description = description
-        // Register the channel with the system; you can't change the importance
-        // or other notification behaviors after this
-        val notificationManager = context?.getSystemService(
-            NotificationManager::class.java
-        )
-        notificationManager?.createNotificationChannel(channel)
     }
 
 }

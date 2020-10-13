@@ -65,6 +65,7 @@ class Util @Inject constructor(){
 
     /**
      * Get night mode string
+     * @return "Auto" | "On" | "Off"
      */
     fun getNightMode(context: Context): String {
         when (context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -91,6 +92,22 @@ class Util @Inject constructor(){
     fun writePreference(context: Context, key: String, value: Int) {
         val prefs = context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
+    }
+
+    /**
+     * Write data to shared preferences
+     */
+    fun writePreference(context: Context, key: String, value: String) {
+        val prefs = context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+        prefs.edit().putString(key, value).apply()
+    }
+
+    /**
+     * Get string preference
+     */
+    fun readStringPreferences(context: Context, key: String): String? {
+        return context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getString(key, context.getString(R.string.off))
     }
 
 }

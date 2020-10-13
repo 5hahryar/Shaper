@@ -119,14 +119,17 @@
                     android:text="@string/reminder"/>
 
                 <TextView
+                    android:id="@+id/textView_reminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="1dp"
-                    android:text="10:00 AM"
+                    android:text="@{viewModel.reminder}"
                     android:textAppearance="@style/TextH5"
                     android:textColor="@color/colorOnPrimaryAlpha"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
             </RelativeLayout>
 
