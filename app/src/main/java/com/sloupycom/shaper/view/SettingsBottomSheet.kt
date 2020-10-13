@@ -122,7 +122,7 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_HALF_HOUR,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
     }
