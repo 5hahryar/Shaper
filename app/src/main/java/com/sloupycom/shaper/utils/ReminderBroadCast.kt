@@ -29,8 +29,8 @@ class ReminderBroadCast: BroadcastReceiver(), Repo.OnDataChanged {
     private fun createNotification(contentText: String) {
         val notification = Notification.Builder(context, Constant.ID_NOTIFICATION_CHANNEL)
             .setContentTitle("Today's Tasks")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentText(contentText)
+            .setSmallIcon(R.drawable.ic_shaper)
+            .setStyle(Notification.BigTextStyle().bigText(contentText))
             .build()
         NotificationManagerCompat.from(context!!).notify(Constant.ID_NOTIFICATION, notification)
     }
@@ -41,7 +41,7 @@ class ReminderBroadCast: BroadcastReceiver(), Repo.OnDataChanged {
         var text: String = ""
         if (data.size != 0) {
             for (task in data) {
-                text += "\n${task.title}"
+                text += " · ${task.title}"
             }
             createNotification(text)
         } else createNotification("No tasks for today!")
