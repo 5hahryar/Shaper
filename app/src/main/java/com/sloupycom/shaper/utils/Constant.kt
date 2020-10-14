@@ -2,6 +2,7 @@ package com.sloupycom.shaper.utils
 
 class Constant {
     companion object {
+        const val RC_REMINDER: Int = 11
         const val SHARED_PREFS_REMINDER: String = "reminder"
         const val SHARED_PREFS = "application"
         const val SHARED_PREFS_NIGHTMODE = "night_mode"

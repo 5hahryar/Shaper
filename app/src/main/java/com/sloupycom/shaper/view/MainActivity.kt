@@ -8,12 +8,14 @@ import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
+import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.daybar.DayBar
 import com.shahryar.daybar.DayBarChip
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import com.sloupycom.shaper.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.bottomsheet_add_task.*
 
 class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
@@ -33,6 +35,23 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
                 dayBar?.setIndicationByDay((sender as ObservableField<List<Int>>).get()!!)
             }
         })
+
+        recyclerView_todayDue.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy >0) {
+                    // Scroll Down
+                    if (floatingActionButton.isShown) {
+                        floatingActionButton.hide();
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!floatingActionButton.isShown) {
+                        floatingActionButton.show();
+                    }
+            }
+        }})
     }
 
     /**
