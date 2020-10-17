@@ -85,6 +85,26 @@ class Repo @Inject constructor(){
     }
 
     /**
+     * Get tasks that are due and overdue to show on reminder notification
+     */
+    fun getDueTasksForReminder(listener: OnDataChanged) {
+        runBlocking {
+            mDatabase.collection(COLLECTION_USERS)
+                .document(mUser!!.uid)
+                .collection(SUBCOLLECTION_TASKS)
+                .whereLessThanOrEqualTo("next_due", todayDateIndex)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+                    val tasks = getTasksFromSnapShot(value)
+                    listener.onDataChanged(tasks, getBusyDays(tasks))
+                }.remove()
+        }
+    }
+
+    /**
      * Get days of week that contain tasks
      * @return List<Int> with dd pattern
      */

@@ -118,7 +118,7 @@ class SettingsBottomSheet : BottomSheetDialogFragment(), PopupMenu.OnMenuItemCli
         val intent = Intent(activity, ReminderBroadCast::class.java)
         val pendingIntent = PendingIntent.getBroadcast(activity, Constant.RC_REMINDER, intent, 0)
         val alarmManager = activity?.getSystemService(Service.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(pendingIntent)
+//        alarmManager.cancel(pendingIntent)
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

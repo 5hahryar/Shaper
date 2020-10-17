@@ -20,7 +20,7 @@ class ReminderBroadCast: BroadcastReceiver(), Repo.OnDataChanged {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
-        DaggerDependencyComponent.create().getRepo().getDueTasks(this)
+        DaggerDependencyComponent.create().getRepo().getDueTasksForReminder(this)
         Log.d("TAG", "reminder repo get established")
         this.context = context
     }
