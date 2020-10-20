@@ -86,8 +86,7 @@
                 android:layout_below="@id/dayBar"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="40dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:setAdapter="@{viewModel.adapter}" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <TextView
             android:id="@+id/recyclerView_empty"
@@ -98,15 +97,15 @@
             android:text="@string/empty_tasks"
             android:textAppearance="@style/TextBody1"
             android:textColor="@color/colorOnPrimaryAlpha"
-            android:visibility="@{viewModel.isEmpty() ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{viewModel.tasks.isEmpty() ? View.VISIBLE : View.GONE}" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            android:indeterminateTint="@color/colorOnPrimary"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>
+<!--        <ProgressBar-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            style="?android:attr/progressBarStyle"-->
+<!--            android:indeterminateTint="@color/colorOnPrimary"-->
+<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>-->
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
