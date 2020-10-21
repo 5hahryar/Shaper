@@ -9,17 +9,30 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
+import java.util.*
 
 class ReminderBroadCast: BroadcastReceiver() {
 
     var context: Context? = null
+    var mLocal: Local? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
 //        DaggerDependencyComponent.create().getRemote().getDueTasksForReminder(this)
         Log.d("TAG", "reminder repo get established")
         this.context = context
+        val data = Local.getInstance(context!!)
+            .localDao
+            .getTodayTasks(Util().getDateIndex(Calendar.getInstance()))?.value
+        var notif = ""
+        if (data != null) {
+            for (task in data) {
+                notif += task.title
+            }
+        }
+        createNotification(notif)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
