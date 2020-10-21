@@ -22,58 +22,58 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp" />
 
-        <LinearLayout
-            android:id="@+id/userLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/userLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:orientation="vertical">-->
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView_profile"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
-                app:loadImage="@{viewModel.imageUri}"/>
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:id="@+id/imageView_profile"-->
+<!--                android:layout_width="85dp"-->
+<!--                android:layout_height="85dp"-->
+<!--                app:loadImage="@{viewModel.imageUri}"/>-->
 
-            <TextView
-                android:id="@+id/textView_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@{viewModel.name}"
-                android:textAppearance="@style/TextH5" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView_name"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="@{viewModel.name}"-->
+<!--                android:textAppearance="@style/TextH5" />-->
 
-            <TextView
-                android:id="@+id/textView_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@{viewModel.email}"
-                android:textAppearance="@style/TextBody1"
-                android:textColor="@color/colorOnPrimaryAlpha" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView_email"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="@{viewModel.email}"-->
+<!--                android:textAppearance="@style/TextBody1"-->
+<!--                android:textColor="@color/colorOnPrimaryAlpha" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-        <View
-            android:id="@+id/devider_1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/userLayout"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorSeparator" />
+<!--        <View-->
+<!--            android:id="@+id/devider_1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_below="@id/userLayout"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@color/colorSeparator" />-->
 
         <LinearLayout
             android:id="@+id/settingsLayout"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_below="@id/devider_1"
+
             android:orientation="vertical"
             android:paddingStart="@dimen/margin_start"
             android:paddingEnd="@dimen/margin_end"
-            android:layout_marginTop="@dimen/margin_start"
+            android:layout_marginTop="50dp"
             android:gravity="center_vertical">
 
             <RelativeLayout
