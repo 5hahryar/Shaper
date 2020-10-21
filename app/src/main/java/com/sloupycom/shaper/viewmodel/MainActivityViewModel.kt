@@ -21,12 +21,28 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val mCalendar = Calendar.getInstance()
     private val weekIndex = mUtil.getWeekIndex(Calendar.getInstance())
 
-    val tasks = mLocal.localDao.getTodayTasks(weekIndex[0])
+    private val tasks0 = mLocal.localDao.getTodayTasks(weekIndex[0])
+    private val tasks1 = mLocal.localDao.getDayTasks(weekIndex[1])
+    private val tasks2 = mLocal.localDao.getDayTasks(weekIndex[2])
+    private val tasks3 = mLocal.localDao.getDayTasks(weekIndex[3])
+    private val tasks4 = mLocal.localDao.getDayTasks(weekIndex[4])
+    private val tasks5 = mLocal.localDao.getDayTasks(weekIndex[5])
+    private val tasks6 = mLocal.localDao.getDayTasks(weekIndex[6])
+    private val liveDataList = listOf(tasks0, tasks1, tasks2, tasks3, tasks4, tasks5, tasks6)
+    val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
     var isLoading: ObservableBoolean = ObservableBoolean(true)
     var busyDays: ObservableField<List<Int>> = ObservableField(mutableListOf())
+    private lateinit var lastLiveData: LiveData<*>
+
+    init {
+        liveDataMerger.addSource(tasks0!!) {
+                value -> liveDataMerger.value = value
+            lastLiveData = tasks0
+        }
+    }
 
 
     /**
@@ -43,7 +59,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     /**
      * DayBar onDayChanged Callback
      */
-    fun dayChanged(date: HashMap<String, String>, chip: DayBarChip) {
+    fun dayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
+        liveDataMerger.removeSource(lastLiveData)
+        liveDataMerger.addSource(liveDataList[index]!!) {value -> liveDataMerger.value = value
+            lastLiveData = liveDataList[index]!!
+        }
+
 //        tasks = if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mLocal.localDao.getTodayTasks(todayIndex)
 //        else mLocal.localDao.getDayTasks("" +
 //                "${date[DayBarChip.YEAR]!!.toInt()}" +

@@ -1,29 +1,26 @@
 package com.sloupycom.shaper.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.daybar.DayBar
 import com.shahryar.daybar.DayBarChip
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.TaskAdapter
+import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.bottomsheet_add_task.*
+
 
 class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     /**Values**/
     private var mBinding: ActivityMainBinding? = null
+    private val adapter = TaskAdapter(this)
+//    var liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,39 +45,47 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     private fun setupRecyclerView() {
 
-        val adapter = TaskAdapter(this, )
         recyclerView_todayDue.adapter = adapter
 
-        adapter.setOnTaskStateListener(object: TaskAdapter.TaskStateListener{
+        adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
             override fun onTaskStateChanged(task: Task) {
                 mBinding?.viewModel?.onTaskStateChanged(task)
             }
         })
 
+//        liveDataMerger.addSource(mBinding?.viewModel?.tasks1!!) { value -> liveDataMerger.value = value }
         //Listen for data changes from viewModel
-        mBinding?.viewModel?.tasks?.observe(this, {
+//        liveDataMerger.addSource(mBinding?.viewModel?.tasks!!) { value -> liveDataMerger.value = value }
+
+        mBinding?.viewModel?.liveDataMerger?.observe(this, {
             it.let {
                 adapter.data = it
             }
         })
 
+//        mBinding?.viewModel?.tasks?.observe(this, {
+//            it.let {
+//                adapter.data = it
+//            }
+//        })
+
         //Change FAB visibility on recyclerView scroll
-        recyclerView_todayDue.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recyclerView_todayDue.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy >0) {
+                if (dy > 0) {
                     // Scroll Down
                     if (floatingActionButton.isShown) {
                         floatingActionButton.hide();
                     }
-                }
-                else if (dy <0) {
+                } else if (dy < 0) {
                     // Scroll Up
                     if (!floatingActionButton.isShown) {
                         floatingActionButton.show();
                     }
                 }
-            }})
+            }
+        })
     }
 
     /**
@@ -97,10 +102,13 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         }
     }
 
+    override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
+        mBinding?.viewModel?.dayChanged(index, date, chip)
+    }
+
     /**
      * Called when selected day from DayBar changes
      */
-    override fun onSelectedDayChanged(date: HashMap<String, String>, chip: DayBarChip) {
-        mBinding?.viewModel?.dayChanged(date, chip)
-    }
+
+
 }
