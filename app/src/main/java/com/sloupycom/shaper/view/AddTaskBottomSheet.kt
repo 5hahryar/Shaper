@@ -12,6 +12,9 @@ import androidx.databinding.Observable
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
@@ -45,7 +48,22 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mBinding?.viewModel?.setOnTaskAddedListener(object: AddTaskViewModel.OnTaskAddedListener{
+            override fun onTaskAdded() {
+                dismiss()
+                showSnackBar()
+            }
 
+        })
+    }
+
+    private fun showSnackBar() {
+        val fab: ExtendedFloatingActionButton = activity!!.findViewById(R.id.floatingActionButton)
+        Snackbar.make(fab, "New task added successfully.", Snackbar.LENGTH_SHORT)
+            .setAnchorView(fab)
+            .setBackgroundTint(activity!!.getColor(R.color.colorSecondary))
+            .setTextColor(activity!!.getColor(R.color.colorOnSecondary))
+            .show()
     }
 
 }

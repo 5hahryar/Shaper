@@ -25,6 +25,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     private val mUtil = mComponent.getUtil()
 
     private var mDateIndex: List<Int>? = null
+    private var onTaskAddedListener: OnTaskAddedListener? = null
     var textDate: ObservableField<String> = ObservableField("")
     var textTitle: String? = null
 
@@ -86,10 +87,16 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun onAddTask() {
-        if (textTitle == "") {
-        }
-        else {
+        if (textTitle != "") {
             textTitle?.let { addTask(buildTask(it)) }
+            onTaskAddedListener?.onTaskAdded()
         }
+    }
+
+    fun setOnTaskAddedListener(listener: OnTaskAddedListener) {
+        this.onTaskAddedListener = listener
+    }
+    interface OnTaskAddedListener{
+        fun onTaskAdded()
     }
 }
