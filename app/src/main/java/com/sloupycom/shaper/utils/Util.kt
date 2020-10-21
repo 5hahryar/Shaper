@@ -110,4 +110,13 @@ class Util @Inject constructor(){
             .getString(key, context.getString(R.string.off))
     }
 
+    fun getDateIndex(date: Calendar): String {
+
+        val year = SimpleDateFormat("yyyy").format(date.time).toInt()
+        val month = SimpleDateFormat("MM").format(date.time).toInt()
+        val day = SimpleDateFormat("dd").format(date.time).toInt()
+
+        return "$year$month$day"
+    }
+
 }

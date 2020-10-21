@@ -34,4 +34,5 @@ abstract class Local: RoomDatabase() {
             }
         }
     }
+
 }

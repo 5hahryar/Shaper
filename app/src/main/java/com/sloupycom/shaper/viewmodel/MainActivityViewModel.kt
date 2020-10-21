@@ -10,6 +10,7 @@ import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -18,7 +19,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val mComponent = DaggerDependencyComponent.create()
     private val mUtil = mComponent.getUtil()
     private val mLocal = Local.getInstance(application)
-    val tasks = mLocal.localDao.getAllTasks()
+    val tasks = mLocal.localDao.getTodayTasks(mUtil.getDateIndex(Calendar.getInstance()))
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var isEmpty: ObservableBoolean = ObservableBoolean(true)

@@ -40,7 +40,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
      */
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
-    private fun buildTask(title: String): HashMap<String, Any> {
+    private fun buildTask(title: String): Task {
         val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
@@ -49,7 +49,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
                 SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
             )
         }
-//        val owId = mRemote.getUserCredentials()?.uid.toString()
+        val nextDue = "${mDateIndex!![2]}${mDateIndex!![1]}${mDateIndex!![0]}"
         val id = mCalendar.timeInMillis.toString()
         val state: String = if (textDate.get() == SimpleDateFormat("EEEE, MMM dd yyyy")
                 .format(java.util.Calendar.getInstance().time)) {
@@ -57,21 +57,14 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
         } else {
             "ONGOING"
         }
-        return hashMapOf(
-            "id" to id,
-            "title" to title,
-            "creation_date" to creationDate,
-            "next_due" to mDateIndex!!,
-            "state" to state
-        )
+        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun addTask(name: String) {
+    fun addTask(task: Task) {
         viewModelScope.launch {
-            mLocal.localDao.insert(Task(title = name))
+            mLocal.localDao.insert(task)
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -96,7 +89,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
         if (textTitle == "") {
         }
         else {
-            textTitle?.let { addTask(it) }
+            textTitle?.let { addTask(buildTask(it)) }
         }
     }
 }
