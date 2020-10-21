@@ -3,8 +3,7 @@ package com.sloupycom.shaper.viewmodel
 import android.app.Application
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.shahryar.daybar.DayBarChip
 import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.database.Local
@@ -19,7 +18,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val mComponent = DaggerDependencyComponent.create()
     private val mUtil = mComponent.getUtil()
     private val mLocal = Local.getInstance(application)
-    val tasks = mLocal.localDao.getTodayTasks(mUtil.getDateIndex(Calendar.getInstance()))
+    private val mCalendar = Calendar.getInstance()
+    private val weekIndex = mUtil.getWeekIndex(Calendar.getInstance())
+
+    val tasks = mLocal.localDao.getTodayTasks(weekIndex[0])
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var isEmpty: ObservableBoolean = ObservableBoolean(true)
@@ -41,14 +43,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     /**
      * DayBar onDayChanged Callback
      */
-    fun dayChanged(date: java.util.HashMap<String, String>, chip: DayBarChip) {
-//        isLoading.set(true)
-//        if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mRepo.getDueTasks(this)
-//        else mRepo.getDueTasksWithDate(
-//            date[DayBarChip.DAY]!!.toInt(),
-//            date[DayBarChip.MONTH]!!.toInt(),
-//            date[DayBarChip.YEAR]!!.toInt(),
-//            this
+    fun dayChanged(date: HashMap<String, String>, chip: DayBarChip) {
+//        tasks = if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mLocal.localDao.getTodayTasks(todayIndex)
+//        else mLocal.localDao.getDayTasks("" +
+//                "${date[DayBarChip.YEAR]!!.toInt()}" +
+//                "${date[DayBarChip.MONTH]!!.toInt()}" +
+//                "${date[DayBarChip.DAY]!!.toInt()}"
 //        )
+
+//        tasks?.value =
     }
 }

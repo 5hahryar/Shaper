@@ -55,6 +55,15 @@ class Util @Inject constructor(){
     }
 
     /**
+     * @input String format: "yyyyMMdd"
+     */
+    @SuppressLint("SimpleDateFormat")
+    fun isDateBeforeToday(dateIndex: String): Boolean {
+        val todayIndex = SimpleDateFormat("yyyyMMdd").format(mCalendar.time)
+        return dateIndex.toInt() < todayIndex.toInt()
+    }
+
+    /**
      * Get date using custom time and format
      */
     @SuppressLint("SimpleDateFormat")
@@ -117,6 +126,15 @@ class Util @Inject constructor(){
         val day = SimpleDateFormat("dd").format(date.time).toInt()
 
         return "$year$month$day"
+    }
+
+    fun getWeekIndex(instance: Calendar): List<String> {
+        val weekIndex = mutableListOf<String>()
+        for (i in 0..6) {
+            weekIndex.add(getDateIndex(instance))
+            instance.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        return weekIndex
     }
 
 }

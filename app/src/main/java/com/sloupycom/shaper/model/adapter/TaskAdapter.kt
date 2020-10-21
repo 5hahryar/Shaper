@@ -46,18 +46,18 @@ class TaskAdapter(
         holder.mTitle.text = data[position].title
 
 //        Change item colors based on state
-//        if (data[position].state == "DONE") {
-//            holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-//            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
-//            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
-//            holder.mCardView.alpha = 0.5f
-//            holder.mCheckBox.isChecked = true
-//        } else if (mUtil.isDateBeforeToday(data[position].next_due)) {
-//            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
-//            holder.mCardView.strokeColor =
-//                activityContext.getColor(R.color.task_item_stroke_overdue)
-//            holder.mCardView.alpha = 1f
-//        }
+        if (data[position].state == "DONE") {
+            holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
+            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
+            holder.mCardView.alpha = 0.5f
+            holder.mCheckBox.isChecked = true
+        } else if (mUtil.isDateBeforeToday(data[position].next_due)) {
+            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
+            holder.mCardView.strokeColor =
+                activityContext.getColor(R.color.task_item_stroke_overdue)
+            holder.mCardView.alpha = 1f
+        }
 
         holder.mCheckBox.setOnCheckedChangeListener { _, _ ->
             listener?.onTaskStateChanged(data[position])
