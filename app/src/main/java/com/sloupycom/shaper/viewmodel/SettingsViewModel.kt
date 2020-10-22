@@ -12,9 +12,9 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Constant
 import com.sloupycom.shaper.utils.ReminderBroadCast
+import com.sloupycom.shaper.utils.Util
 import com.sloupycom.shaper.view.SupportDialog
 import java.util.*
 
@@ -23,8 +23,7 @@ class SettingsViewModel(private val activity: FragmentActivity): AndroidViewMode
     PopupMenu.OnMenuItemClickListener {
 
     /** Values **/
-    private val mComponent = DaggerDependencyComponent.create()
-    private val mUtil = mComponent.getUtil()
+    private val mUtil = Util()
 
     var nightMode: ObservableField<String> = ObservableField(mUtil.getNightMode(getApplication()))
     var reminder: ObservableField<String> = ObservableField(mUtil.readStringPreferences(getApplication(), Constant.SHARED_PREFS_REMINDER))

@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
      * Called when selected day from DayBar changes
      */
     override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
-        mBinding?.viewModel?.dayChanged(index, date, chip)
+        mBinding?.viewModel?.dayChanged(index)
     }
 
 }

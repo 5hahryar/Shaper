@@ -1,13 +1,11 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.app.Application
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
-import com.shahryar.daybar.DayBarChip
-import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
+import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -15,10 +13,8 @@ import java.util.*
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     /** Values **/
-    private val mComponent = DaggerDependencyComponent.create()
-    private val mUtil = mComponent.getUtil()
+    private val mUtil = Util()
     private val mLocal = Local.getInstance(application)
-    private val mCalendar = Calendar.getInstance()
     private val weekIndex = mUtil.getWeekIndex(Calendar.getInstance())
 
     private val tasks0 = mLocal.localDao.getTodayTasks(weekIndex[0])
@@ -57,7 +53,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     /**
      * DayBar onDayChanged Callback
      */
-    fun dayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
+    fun dayChanged(index: Int) {
         liveDataMerger.removeSource(lastLiveData)
         liveDataMerger.addSource(liveDataList[index]!!) {value -> liveDataMerger.value = value
             lastLiveData = liveDataList[index]!!

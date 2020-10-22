@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -15,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
+import kotlinx.android.synthetic.main.bottomsheet_add_task.*
 
 class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
@@ -48,6 +51,12 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
             override fun onTaskAdded() {
                 dismiss()
                 showSnackBar()
+            }
+        })
+
+        mBinding?.viewModel?.textError?.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                editTextLayout_title.error = (sender as ObservableField<String>).get()
             }
         })
     }
