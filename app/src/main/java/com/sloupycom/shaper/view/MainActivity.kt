@@ -11,6 +11,7 @@ import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.TaskAdapter
+import com.sloupycom.shaper.utils.Util
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,6 +34,10 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         dayBar?.setOnDayChangedListener(this)
 
         setupRecyclerView()
+
+        mBinding?.viewModel?.busyDays?.observe(this, {
+            dayBar.setIndicationByDay(Util().getDayListFromDateIndex(it))
+        })
 
     }
 

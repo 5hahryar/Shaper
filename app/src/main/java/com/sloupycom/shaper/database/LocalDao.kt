@@ -27,4 +27,7 @@ interface LocalDao {
 
     @Query ("DELETE FROM task_table WHERE next_due < :dateIndex AND state = 'DONE'")
     suspend fun removeOldDoneTasks(dateIndex: String)
+
+    @Query("SELECT DISTINCT next_due FROM task_table")
+    fun getBusyDaysOfWeek(): LiveData<List<String>>?
 }

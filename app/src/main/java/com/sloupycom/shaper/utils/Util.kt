@@ -137,4 +137,15 @@ class Util @Inject constructor(){
         return weekIndex
     }
 
+    fun getDayListFromDateIndex(list: List<String>?): List<Int> {
+        var days = mutableListOf<Int>()
+        if (list != null) {
+            for (date in list) {
+                days.add(date.substring(5, 8).toInt())
+            }
+        }
+
+        return days
+    }
+
 }

@@ -32,7 +32,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
-    var busyDays: ObservableField<List<Int>> = ObservableField(mutableListOf())
+    var busyDays: LiveData<List<String>>? = mLocal.localDao.getBusyDaysOfWeek()
     private lateinit var lastLiveData: LiveData<*>
 
     init {
