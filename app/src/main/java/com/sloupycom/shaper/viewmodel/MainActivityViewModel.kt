@@ -49,7 +49,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
      * Called when state of a task changes
      */
     fun onTaskStateChanged(task: Task) {
-        if (task.state != "DONE") task.state = "DONE"
+        if (task.state == "ONGOING") task.state = "DONE"
         else task.state = "ONGOING"
         viewModelScope.launch {
             mLocal.localDao.update(task)

@@ -5,15 +5,13 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.accessibility.AccessibilityManager
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.dagger.DaggerDependencyComponent
+import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import net.igenius.customcheckbox.CustomCheckBox
 
@@ -42,6 +40,10 @@ class TaskAdapter(
         return data.size
     }
 
+    override fun getItemId(position: Int): Long {
+        return data[position].id
+    }
+
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.mTitle.text = data[position].title
 
@@ -50,16 +52,21 @@ class TaskAdapter(
             holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
             holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
-            holder.mCardView.alpha = 0.5f
             holder.mCheckBox.isChecked = true
         } else if (mUtil.isDateBeforeToday(data[position].next_due)) {
             holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
-            holder.mCardView.strokeColor =
-                activityContext.getColor(R.color.task_item_stroke_overdue)
+            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
+            holder.mCardView.alpha = 1f
+            holder.mCheckBox.isChecked = false
+        } else {
+            holder.mCheckBox.isChecked = false
+            holder.mTitle.paintFlags = holder.mTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_due))
+            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_due)
             holder.mCardView.alpha = 1f
         }
 
-        holder.mCheckBox.setOnCheckedChangeListener { _, _ ->
+        holder.mCheckBox.setOnClickListener {
             listener?.onTaskStateChanged(data[position])
         }
 

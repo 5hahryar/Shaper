@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     private fun setupRecyclerView() {
 
+        adapter.setHasStableIds(true)
         recyclerView_todayDue.adapter = adapter
 
         adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
