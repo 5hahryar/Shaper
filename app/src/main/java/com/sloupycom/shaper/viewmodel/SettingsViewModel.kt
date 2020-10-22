@@ -1,49 +1,127 @@
 package com.sloupycom.shaper.viewmodel
 
-import android.app.Application
+import android.app.*
+import android.content.DialogInterface
+import android.content.Intent
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
-import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseUser
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.dagger.DaggerDependencyComponent
 import com.sloupycom.shaper.utils.Constant
-import de.hdodenhof.circleimageview.CircleImageView
+import com.sloupycom.shaper.utils.ReminderBroadCast
+import com.sloupycom.shaper.view.SupportDialog
+import java.util.*
 
 
-class SettingsViewModel(application: Application): AndroidViewModel(application) {
+class SettingsViewModel(private val activity: FragmentActivity): AndroidViewModel(activity.application),
+    PopupMenu.OnMenuItemClickListener {
 
     /** Values **/
     private val mComponent = DaggerDependencyComponent.create()
-//    private val mRemote: Remote = mComponent.getRemote()
     private val mUtil = mComponent.getUtil()
-//    private val mUser: FirebaseUser? = mRemote.getUserCredentials()
 
-//    var imageUri: String? = mUser?.photoUrl.toString()
-//    var name: String? = mUser?.displayName
-//    var email: String? = mUser?.email
-    var imageUri: String? = "mUser?.photoUrl.toString()"
-    var name: String? = "mUser?.displayName"
-    var email: String? = "mUser?.email"
-    var nightMode: ObservableField<String> = ObservableField(mUtil.getNightMode(application.applicationContext))
-    var reminder: String? = mUtil.readStringPreferences(application.applicationContext, Constant.SHARED_PREFS_REMINDER)
+    var nightMode: ObservableField<String> = ObservableField(mUtil.getNightMode(getApplication()))
+    var reminder: ObservableField<String> = ObservableField(mUtil.readStringPreferences(getApplication(), Constant.SHARED_PREFS_REMINDER))
 
-    init {
-//        name = mRemote.getUserCredentials()?.displayName
-    }
-
-    fun setNightMode(mode: Int) {
+    private fun setNightMode(mode: Int) {
         AppCompatDelegate.setDefaultNightMode(mode)
-        mUtil.writePreference(getApplication(), "night_mode", mode)
-    }
-}
+        mUtil.writePreference(getApplication(), Constant.SHARED_PREFS_NIGHTMODE, mode)
 
-@BindingAdapter("loadImage")
-fun loadImage(imageView: CircleImageView, imageUrl: String?) {
-    Glide.with(imageView.context)
-        .load(imageUrl)
-        .placeholder(R.drawable.ic_account_circle_24px)
-        .into(imageView)
+    }
+
+    fun onSupportClick() {
+        SupportDialog().show(activity.supportFragmentManager, "fragment_support")
+    }
+
+    fun onReminderClick() {
+        val text = reminder.get()!!
+        if (text != "Off" && text != "On") openTimePicker(text.substringBefore(":").toInt(),
+            text.substringAfter(":").toInt())
+        else openTimePicker(0, 0)
+    }
+
+    /**
+     * Open TimePickerDialog and listen for it's events
+     */
+    private fun openTimePicker(hour: Int, minute: Int) {
+        val timePicker = TimePickerDialog(activity, { _: TimePicker, i: Int, i1: Int ->
+            //Time is set
+            reminder.set("$i:$i1")
+            setReminder(i, i1)
+            mUtil.writePreference(activity, Constant.SHARED_PREFS_REMINDER, "$i:$i1")
+        }, hour, minute, false)
+        timePicker.setButton(TimePickerDialog.BUTTON_NEGATIVE, "Turn Off") { _: DialogInterface, _: Int ->
+            //Negative button pressed
+            reminder.set(activity.getString(R.string.off))
+            cancelReminder()
+            mUtil.writePreference(activity, Constant.SHARED_PREFS_REMINDER, activity.getString(R.string.off))
+        }
+        timePicker.show()
+    }
+
+    /**
+     * Cancel alarm for task reminder
+     */
+    private fun cancelReminder() {
+        val intent = Intent(activity, ReminderBroadCast::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, 100, intent, 0)
+        val alarmManager = activity.getSystemService(Service.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+    }
+
+    /**
+     * Set alarm for task reminder
+     */
+    private fun setReminder(hour: Int, minute: Int) {
+        // Set the alarm to start
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+        }
+        val intent = Intent(activity, ReminderBroadCast::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, Constant.RC_REMINDER, intent, 0)
+        val alarmManager = activity.getSystemService(Service.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+    }
+
+    fun onSetNightModeClick(view: View) {
+        val popup = PopupMenu(activity, view)
+        popup.menuInflater.inflate(R.menu.menu_night_mode, popup.menu)
+        popup.show()
+        popup.setOnMenuItemClickListener(this)
+    }
+
+    /**
+     * On night mode menu item clicked
+     */
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.night_auto -> {
+                setNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                nightMode.set(activity.getString(R.string.auto))
+            }
+            R.id.night_on -> {
+                setNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                nightMode.set(activity.getString(R.string.on))
+            }
+            R.id.night_off -> {
+                setNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                nightMode.set(activity.getString(R.string.off))
+            }
+            else -> return false
+        }
+        return true
+    }
 }

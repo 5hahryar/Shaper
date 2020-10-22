@@ -20,8 +20,6 @@ class ReminderBroadCast: BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
-//        DaggerDependencyComponent.create().getRemote().getDueTasksForReminder(this)
-        Log.d("TAG", "reminder repo get established")
         this.context = context
         val data = Local.getInstance(context!!)
             .localDao
@@ -29,7 +27,7 @@ class ReminderBroadCast: BroadcastReceiver() {
         var notif = ""
         if (data != null) {
             for (task in data) {
-                notif += task.title
+                notif += " · ${task.title}"
             }
         }
         createNotification(notif)

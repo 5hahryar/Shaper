@@ -31,4 +31,7 @@
     <string name="support_repo">Shaper repository on <a href="https://github.com/5hahryar">github</a></string>
     <string name="title">Title</string>
     <string name="empty_title">Title can\'t be empty</string>
+    <string name="on_task_added">New task added successfully.</string>
+    <string name="separator">Separator</string>
+    <string name="question_mark">Question mark</string>
 </resources>

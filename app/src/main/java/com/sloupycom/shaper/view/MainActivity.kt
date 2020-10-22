@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
     /**Values**/
     private var mBinding: ActivityMainBinding? = null
     private val adapter = TaskAdapter(this)
-//    var liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +34,6 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
         setupRecyclerView()
 
-//        mBinding?.viewModel?.busyDays?.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                dayBar?.setIndicationByDay((sender as ObservableField<List<Int>>).get()!!)
-//            }
-//        })
-
     }
 
     private fun setupRecyclerView() {
@@ -53,21 +46,12 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
             }
         })
 
-//        liveDataMerger.addSource(mBinding?.viewModel?.tasks1!!) { value -> liveDataMerger.value = value }
-        //Listen for data changes from viewModel
-//        liveDataMerger.addSource(mBinding?.viewModel?.tasks!!) { value -> liveDataMerger.value = value }
-
+        //Observe liveData in order to update recyclerView
         mBinding?.viewModel?.liveDataMerger?.observe(this, {
             it.let {
                 adapter.data = it
             }
         })
-
-//        mBinding?.viewModel?.tasks?.observe(this, {
-//            it.let {
-//                adapter.data = it
-//            }
-//        })
 
         //Change FAB visibility on recyclerView scroll
         recyclerView_todayDue.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -76,12 +60,12 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
                 if (dy > 0) {
                     // Scroll Down
                     if (floatingActionButton.isShown) {
-                        floatingActionButton.hide();
+                        floatingActionButton.hide()
                     }
                 } else if (dy < 0) {
                     // Scroll Up
                     if (!floatingActionButton.isShown) {
-                        floatingActionButton.show();
+                        floatingActionButton.show()
                     }
                 }
             }
@@ -102,13 +86,11 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         }
     }
 
-    override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
-        mBinding?.viewModel?.dayChanged(index, date, chip)
-    }
-
     /**
      * Called when selected day from DayBar changes
      */
-
+    override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
+        mBinding?.viewModel?.dayChanged(index, date, chip)
+    }
 
 }
