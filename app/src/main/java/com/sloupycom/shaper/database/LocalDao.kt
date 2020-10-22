@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.sloupycom.shaper.model.Task
-import java.util.*
 
 @Dao
 interface LocalDao {
@@ -25,4 +24,7 @@ interface LocalDao {
 
     @Query ("SELECT * FROM task_table WHERE next_due = :dateIndex")
     fun getDayTasks(dateIndex: String): LiveData<MutableList<Task>>?
+
+    @Query ("DELETE FROM task_table WHERE next_due < :dateIndex AND state = 'DONE'")
+    suspend fun removeOldDoneTasks(dateIndex: String)
 }
