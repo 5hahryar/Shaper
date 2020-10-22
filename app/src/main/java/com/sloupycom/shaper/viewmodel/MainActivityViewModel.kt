@@ -32,8 +32,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
-    var isEmpty: ObservableBoolean = ObservableBoolean(true)
-    var isLoading: ObservableBoolean = ObservableBoolean(true)
     var busyDays: ObservableField<List<Int>> = ObservableField(mutableListOf())
     private lateinit var lastLiveData: LiveData<*>
 
@@ -65,13 +63,5 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             lastLiveData = liveDataList[index]!!
         }
 
-//        tasks = if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mLocal.localDao.getTodayTasks(todayIndex)
-//        else mLocal.localDao.getDayTasks("" +
-//                "${date[DayBarChip.YEAR]!!.toInt()}" +
-//                "${date[DayBarChip.MONTH]!!.toInt()}" +
-//                "${date[DayBarChip.DAY]!!.toInt()}"
-//        )
-
-//        tasks?.value =
     }
 }
