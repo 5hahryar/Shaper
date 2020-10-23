@@ -9,6 +9,7 @@
     <color name="colorOrange">#FF905F</color>
     <color name="day_bar_chip_text_color">@color/colorOnPrimaryAlpha</color>
     <color name="day_bar_chip_text_color_selected">@color/colorPrimary</color>
+    <color name="day_bar_chip_indicator_color">@color/colorOnPrimaryAlpha</color>
     <color name="colorIndicatorOnPrimary">#D1CCB0</color>
     <color name="colorOnSecondary">@color/colorPrimary</color>
     <color name="colorSeparator">#F1ECCD</color>

@@ -1,76 +1,63 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.app.Application
-import android.content.Context
-import androidx.databinding.BindingAdapter
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.shahryar.daybar.DayBarChip
-import com.sloupycom.shaper.dagger.DaggerDependencyComponent
-import com.sloupycom.shaper.model.adapter.TaskAdapter
-import com.sloupycom.shaper.model.Repo
+import androidx.lifecycle.*
+import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
-import kotlin.collections.ArrayList
+import com.sloupycom.shaper.utils.Util
+import kotlinx.coroutines.launch
+import java.util.*
 
 
-class MainActivityViewModel(application: Application, activityContext: Context) : AndroidViewModel(application),
-    Repo.OnDataChanged,
-    TaskAdapter.TaskStateListener{
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     /** Values **/
-    private val mComponent = DaggerDependencyComponent.create()
-    private val mUtil = mComponent.getUtil()
-    private val mRepo = mComponent.getRepo()
+    private val mUtil = Util()
+    private val mLocal = Local.getInstance(application)
+    private val weekIndex = mUtil.getWeekIndex(Calendar.getInstance())
+
+    private val tasks0 = mLocal.localDao.getTodayTasks(weekIndex[0])
+    private val tasks1 = mLocal.localDao.getDayTasks(weekIndex[1])
+    private val tasks2 = mLocal.localDao.getDayTasks(weekIndex[2])
+    private val tasks3 = mLocal.localDao.getDayTasks(weekIndex[3])
+    private val tasks4 = mLocal.localDao.getDayTasks(weekIndex[4])
+    private val tasks5 = mLocal.localDao.getDayTasks(weekIndex[5])
+    private val tasks6 = mLocal.localDao.getDayTasks(weekIndex[6])
+    private val liveDataList = listOf(tasks0, tasks1, tasks2, tasks3, tasks4, tasks5, tasks6)
+    val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
 
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
-    var adapter: ObservableField<TaskAdapter> = ObservableField()
-    var isEmpty: ObservableBoolean = ObservableBoolean(true)
-    var isLoading: ObservableBoolean = ObservableBoolean(true)
+    var busyDays: LiveData<List<String>>? = mLocal.localDao.getBusyDaysOfWeek()
+    private lateinit var lastLiveData: LiveData<*>
 
     init {
-        adapter.set(TaskAdapter(this, activityContext))
-        mRepo.getDueTasks(this)
-        Int
+        liveDataMerger.addSource(tasks0!!) {
+                value -> liveDataMerger.value = value
+            lastLiveData = tasks0
+        }
     }
 
-    /**
-     * Method is called when data set changes
-     */
-    override fun onDataChanged(data: ArrayList<Task>) {
-        isLoading.set(false)
-        isEmpty.set(data.isEmpty())
-        adapter.get()?.mList?.clear()
-        adapter.get()?.mList?.addAll(data)
-        adapter.get()?.notifyDataSetChanged()
-    }
 
     /**
      * Called when state of a task changes
      */
-    override fun onTaskStateChanged(task: Task) {
-        if (task.state != "DONE") task.state = "DONE"
+    fun onTaskStateChanged(task: Task) {
+        if (task.state == "ONGOING") task.state = "DONE"
         else task.state = "ONGOING"
-        mRepo.updateTask(task)
+        viewModelScope.launch {
+            mLocal.localDao.update(task)
+        }
     }
 
-    fun dayChanged(date: java.util.HashMap<String, String>, chip: DayBarChip) {
-        isLoading.set(true)
-        if (date[DayBarChip.DAY] == mUtil.getDate("dd")) mRepo.getDueTasks(this)
-        else mRepo.getDueTasksWithDate(
-            date[DayBarChip.DAY]!!.toInt(),
-            date[DayBarChip.MONTH]!!.toInt(),
-            date[DayBarChip.YEAR]!!.toInt(),
-            this
-        )
-    }
-}
+    /**
+     * DayBar onDayChanged Callback
+     */
+    fun dayChanged(index: Int) {
+        liveDataMerger.removeSource(lastLiveData)
+        liveDataMerger.addSource(liveDataList[index]!!) {value -> liveDataMerger.value = value
+            lastLiveData = liveDataList[index]!!
+        }
 
-/**
- * Set adapter which is passed from xml layout to recyclerView
- */
-@BindingAdapter(value = ["setAdapter"])
-fun setAdapter(recyclerView: RecyclerView, adapter: TaskAdapter) {
-    recyclerView.adapter = adapter
+    }
 }

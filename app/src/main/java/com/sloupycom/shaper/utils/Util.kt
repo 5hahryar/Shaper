@@ -55,6 +55,15 @@ class Util @Inject constructor(){
     }
 
     /**
+     * @input String format: "yyyyMMdd"
+     */
+    @SuppressLint("SimpleDateFormat")
+    fun isDateBeforeToday(dateIndex: String): Boolean {
+        val todayIndex = SimpleDateFormat("yyyyMMdd").format(mCalendar.time)
+        return dateIndex.toInt() < todayIndex.toInt()
+    }
+
+    /**
      * Get date using custom time and format
      */
     @SuppressLint("SimpleDateFormat")
@@ -65,6 +74,7 @@ class Util @Inject constructor(){
 
     /**
      * Get night mode string
+     * @return "Auto" | "On" | "Off"
      */
     fun getNightMode(context: Context): String {
         when (context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -91,6 +101,51 @@ class Util @Inject constructor(){
     fun writePreference(context: Context, key: String, value: Int) {
         val prefs = context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
         prefs.edit().putInt(key, value).apply()
+    }
+
+    /**
+     * Write data to shared preferences
+     */
+    fun writePreference(context: Context, key: String, value: String) {
+        val prefs = context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+        prefs.edit().putString(key, value).apply()
+    }
+
+    /**
+     * Get string preference
+     */
+    fun readStringPreferences(context: Context, key: String): String? {
+        return context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getString(key, context.getString(R.string.off))
+    }
+
+    fun getDateIndex(date: Calendar): String {
+
+        val year = SimpleDateFormat("yyyy").format(date.time).toInt()
+        val month = SimpleDateFormat("MM").format(date.time).toInt()
+        val day = SimpleDateFormat("dd").format(date.time).toInt()
+
+        return "$year$month$day"
+    }
+
+    fun getWeekIndex(instance: Calendar): List<String> {
+        val weekIndex = mutableListOf<String>()
+        for (i in 0..6) {
+            weekIndex.add(getDateIndex(instance))
+            instance.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        return weekIndex
+    }
+
+    fun getDayListFromDateIndex(list: List<String>?): List<Int> {
+        var days = mutableListOf<Int>()
+        if (list != null) {
+            for (date in list) {
+                days.add(date.substring(5, 8).toInt())
+            }
+        }
+
+        return days
     }
 
 }

@@ -1,33 +1,37 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Application
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
-import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.*
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.dagger.DaggerDependencyComponent
-import com.sloupycom.shaper.model.Repo
+import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.model.Task
+import com.sloupycom.shaper.utils.Util
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import kotlin.collections.HashMap
 
-class AddTaskViewModel(application: Application): AndroidViewModel(application), DatePickerDialog.OnDateSetListener {
+class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activity.application) {
 
     /** Values **/
-    @RequiresApi(Build.VERSION_CODES.N) private val mCalendar: Calendar = Calendar.getInstance()
-    private val mComponent = DaggerDependencyComponent.create()
-    private val mRepo: Repo = mComponent.getRepo()
-    private val mUtil = mComponent.getUtil()
+    @RequiresApi(Build.VERSION_CODES.N)
+    private val mCalendar: Calendar = Calendar.getInstance()
+    private val mUtil = Util()
 
     private var mDateIndex: List<Int>? = null
-    var textDate: ObservableField<String> = ObservableField("")
+    private var onTaskAddedListener: OnTaskAddedListener? = null
+    val textDate: ObservableField<String> = ObservableField("")
+    var textTitle: String? = null
+    val textError: ObservableField<String> = ObservableField()
+
+    private val mLocal = Local.getInstance(activity)
 
     init {
-        textDate.set(application.getString(R.string.today))
+        textDate.set(activity.getString(R.string.today))
     }
 
     /**
@@ -35,7 +39,7 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
      */
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
-    private fun buildTask(title: String): HashMap<String, Any> {
+    private fun buildTask(title: String): Task {
         val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
@@ -44,40 +48,56 @@ class AddTaskViewModel(application: Application): AndroidViewModel(application),
                 SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
             )
         }
-        val owId = mRepo.getUserCredentials()?.uid.toString()
-        val id = mCalendar.timeInMillis.toString()
+        val nextDue = "${mDateIndex!![2]}${mDateIndex!![1]}${mDateIndex!![0]}"
         val state: String = if (textDate.get() == SimpleDateFormat("EEEE, MMM dd yyyy")
                 .format(java.util.Calendar.getInstance().time)) {
             "DUE"
         } else {
             "ONGOING"
         }
-        return hashMapOf(
-            "id" to id,
-            "title" to title,
-            "creation_date" to creationDate,
-            "next_due" to mDateIndex!!,
-            "state" to state
-        )
+        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state)
     }
 
-    /**
-     * Called when user selects a day from DatePicker
-     */
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun addTask(task: Task) {
+        viewModelScope.launch {
+            mLocal.localDao.insert(task)
+        }
+    }
+
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val date = Calendar.getInstance()
-        date.set(year, month, dayOfMonth)
-        textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
-        this.mDateIndex = listOf(
-            SimpleDateFormat("dd").format(date.time).toInt(),
-            SimpleDateFormat("MM").format(date.time).toInt(),
-            SimpleDateFormat("yyyy").format(date.time).toInt())
+    fun onChooseDate() {
+        val picker = DatePickerDialog(activity)
+        picker.datePicker.minDate = Calendar.getInstance().timeInMillis
+        picker.show()
+        picker.setOnDateSetListener { _, year, month, dayOfMonth ->
+            val date = Calendar.getInstance()
+            date.set(year, month, dayOfMonth)
+            textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
+            this.mDateIndex = listOf(
+                SimpleDateFormat("dd").format(date.time).toInt(),
+                SimpleDateFormat("MM").format(date.time).toInt(),
+                SimpleDateFormat("yyyy").format(date.time).toInt())
+        }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.N)
-    fun addTask(name: String) {
-        mRepo.addTask(buildTask(name))
+    fun onAddTask() {
+        if (textTitle != null && textTitle != "") {
+            textTitle?.let { addTask(buildTask(it)) }
+            onTaskAddedListener?.onTaskAdded()
+        } else {
+            textError.set(activity.getString(R.string.empty_title_error))
+            textError.notifyChange()
+        }
+    }
+
+    fun setOnTaskAddedListener(listener: OnTaskAddedListener) {
+        this.onTaskAddedListener = listener
+    }
+    interface OnTaskAddedListener{
+        fun onTaskAdded()
     }
 }

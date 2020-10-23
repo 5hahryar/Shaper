@@ -9,22 +9,23 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.dagger.DaggerDependencyComponent
+import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import net.igenius.customcheckbox.CustomCheckBox
-import kotlin.collections.ArrayList
 
 class TaskAdapter(
-    private val taskStateListener: TaskStateListener,
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val mComponent = DaggerDependencyComponent.create()
-    private val mUtil: Util = mComponent.getUtil()
+    private val mUtil: Util = Util()
+    private var listener: TaskStateListener? = null
 
-    var mList: ArrayList<Task> = arrayListOf()
+    var data: List<Task> = mutableListOf()
+        set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
@@ -34,29 +35,43 @@ class TaskAdapter(
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return data.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return data[position].id
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.mTitle.text = mList[position].title
+        holder.mTitle.text = data[position].title
 
-        //Change item colors based on state
-        if (mList[position].state == "DONE") {
-            holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
-            holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
-            holder.mCardView.alpha = 0.5f
-            holder.mCheckBox.isChecked = true
-        } else if (mUtil.isDateBeforeToday(mList[position].next_due)) {
-            holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
-            holder.mCardView.strokeColor =
-                activityContext.getColor(R.color.task_item_stroke_overdue)
-            holder.mCardView.alpha = 1f
+//        Change item colors based on state
+        when {
+            data[position].state == "DONE" -> {
+                holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
+                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
+                holder.mCheckBox.isChecked = true
+            }
+            mUtil.isDateBeforeToday(data[position].next_due) -> {
+                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
+                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
+                holder.mCardView.alpha = 1f
+                holder.mCheckBox.isChecked = false
+            }
+            else -> {
+                holder.mCheckBox.isChecked = false
+                holder.mTitle.paintFlags = holder.mTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_due))
+                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_due)
+                holder.mCardView.alpha = 1f
+            }
         }
 
-        holder.mCheckBox.setOnCheckedChangeListener { _, _ ->
-            taskStateListener.onTaskStateChanged(mList[position])
+        holder.mCheckBox.setOnClickListener {
+            listener?.onTaskStateChanged(data[position])
         }
+
     }
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -72,6 +87,11 @@ class TaskAdapter(
             mTitle = itemView.findViewById(R.id.textView_title)
             mCheckBox = itemView.findViewById(R.id.checkbox)
         }
+
+    }
+
+    fun setOnTaskStateListener(listener: TaskStateListener) {
+        this.listener = listener
     }
 
     interface TaskStateListener {
