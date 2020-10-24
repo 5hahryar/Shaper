@@ -30,4 +30,7 @@ interface LocalDao {
 
     @Query("SELECT DISTINCT next_due FROM task_table")
     fun getBusyDaysOfWeek(): LiveData<List<String>>?
+
+    @Query ("SELECT * FROM task_table WHERE next_due <= :todayDateIndex")
+    suspend fun getReminderTasks(todayDateIndex: String): List<Task>
 }

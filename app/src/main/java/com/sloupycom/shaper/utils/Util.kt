@@ -119,6 +119,14 @@ class Util @Inject constructor(){
             .getString(key, context.getString(R.string.off))
     }
 
+    /**
+     * Get boolean preference
+     */
+    fun readBooleanPreferences(context: Context, key: String): Boolean {
+        return context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
+            .getBoolean(key, false)
+    }
+
     fun getDateIndex(date: Calendar): String {
 
         val year = SimpleDateFormat("yyyy").format(date.time).toInt()

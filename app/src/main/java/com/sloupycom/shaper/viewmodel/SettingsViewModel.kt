@@ -3,6 +3,7 @@ package com.sloupycom.shaper.viewmodel
 import android.app.*
 import android.content.DialogInterface
 import android.content.Intent
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
@@ -84,15 +85,19 @@ class SettingsViewModel(private val activity: FragmentActivity): AndroidViewMode
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
         }
+
         val intent = Intent(activity, ReminderBroadCast::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(activity, Constant.RC_REMINDER, intent, 0)
+        val pendingIntent = PendingIntent
+            .getBroadcast(activity, Constant.RC_REMINDER, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         val alarmManager = activity.getSystemService(Service.ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
+            AlarmManager.INTERVAL_HOUR,
             pendingIntent
         )
+        Log.d(Constant.TAG, "ALARM: Reminder set")
     }
 
     fun onSetNightModeClick(view: View) {

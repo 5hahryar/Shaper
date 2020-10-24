@@ -2,6 +2,8 @@ package com.sloupycom.shaper.utils
 
 class Constant {
     companion object {
+        const val SHARED_PREFS_CHANNEL: String = "NOTIFICATION_CHANNEL"
+        const val TAG: String = "TAG"
         const val RC_REMINDER: Int = 11
         const val SHARED_PREFS_REMINDER: String = "reminder"
         const val SHARED_PREFS = "application"
