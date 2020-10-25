@@ -19,7 +19,6 @@ import java.util.*
 class ReminderBroadCast: BroadcastReceiver() {
 
     var context: Context? = null
-    var mLocal: Local? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {

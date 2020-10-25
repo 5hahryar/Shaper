@@ -70,7 +70,7 @@ class SettingsViewModel(private val activity: FragmentActivity): AndroidViewMode
      */
     private fun cancelReminder() {
         val intent = Intent(activity, ReminderBroadCast::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(activity, 100, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(activity, Constant.RC_REMINDER, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = activity.getSystemService(Service.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
     }
@@ -94,7 +94,7 @@ class SettingsViewModel(private val activity: FragmentActivity): AndroidViewMode
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_HOUR,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
         Log.d(Constant.TAG, "ALARM: Reminder set")
