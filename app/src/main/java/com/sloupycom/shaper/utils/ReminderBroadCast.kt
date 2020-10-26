@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.utils
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -11,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
+import com.sloupycom.shaper.view.MainActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -47,10 +49,14 @@ class ReminderBroadCast: BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotification(contentText: String) {
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, Constant.RC_MAIN_ACTIVITY, intent, PendingIntent.FLAG_ONE_SHOT)
         val notification = Notification.Builder(context, Constant.ID_NOTIFICATION_CHANNEL)
             .setContentTitle("Today's Tasks")
             .setSmallIcon(R.drawable.ic_shaper)
             .setStyle(Notification.BigTextStyle().bigText(contentText))
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
         NotificationManagerCompat.from(context!!).notify(Constant.ID_NOTIFICATION, notification)
     }
