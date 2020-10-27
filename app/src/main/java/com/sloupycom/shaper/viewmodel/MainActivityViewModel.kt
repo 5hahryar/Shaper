@@ -3,10 +3,12 @@ package com.sloupycom.shaper.viewmodel
 import android.app.Application
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import com.google.android.material.snackbar.Snackbar
 import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -59,5 +61,17 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             lastLiveData = liveDataList[index]!!
         }
 
+    }
+
+    fun deleteTaskItem(task: Task) {
+        viewModelScope.launch {
+            mLocal.localDao.delete(task)
+        }
+    }
+
+    fun undoDeleteTaskItem(task: Task) {
+        viewModelScope.launch {
+            mLocal.localDao.insert(task)
+        }
     }
 }

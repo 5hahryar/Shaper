@@ -1,10 +1,7 @@
 package com.sloupycom.shaper.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.sloupycom.shaper.model.Task
 
 @Dao
@@ -15,6 +12,9 @@ interface LocalDao {
 
     @Update
     suspend fun update(task: Task)
+
+    @Delete
+    suspend fun delete(task: Task)
 
     @Query ("SELECT * FROM task_table")
     fun getAllTasks(): LiveData<MutableList<Task>>?
