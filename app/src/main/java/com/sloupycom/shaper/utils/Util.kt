@@ -129,9 +129,9 @@ class Util @Inject constructor(){
 
     fun getDateIndex(date: Calendar): String {
 
-        val year = SimpleDateFormat("yyyy").format(date.time).toInt()
-        val month = SimpleDateFormat("MM").format(date.time).toInt()
-        val day = SimpleDateFormat("dd").format(date.time).toInt()
+        val year = SimpleDateFormat("yyyy").format(date.time)
+        val month = SimpleDateFormat("MM").format(date.time)
+        val day = SimpleDateFormat("dd").format(date.time)
 
         return "$year$month$day"
     }
@@ -149,10 +149,9 @@ class Util @Inject constructor(){
         var days = mutableListOf<Int>()
         if (list != null) {
             for (date in list) {
-                days.add(date.substring(5, 8).toInt())
+                days.add(date.substring(6, 8).toInt())
             }
         }
-
         return days
     }
 
