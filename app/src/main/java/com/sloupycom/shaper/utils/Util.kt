@@ -159,7 +159,7 @@ class Util @Inject constructor(){
     fun getBusyWeekDaysFromDateIndex(list: List<String>?): List<Int> {
         val days = mutableListOf<Int>()
         val todayIndex = getTodayDateIndexString()
-        if (list != null) {
+        if (list != null && list.isNotEmpty()) {
             days.add(todayIndex.substring(6).toInt())
             for (date in list) {
                 if (date.substring(0, 6) == todayIndex.substring(0, 6))
