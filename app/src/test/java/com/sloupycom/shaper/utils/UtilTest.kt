@@ -21,11 +21,5 @@ class UtilTest {
         assertEquals(expect, actual)
     }
 
-    @Test
-    fun util_getDayListFromDateIndex() {
-        val actual = Util().getDayListFromDateIndex(listOf("20201021", "20201001", "20201010", "20201013"))
-        val expect = mutableListOf("21", "1", "10", "13")
 
-        assertEquals(expect, actual)
-    }
 }

@@ -28,6 +28,17 @@ class Util @Inject constructor(){
     }
 
     /**
+     * Get date in a string, format: "ddMMyyyy"
+     */
+    @SuppressLint("SimpleDateFormat")
+    fun getTodayDateIndexString(): String {
+        val dd = SimpleDateFormat("dd").format(mCalendar.time).toInt()
+        val MM = SimpleDateFormat("MM").format(mCalendar.time).toInt()
+        val yyyy = SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
+        return "$yyyy$MM$dd"
+    }
+
+    /**
      * Get date in a string by custom format
      */
     @SuppressLint("SimpleDateFormat")
@@ -145,11 +156,14 @@ class Util @Inject constructor(){
         return weekIndex
     }
 
-    fun getDayListFromDateIndex(list: List<String>?): List<Int> {
-        var days = mutableListOf<Int>()
+    fun getBusyWeekDaysFromDateIndex(list: List<String>?): List<Int> {
+        val days = mutableListOf<Int>()
+        val todayIndex = getTodayDateIndexString()
         if (list != null) {
+            days.add(todayIndex.substring(6).toInt())
             for (date in list) {
-                days.add(date.substring(6, 8).toInt())
+                if (date.substring(0, 6) == todayIndex.substring(0, 6))
+                    days.add(date.substring(6).toInt())
             }
         }
         return days

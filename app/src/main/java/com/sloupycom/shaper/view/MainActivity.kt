@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         setupRecyclerView()
 
         mBinding?.viewModel?.busyDays?.observe(this, {
-            dayBar.setIndicationByDay(Util().getDayListFromDateIndex(it))
+            dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
             //TODO: issue -> Indication is not removed when busyDay is removed
         })
 
