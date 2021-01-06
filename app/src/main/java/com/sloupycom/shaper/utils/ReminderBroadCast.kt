@@ -37,12 +37,12 @@ class ReminderBroadCast: BroadcastReceiver() {
 
             job.join()
             var notif = ""
-            if (data != null) {
+            if (data != null && data!!.isNotEmpty()) {
                 for (task in data!!) {
                     notif += " · ${task.title}"
                 }
+                createNotification(notif)
             }
-            createNotification(notif)
             Log.d(Constant.TAG, "ALARM: notification created with data size: ${data?.size}")
         }
     }
