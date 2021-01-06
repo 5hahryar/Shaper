@@ -34,4 +34,6 @@
     <string name="on_task_added">New task added successfully.</string>
     <string name="separator">Separator</string>
     <string name="question_mark">Question mark</string>
+    <string name="delete_task">Task removed successfully.</string>
+    <string name="undo">Undo</string>
 </resources>

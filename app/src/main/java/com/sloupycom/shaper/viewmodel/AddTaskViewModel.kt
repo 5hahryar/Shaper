@@ -22,7 +22,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     private val mCalendar: Calendar = Calendar.getInstance()
     private val mUtil = Util()
 
-    private var mDateIndex: List<Int>? = null
+    private var mDateIndex: List<String>? = null
     private var onTaskAddedListener: OnTaskAddedListener? = null
     val textDate: ObservableField<String> = ObservableField("")
     var textTitle: String? = null
@@ -43,9 +43,9 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
         val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
-                SimpleDateFormat("dd").format(mCalendar.time).toInt(),
-                SimpleDateFormat("MM").format(mCalendar.time).toInt(),
-                SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
+                SimpleDateFormat("dd").format(mCalendar.time),
+                SimpleDateFormat("MM").format(mCalendar.time),
+                SimpleDateFormat("yyyy").format(mCalendar.time)
             )
         }
         val nextDue = "${mDateIndex!![2]}${mDateIndex!![1]}${mDateIndex!![0]}"
@@ -76,9 +76,9 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
             date.set(year, month, dayOfMonth)
             textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
             this.mDateIndex = listOf(
-                SimpleDateFormat("dd").format(date.time).toInt(),
-                SimpleDateFormat("MM").format(date.time).toInt(),
-                SimpleDateFormat("yyyy").format(date.time).toInt())
+                SimpleDateFormat("dd").format(date.time),
+                SimpleDateFormat("MM").format(date.time),
+                SimpleDateFormat("yyyy").format(date.time))
         }
     }
 

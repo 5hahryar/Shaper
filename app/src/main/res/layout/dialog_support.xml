@@ -29,4 +29,14 @@
         android:gravity="center"
         android:text="@string/support_repo"/>
 
+    <TextView
+        android:id="@+id/textView_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextOverLine"
+        android:alpha="0.6"
+        android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:text="v1.2.2"/>
+
 </LinearLayout>

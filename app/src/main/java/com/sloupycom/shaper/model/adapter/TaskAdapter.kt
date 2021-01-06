@@ -20,8 +20,10 @@ class TaskAdapter(
 
     private val mUtil: Util = Util()
     private var listener: TaskStateListener? = null
+    private var recentDeletedItemPostition: Int? = null
+    private var recentDeletedItem: Task? = null
 
-    var data: List<Task> = mutableListOf()
+    var data: MutableList<Task> = mutableListOf()
         set(value) {
         field = value
         notifyDataSetChanged()
@@ -94,7 +96,23 @@ class TaskAdapter(
         this.listener = listener
     }
 
+    fun deleteItem(position: Int) {
+        recentDeletedItem = data[position]
+        recentDeletedItemPostition = position
+        listener?.onTaskItemDeleted(recentDeletedItem!!)
+        data.drop(recentDeletedItemPostition!!)
+        notifyItemRemoved(recentDeletedItemPostition!!)
+    }
+
+    fun undoRemove() {
+        listener?.onTaskItemDeleteUndo(recentDeletedItem!!)
+        data.add(recentDeletedItemPostition!!, recentDeletedItem!!)
+        notifyItemInserted(recentDeletedItemPostition!!)
+    }
+
     interface TaskStateListener {
         fun onTaskStateChanged(task: Task)
+        fun onTaskItemDeleted(task: Task)
+        fun onTaskItemDeleteUndo(task: Task)
     }
 }
