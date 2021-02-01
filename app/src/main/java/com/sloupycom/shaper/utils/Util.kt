@@ -32,9 +32,9 @@ class Util @Inject constructor(){
      */
     @SuppressLint("SimpleDateFormat")
     fun getTodayDateIndexString(): String {
-        val dd = SimpleDateFormat("dd").format(mCalendar.time).toInt()
-        val MM = SimpleDateFormat("MM").format(mCalendar.time).toInt()
-        val yyyy = SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
+        val dd = SimpleDateFormat("dd").format(mCalendar.time)
+        val MM = SimpleDateFormat("MM").format(mCalendar.time)
+        val yyyy = SimpleDateFormat("yyyy").format(mCalendar.time)
         return "$yyyy$MM$dd"
     }
 
