@@ -16,30 +16,19 @@ class Util @Inject constructor(){
     private val mCalendar: Calendar = Calendar.getInstance()
 
     /**
-     * Get date in a list, format: [dd, MM, yyyy]
+     * @Output Get today's date in a string, pattern: "yyyyMMdd"
      */
     @SuppressLint("SimpleDateFormat")
-    fun getTodayDateIndex(): List<Int> {
-        return listOf(
-            SimpleDateFormat("dd").format(mCalendar.time).toInt(),
-            SimpleDateFormat("MM").format(mCalendar.time).toInt(),
-            SimpleDateFormat("yyyy").format(mCalendar.time).toInt()
-        )
-    }
-
-    /**
-     * Get date in a string, format: "ddMMyyyy"
-     */
-    @SuppressLint("SimpleDateFormat")
-    fun getTodayDateIndexString(): String {
+    fun getTodayDateIndex(): String {
         val dd = SimpleDateFormat("dd").format(mCalendar.time)
-        val MM = SimpleDateFormat("MM").format(mCalendar.time)
+        val mm = SimpleDateFormat("MM").format(mCalendar.time)
         val yyyy = SimpleDateFormat("yyyy").format(mCalendar.time)
-        return "$yyyy$MM$dd"
+        return "$yyyy$mm$dd"
     }
 
     /**
-     * Get date in a string by custom format
+     * @Input String in a SimpleDateFormat pattern, example: "yyyyMMdd"
+     * @Output Date in a string, with the pattern which is provided at input
      */
     @SuppressLint("SimpleDateFormat")
     fun getDate(pattern: String): String {
@@ -48,25 +37,8 @@ class Util @Inject constructor(){
     }
 
     /**
-     * @input List<Int> format: [dd, MM, yyyy]
-     */
-    @SuppressLint("SimpleDateFormat")
-    fun isDateBeforeToday(dateIndex: List<Int>): Boolean {
-        val dateString = dateIndex.toString()
-            .replace("[", "")
-            .replace("]", "")
-            .replace(",", "")
-        val dateFormat = SimpleDateFormat("dd MM yyyy").parse(dateString)
-        val today = SimpleDateFormat("dd MM yyyy").parse(
-            SimpleDateFormat("dd MM yyyy").format(
-                mCalendar.time
-            )
-        )
-        return dateFormat.before(today)
-    }
-
-    /**
-     * @input String format: "yyyyMMdd"
+     * @Input Date with a string format, example: "yyyyMMdd"
+     * @Output Boolean, true if input date is before today, else false
      */
     @SuppressLint("SimpleDateFormat")
     fun isDateBeforeToday(dateIndex: String): Boolean {
@@ -75,6 +47,9 @@ class Util @Inject constructor(){
     }
 
     /**
+     * @Input String in a SimpleDateFormat pattern, example: "yyyyMMdd"
+     * & Custom time as a Date object
+     * @Output String containing the date of the time which is provided at input, following the given pattern
      * Get date using custom time and format
      */
     @SuppressLint("SimpleDateFormat")
@@ -84,8 +59,7 @@ class Util @Inject constructor(){
     }
 
     /**
-     * Get night mode string
-     * @return "Auto" | "On" | "Off"
+     * @Output String containing nightMode status, example: "Auto" | "On" | "Off" | "NOT SUPPORTED"
      */
     fun getNightMode(context: Context): String {
         when (context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -96,14 +70,6 @@ class Util @Inject constructor(){
             AppCompatDelegate.MODE_NIGHT_NO -> return context.getString(R.string.off)
         }
         return "NOT SUPPORTED"
-    }
-
-    /**
-     * Get night mode config
-     */
-    fun getNightModeConfig(context: Context): Int {
-        return context.getSharedPreferences(Constant.SHARED_PREFS, Context.MODE_PRIVATE)
-            .getInt(Constant.SHARED_PREFS_NIGHTMODE, -1)
     }
 
     /**
@@ -138,6 +104,10 @@ class Util @Inject constructor(){
             .getBoolean(key, false)
     }
 
+    /**
+     * @Output String like the following pattern: "yyyyMMdd"
+     */
+    @SuppressLint("SimpleDateFormat")
     fun getDateIndex(date: Calendar): String {
 
         val year = SimpleDateFormat("yyyy").format(date.time)
@@ -147,6 +117,10 @@ class Util @Inject constructor(){
         return "$year$month$day"
     }
 
+    /**
+     * @Output DateIndex of the following 7 days starting from the provided instance time
+     * pattern: "yyyyMMdd"
+     */
     fun getWeekIndex(instance: Calendar): List<String> {
         val weekIndex = mutableListOf<String>()
         for (i in 0..6) {
@@ -156,9 +130,12 @@ class Util @Inject constructor(){
         return weekIndex
     }
 
+    /**
+     * @Output Get DAY_OF_MONTH of all the weekDays that contain tasks
+     */
     fun getBusyWeekDaysFromDateIndex(list: List<String>?): List<Int> {
         val days = mutableListOf<Int>()
-        val todayIndex = getTodayDateIndexString()
+        val todayIndex = getTodayDateIndex()
         if (list != null && list.isNotEmpty()) {
             days.add(todayIndex.substring(6).toInt())
             for (date in list) {
