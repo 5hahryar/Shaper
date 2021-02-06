@@ -52,9 +52,13 @@ class SettingsViewModel(private val activity: FragmentActivity): AndroidViewMode
     private fun openTimePicker(hour: Int, minute: Int) {
         val timePicker = TimePickerDialog(activity, { _: TimePicker, i: Int, i1: Int ->
             //Time is set
-            reminder.set("$i:$i1")
+            var h = i.toString()
+            var m = i1.toString()
+            if (i < 10) h = "0$h"
+            if (i1 < 10) m = "0$m"
+            reminder.set("$h:$m")
             setReminder(i, i1)
-            mUtil.writePreference(activity, Constant.SHARED_PREFS_REMINDER, "$i:$i1")
+            mUtil.writePreference(activity, Constant.SHARED_PREFS_REMINDER, "$h:$m")
         }, hour, minute, false)
         timePicker.setButton(TimePickerDialog.BUTTON_NEGATIVE, "Turn Off") { _: DialogInterface, _: Int ->
             //Negative button pressed
