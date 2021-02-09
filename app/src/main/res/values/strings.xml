@@ -36,4 +36,6 @@
     <string name="question_mark">Question mark</string>
     <string name="delete_task">Task removed successfully.</string>
     <string name="undo">Undo</string>
+    <string name="repeat_every">Repeat every</string>
+    <string name="days">days</string>
 </resources>
