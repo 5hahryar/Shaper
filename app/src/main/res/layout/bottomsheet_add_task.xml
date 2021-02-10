@@ -4,13 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.sloupycom.shaper.viewmodel.AddTaskViewModel" />
-        <variable
-            name="view"
-            type="com.sloupycom.shaper.view.AddTaskBottomSheet" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -97,7 +93,8 @@
                         app:toggle_icon="@drawable/ic_loop_24px"
                         app:toggle_iconColor="@color/colorOnPrimary"
                         app:toggle_backgroundColor="@android:color/transparent"
-                        app:toggle_iconPadding="29dp" />
+                        app:toggle_iconPadding="29dp"
+                        android:onClick="@{(it) -> viewModel.onRepetitionClick(it)}"/>
 
                 </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
@@ -133,11 +130,11 @@
                             android:layout_height="wrap_content"
                             style="@style/TextOverLine"
                             android:textSize="14sp"
-                            android:hint="1"
+                            android:hint="@string/_1"
                             android:textColorHint="@color/colorOnPrimaryAlpha"
-                            android:maxEms="3"
                             android:singleLine="true"
                             android:inputType="number"
+                            android:afterTextChanged="@{viewModel::afterTextRepetitionChanged}"
                             android:backgroundTint="@color/colorOnPrimary"
                             android:gravity="center"/>
 

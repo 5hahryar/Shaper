@@ -19,5 +19,8 @@ data class Task(
     var next_due: String = "",
 
     @ColumnInfo(name = "state")
-    var state: String = ""
+    var state: String = "",
+
+    @ColumnInfo(name = "repetition")
+    var repetition: Int? = null
 )

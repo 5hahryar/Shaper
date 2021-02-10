@@ -5,6 +5,9 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
+import android.text.Editable
+import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
@@ -13,6 +16,7 @@ import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch
+import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import java.text.SimpleDateFormat
 
 class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activity.application) {
@@ -21,14 +25,15 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     @RequiresApi(Build.VERSION_CODES.N)
     private val mCalendar: Calendar = Calendar.getInstance()
     private val mUtil = Util()
-
-    private var mDateIndex: List<String>? = null
-    private var onTaskAddedListener: OnTaskAddedListener? = null
-    val textDate: ObservableField<String> = ObservableField("")
-    var textTitle: String? = null
-    val textError: ObservableField<String> = ObservableField()
-
     private val mLocal = Local.getInstance(activity)
+    val textDate: ObservableField<String> = ObservableField("")
+    val textError: ObservableField<String> = ObservableField()
+    private var mDateIndex: List<String>? = null
+
+    private var onTaskAddedListener: OnTaskAddedListener? = null
+    private var isRepetitionSelected: Boolean = false
+    private var textRepetition: String = ""
+    var textTitle: String? = null
 
     init {
         textDate.set(activity.getString(R.string.today))
@@ -55,7 +60,12 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
         } else {
             "ONGOING"
         }
-        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state)
+        var repetition: Int? = null
+        if (isRepetitionSelected) {
+            repetition = if (textRepetition.isNotEmpty()) textRepetition.toInt() else 1
+        }
+
+        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state, repetition = repetition)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -92,6 +102,14 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
             textError.set(activity.getString(R.string.empty_title_error))
             textError.notifyChange()
         }
+    }
+
+    fun onRepetitionClick(view: View) {
+        isRepetitionSelected = view.isSelected
+    }
+
+    fun afterTextRepetitionChanged(editable: Editable) {
+        textRepetition = editable.toString()
     }
 
     fun setOnTaskAddedListener(listener: OnTaskAddedListener) {

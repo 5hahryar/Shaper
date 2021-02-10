@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-@Database(entities = [Task::class], version = 3, exportSchema = false)
+@Database(entities = [Task::class], version = 5, exportSchema = false)
 abstract class Local: RoomDatabase() {
 
     abstract val localDao: LocalDao
