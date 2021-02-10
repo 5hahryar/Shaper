@@ -45,7 +45,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     private fun buildTask(title: String): Task {
-        val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
+        val creationDate = mUtil.getDate("yyyyMMdd", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
                 SimpleDateFormat("dd").format(mCalendar.time),
