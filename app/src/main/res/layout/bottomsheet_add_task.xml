@@ -40,7 +40,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@{viewModel.textDate}"
-                android:onClick="@{() -> viewModel.onChooseDate()}"
                 android:textAppearance="@style/TextH5" />
 
             <com.google.android.material.textfield.TextInputLayout

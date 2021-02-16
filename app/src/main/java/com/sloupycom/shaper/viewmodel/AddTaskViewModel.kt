@@ -1,13 +1,11 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import android.text.Editable
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
@@ -16,27 +14,26 @@ import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch
-import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import java.text.SimpleDateFormat
 
-class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activity.application) {
+class AddTaskViewModel: ViewModel() {
 
     /** Values **/
     @RequiresApi(Build.VERSION_CODES.N)
     private val mCalendar: Calendar = Calendar.getInstance()
     private val mUtil = Util()
-    private val mLocal = Local.getInstance(activity)
     val textDate: ObservableField<String> = ObservableField("")
     val textError: ObservableField<String> = ObservableField()
-    private var mDateIndex: List<String>? = null
 
+    private var mDateIndex: List<String>? = null
     private var onTaskAddedListener: OnTaskAddedListener? = null
     private var isRepetitionSelected: Boolean = false
     private var textRepetition: String = ""
+    lateinit var mLocal: Local
     var textTitle: String? = null
 
     init {
-        textDate.set(activity.getString(R.string.today))
+        textDate.set((R.string.today).toString())
     }
 
     /**
@@ -77,19 +74,15 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.N)
-    fun onChooseDate() {
-        val picker = DatePickerDialog(activity)
-        picker.datePicker.minDate = Calendar.getInstance().timeInMillis
-        picker.show()
-        picker.setOnDateSetListener { _, year, month, dayOfMonth ->
-            val date = Calendar.getInstance()
-            date.set(year, month, dayOfMonth)
-            textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
-            this.mDateIndex = listOf(
-                SimpleDateFormat("dd").format(date.time),
-                SimpleDateFormat("MM").format(date.time),
-                SimpleDateFormat("yyyy").format(date.time))
-        }
+    fun onDateSelected(year: Int, month: Int, dayOfMonth: Int) {
+        val date = Calendar.getInstance()
+        date.set(year, month, dayOfMonth)
+        textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
+        this.mDateIndex = listOf(
+            SimpleDateFormat("dd").format(date.time),
+            SimpleDateFormat("MM").format(date.time),
+            SimpleDateFormat("yyyy").format(date.time)
+        )
     }
 
 
@@ -99,7 +92,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
             textTitle?.let { addTask(buildTask(it)) }
             onTaskAddedListener?.onTaskAdded()
         } else {
-            textError.set(activity.getString(R.string.empty_title_error))
+            textError.set(R.string.empty_title_error.toString())
             textError.notifyChange()
         }
     }

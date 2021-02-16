@@ -14,14 +14,14 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel(application: Application) : ViewModel() {
 
     /** Values **/
-    private val mUtil = Util()
     private val mLocal = Local.getInstance(application)
+    private val mUtil = Util()
     private val weekIndex = mUtil.getWeekIndex(Calendar.getInstance())
-
     private val tasks0 = mLocal.localDao.getTodayTasks(weekIndex[0])
+
     private val tasks1 = mLocal.localDao.getDayTasks(weekIndex[1])
     private val tasks2 = mLocal.localDao.getDayTasks(weekIndex[2])
     private val tasks3 = mLocal.localDao.getDayTasks(weekIndex[3])
@@ -30,8 +30,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val tasks6 = mLocal.localDao.getDayTasks(weekIndex[6])
     private val liveDataList = listOf(tasks0, tasks1, tasks2, tasks3, tasks4, tasks5, tasks6)
     val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
-
     var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
+
     var busyDays: LiveData<List<String>>? = mLocal.localDao.getBusyDaysOfWeek(weekIndex[6])
     private lateinit var lastLiveData: LiveData<*>
 
@@ -51,7 +51,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         if (task.state == "ONGOING") {
             task.state = "DONE"
             if (task.repetition != null) {
-                var repetitionTask = Task(
+                val repetitionTask = Task(
                     title = task.title,
                     next_due = mUtil.addDayToDate(task.next_due, task.repetition!!),
                     creation_date = mUtil.getTodayDateIndex(),

@@ -1,21 +1,26 @@
 package com.sloupycom.shaper.view
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.shahryar.daybar.DayBar
 import com.shahryar.daybar.DayBarChip
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.database.Local
 import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.SwipeToDeleteCallBack
 import com.sloupycom.shaper.model.adapter.TaskAdapter
 import com.sloupycom.shaper.utils.Util
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
+import com.sloupycom.shaper.viewmodel.MainActivityViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -23,6 +28,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     /**Values**/
     private var mBinding: ActivityMainBinding? = null
+    private lateinit var viewModel: MainActivityViewModel
     private val adapter = TaskAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +36,8 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
         //Data binding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mBinding?.viewModel = MainActivityViewModel(application)
+        viewModel = ViewModelProvider(this, MainActivityViewModelFactory(application)).get(MainActivityViewModel::class.java)
+        mBinding?.viewModel = viewModel
         mBinding?.lifecycleOwner = this
 
         //Setup DayBar listener
@@ -52,6 +59,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         ItemTouchHelper(SwipeToDeleteCallBack(adapter)).attachToRecyclerView(recyclerView_todayDue)
 
         adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onTaskStateChanged(task: Task) {
                 mBinding?.viewModel?.onTaskStateChanged(task)
             }
