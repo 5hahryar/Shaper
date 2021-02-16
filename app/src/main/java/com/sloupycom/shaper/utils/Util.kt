@@ -146,4 +146,20 @@ class Util @Inject constructor(){
         return days
     }
 
+    fun addDayToDate(date: String, day: Int): String {
+        val dateCal = Calendar.getInstance()
+//        val a=date.substring(0..3).toInt()
+//        val b=date.substring(4..5).toInt()
+//        val c=date.substring(6).toInt()
+        dateCal.set(
+            date.substring(0..3).toInt(),
+            date.substring(4..5).toInt()-1,
+            date.substring(6).toInt()
+        )
+//        dateCal.set(1999, 5, 22)
+        dateCal.add(Calendar.DAY_OF_MONTH, day)
+
+        return getDate("yyyyMMdd", dateCal.time)
+    }
+
 }

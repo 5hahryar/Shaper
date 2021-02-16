@@ -1,6 +1,8 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.google.android.material.snackbar.Snackbar
@@ -44,8 +46,21 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     /**
      * Called when state of a task changes
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     fun onTaskStateChanged(task: Task) {
-        if (task.state == "ONGOING") task.state = "DONE"
+        if (task.state == "ONGOING") {
+            task.state = "DONE"
+            if (task.repetition != null) {
+                var repetitionTask = Task(
+                    title = task.title,
+                    next_due = mUtil.addDayToDate(task.next_due, task.repetition!!),
+                    creation_date = mUtil.getTodayDateIndex(),
+                    state = "ONGOING",
+                    repetition = task.repetition
+                )
+                addTask(repetitionTask)
+            }
+        }
         else task.state = "ONGOING"
         viewModelScope.launch {
             mLocal.localDao.update(task)
@@ -70,6 +85,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun undoDeleteTaskItem(task: Task) {
+        viewModelScope.launch {
+            mLocal.localDao.insert(task)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun addTask(task: Task) {
         viewModelScope.launch {
             mLocal.localDao.insert(task)
         }

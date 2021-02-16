@@ -21,5 +21,13 @@ class UtilTest {
         assertEquals(expect, actual)
     }
 
+    @Test
+    fun addDayToDate() {
+        val actual = Util().addDayToDate("20210311", 20)
+        val expect = "20210516"
+
+        assertEquals(expect, actual)
+    }
+
 
 }
