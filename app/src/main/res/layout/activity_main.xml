@@ -4,16 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="com.sloupycom.shaper.viewmodel.MainActivityViewModel" />
-
-        <variable
-            name="adapter"
-            type="com.sloupycom.shaper.model.adapter.TaskAdapter" />
     </data>
 
     <RelativeLayout
@@ -98,14 +92,6 @@
             android:textAppearance="@style/TextBody1"
             android:textColor="@color/colorOnPrimaryAlpha"
             android:visibility="@{viewModel.liveDataMerger.isEmpty() ? View.VISIBLE : View.GONE}" />
-
-<!--        <ProgressBar-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            style="?android:attr/progressBarStyle"-->
-<!--            android:indeterminateTint="@color/colorOnPrimary"-->
-<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>-->
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"

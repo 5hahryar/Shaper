@@ -29,15 +29,17 @@ class MainActivityViewModel(application: Application) : ViewModel() {
     private val tasks5 = mLocal.localDao.getDayTasks(weekIndex[5])
     private val tasks6 = mLocal.localDao.getDayTasks(weekIndex[6])
     private val liveDataList = listOf(tasks0, tasks1, tasks2, tasks3, tasks4, tasks5, tasks6)
-    val liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
-    var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
+    private val _liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
+    val liveDataMerger: MediatorLiveData<MutableList<Task>>
+        get() = _liveDataMerger
 
+    var textDate: ObservableField<String> = ObservableField(mUtil.getDate("EEEE, MMM dd"))
     var busyDays: LiveData<List<String>>? = mLocal.localDao.getBusyDaysOfWeek(weekIndex[6])
     private lateinit var lastLiveData: LiveData<*>
 
     init {
-        liveDataMerger.addSource(tasks0!!) {
-                value -> liveDataMerger.value = value
+        _liveDataMerger.addSource(tasks0!!) {
+                value -> _liveDataMerger.value = value
             lastLiveData = tasks0
         }
     }
@@ -71,8 +73,8 @@ class MainActivityViewModel(application: Application) : ViewModel() {
      * DayBar onDayChanged Callback
      */
     fun dayChanged(index: Int) {
-        liveDataMerger.removeSource(lastLiveData)
-        liveDataMerger.addSource(liveDataList[index]!!) {value -> liveDataMerger.value = value
+        _liveDataMerger.removeSource(lastLiveData)
+        _liveDataMerger.addSource(liveDataList[index]!!) {value -> _liveDataMerger.value = value
             lastLiveData = liveDataList[index]!!
         }
 

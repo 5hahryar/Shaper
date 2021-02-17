@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     /**Values**/
-    private var mBinding: ActivityMainBinding? = null
+    private lateinit var mBinding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
     private val adapter = TaskAdapter(this)
 
@@ -37,17 +37,16 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         //Data binding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProvider(this, MainActivityViewModelFactory(application)).get(MainActivityViewModel::class.java)
-        mBinding?.viewModel = viewModel
-        mBinding?.lifecycleOwner = this
+        mBinding.viewModel = viewModel
+        mBinding.lifecycleOwner = this
 
         //Setup DayBar listener
         dayBar?.setOnDayChangedListener(this)
 
         setupRecyclerView()
 
-        mBinding?.viewModel?.busyDays?.observe(this, {
+        mBinding.viewModel?.busyDays?.observe(this, {
             dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
-            //TODO: issue -> Indication is not removed when busyDay is removed
         })
 
     }
@@ -61,21 +60,21 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
             @RequiresApi(Build.VERSION_CODES.N)
             override fun onTaskStateChanged(task: Task) {
-                mBinding?.viewModel?.onTaskStateChanged(task)
+                mBinding.viewModel?.onTaskStateChanged(task)
             }
 
             override fun onTaskItemDeleted(task: Task) {
-                mBinding?.viewModel?.deleteTaskItem(task)
+                mBinding.viewModel?.deleteTaskItem(task)
                 showItemDeletedSnackBar()
             }
 
             override fun onTaskItemDeleteUndo(task: Task) {
-                mBinding?.viewModel?.undoDeleteTaskItem(task)
+                mBinding.viewModel?.undoDeleteTaskItem(task)
             }
         })
 
         //Observe liveData in order to update recyclerView
-        mBinding?.viewModel?.liveDataMerger?.observe(this, {
+        mBinding.viewModel?.liveDataMerger?.observe(this, {
             it.let {
                 adapter.data = it
             }
@@ -128,7 +127,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
      * Called when selected day from DayBar changes
      */
     override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
-        mBinding?.viewModel?.dayChanged(index)
+        mBinding.viewModel?.dayChanged(index)
     }
 
 }
