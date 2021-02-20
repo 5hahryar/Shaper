@@ -42,8 +42,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:layout_toStartOf="@id/checkbox"
-                android:layout_marginEnd="@dimen/margin_top"
-                android:text="@{task.title}" />
+                android:layout_marginEnd="@dimen/margin_top"/>
 
             <net.igenius.customcheckbox.CustomCheckBox
                 android:id="@+id/checkbox"
