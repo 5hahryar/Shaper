@@ -5,12 +5,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
-import com.google.android.material.snackbar.Snackbar
-import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 

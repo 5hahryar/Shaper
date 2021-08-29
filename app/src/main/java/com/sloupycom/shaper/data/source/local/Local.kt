@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.database
+package com.sloupycom.shaper.data.source.local
 
 import android.content.Context
 import androidx.room.Database

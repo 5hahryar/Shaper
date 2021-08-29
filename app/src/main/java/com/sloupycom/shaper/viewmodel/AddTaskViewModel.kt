@@ -1,7 +1,6 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import android.text.Editable
@@ -10,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.utils.Util
 import kotlinx.coroutines.launch

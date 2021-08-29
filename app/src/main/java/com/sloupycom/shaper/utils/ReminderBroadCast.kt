@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.view.MainActivity
 import kotlinx.coroutines.GlobalScope

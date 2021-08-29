@@ -22,12 +22,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
 import com.sloupycom.shaper.utils.TextInputFilter
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
 import kotlinx.android.synthetic.main.bottomsheet_add_task.*
-import java.text.SimpleDateFormat
 
 
 class AddTaskBottomSheet : BottomSheetDialogFragment() {
