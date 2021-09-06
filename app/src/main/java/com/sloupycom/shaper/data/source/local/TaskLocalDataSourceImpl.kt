@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.sloupycom.shaper.data.TaskDataSource
 import com.sloupycom.shaper.model.Task
 
-class TaskLocalDataSource(private val taskDao: LocalDao): TaskDataSource {
+class TaskLocalDataSourceImpl(private val taskDao: LocalDao): TaskDataSource {
 
     override suspend fun addTask(task: Task) {
         taskDao.insert(task)
@@ -20,5 +20,13 @@ class TaskLocalDataSource(private val taskDao: LocalDao): TaskDataSource {
 
     override fun getTasks(): LiveData<List<Task>>? =
         taskDao.getTasks()
+
+    override fun getTasks(dateIndex: String): LiveData<MutableList<Task>>? {
+        return taskDao.getTasks(dateIndex)
+    }
+
+    override fun getBusyDays(until: String): LiveData<List<String>>? {
+        return taskDao.getBusyDaysOfWeek(until)
+    }
 
 }

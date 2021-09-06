@@ -2,11 +2,9 @@ package com.sloupycom.shaper.view
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -17,26 +15,23 @@ import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.SwipeToDeleteCallBack
 import com.sloupycom.shaper.model.adapter.TaskAdapter
-import com.sloupycom.shaper.utils.Util
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
-import com.sloupycom.shaper.viewmodel.MainActivityViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     /**Values**/
     private lateinit var mBinding: ActivityMainBinding
-    private lateinit var viewModel: MainActivityViewModel
-    private val adapter = TaskAdapter(this)
+    private val mViewModel: MainActivityViewModel by viewModel()
+    private val mTaskAdapter = TaskAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Data binding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModel = ViewModelProvider(this, MainActivityViewModelFactory(application)).get(MainActivityViewModel::class.java)
-        mBinding.viewModel = viewModel
+        mBinding.viewModel = mViewModel
         mBinding.lifecycleOwner = this
 
         //Setup DayBar listener
@@ -44,19 +39,31 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
         setupRecyclerView()
 
-        mBinding.viewModel?.busyDays?.observe(this, {
-            dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
-        })
+        listenToEvents()
+
+//        mBinding.viewModel?.busyDays?.observe(this, {
+//            dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
+//        })
 
     }
 
+    private fun listenToEvents() {
+        mViewModel.newTaskEvent.observe(this, {
+            AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
+        })
+
+        mViewModel.openSettingsEvent.observe(this, {
+            SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
+        })
+    }
+
     private fun setupRecyclerView() {
-        recyclerView_todayDue.adapter = adapter
+        recyclerView_todayDue.adapter = mTaskAdapter
 
         //Setup on item swipe listener
-        ItemTouchHelper(SwipeToDeleteCallBack(adapter)).attachToRecyclerView(recyclerView_todayDue)
+        ItemTouchHelper(SwipeToDeleteCallBack(mTaskAdapter)).attachToRecyclerView(recyclerView_todayDue)
 
-        adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
+        mTaskAdapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
             @RequiresApi(Build.VERSION_CODES.N)
             override fun onTaskStateChanged(task: Task) {
                 mBinding.viewModel?.onTaskStateChanged(task)
@@ -75,7 +82,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         //Observe liveData in order to update recyclerView
         mBinding.viewModel?.liveDataMerger?.observe(this, {
             it.let {
-                adapter.data = it
+                mTaskAdapter.data = it
             }
         })
 
@@ -98,26 +105,12 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         })
     }
 
-    /**
-     * Set onClick method for buttons
-     */
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.floatingActionButton -> {
-                AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
-            }
-            R.id.imageButton_settings -> {
-                SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
-            }
-        }
-    }
-
     private fun showItemDeletedSnackBar() {
         Snackbar.make(floatingActionButton, getText(R.string.delete_task), Snackbar.LENGTH_SHORT)
             .setAnchorView(floatingActionButton)
             .setBackgroundTint(getColor(R.color.colorSecondary))
             .setTextColor(getColor(R.color.colorOnSecondary))
-            .setAction(getString(R.string.undo)) { adapter.undoRemove() }
+            .setAction(getString(R.string.undo)) { mTaskAdapter.undoRemove() }
             .setActionTextColor(getColor(R.color.colorOnSecondary))
             .show()
     }

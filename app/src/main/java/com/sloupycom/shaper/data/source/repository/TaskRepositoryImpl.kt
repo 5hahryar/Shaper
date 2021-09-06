@@ -1,14 +1,21 @@
 package com.sloupycom.shaper.data.source.repository
 
 import androidx.lifecycle.LiveData
-import com.sloupycom.shaper.data.source.local.TaskLocalDataSource
+import com.sloupycom.shaper.data.source.local.TaskLocalDataSourceImpl
 import com.sloupycom.shaper.model.Task
 
-class TaskRepositoryImpl(private val localDataSource: TaskLocalDataSource): TaskRepository {
+class TaskRepositoryImpl(private val localDataSource: TaskLocalDataSourceImpl): TaskRepository {
 
     override fun getTasks(): LiveData<List<Task>>? =
         localDataSource.getTasks()
 
+    override fun getTasks(dateIndex: String): LiveData<MutableList<Task>>? {
+        return localDataSource.getTasks(dateIndex)
+    }
+
+    override fun getBusyDays(until: String): LiveData<List<String>>? {
+        return localDataSource.getBusyDays(until)
+    }
 
     override suspend fun addTask(task: Task) {
         localDataSource.addTask(task)

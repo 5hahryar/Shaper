@@ -12,4 +12,8 @@ interface TaskDataSource {
     suspend fun deleteTask(task: Task)
 
     fun getTasks(): LiveData<List<Task>>?
+
+    fun getTasks(dateIndex: String): LiveData<MutableList<Task>>?
+
+    fun getBusyDays(until: String): LiveData<List<String>>?
 }

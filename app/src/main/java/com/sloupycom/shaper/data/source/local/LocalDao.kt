@@ -22,8 +22,8 @@ interface LocalDao {
     @Query ("SELECT * FROM task_table")
     fun getTasks(): LiveData<List<Task>>?
 
-    @Query ("SELECT * FROM task_table WHERE next_due <= :todayDateIndex")
-    fun getTodayTasks(todayDateIndex: String): LiveData<MutableList<Task>>?
+    @Query ("SELECT * FROM task_table WHERE next_due <= :dateIndex")
+    fun getTasks(dateIndex: String): LiveData<MutableList<Task>>?
 
     @Query ("SELECT * FROM task_table WHERE next_due = :dateIndex")
     fun getDayTasks(dateIndex: String): LiveData<MutableList<Task>>?

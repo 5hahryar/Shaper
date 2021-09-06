@@ -7,6 +7,10 @@ interface TaskRepository {
 
     fun getTasks(): LiveData<List<Task>>?
 
+    fun getTasks(dateIndex: String): LiveData<MutableList<Task>>?
+
+    fun getBusyDays(until: String): LiveData<List<String>>?
+
     suspend fun addTask(task: Task)
 
     suspend fun updateTask(task: Task)
