@@ -2,6 +2,7 @@ package com.sloupycom.shaper.view
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -99,10 +100,12 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     private fun listenToEvents() {
         mViewModel.newTaskEvent.observe(this, {
+            Log.d("EVENT", "new task event happened")
             AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
         })
 
         mViewModel.openSettingsEvent.observe(this, {
+            Log.d("EVENT", "open settings event happened")
             SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
         })
     }

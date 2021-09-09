@@ -15,5 +15,7 @@ interface TaskDataSource {
 
     fun getTasks(dateIndex: String): LiveData<MutableList<Task>>?
 
+    fun getTasksUntil(dateIndex: String): LiveData<MutableList<Task>>?
+
     fun getBusyDays(until: String): LiveData<List<String>>?
 }

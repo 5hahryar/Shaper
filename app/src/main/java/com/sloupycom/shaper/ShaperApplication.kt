@@ -27,7 +27,7 @@ open class ShaperApplication: Application() {
         }
 
         GlobalScope.launch {
-            if (!Util().readBooleanPreferences(applicationContext, Constant.SHARED_PREFS_CHANNEL)) {
+            if (!Util.readBooleanPreferences(applicationContext, Constant.SHARED_PREFS_CHANNEL)) {
                 val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.createNotificationChannel(
                     NotificationChannel(

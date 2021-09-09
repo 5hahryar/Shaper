@@ -4,6 +4,7 @@ import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.data.source.local.TaskLocalDataSourceImpl
 import com.sloupycom.shaper.data.repository.TaskRepository
 import com.sloupycom.shaper.data.repository.TaskRepositoryImpl
+import com.sloupycom.shaper.data.source.TaskDataSource
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import com.sloupycom.shaper.viewmodel.SettingsViewModel
@@ -14,8 +15,12 @@ import org.koin.dsl.module
 
 val tasksModule = module {
 
+    single<TaskDataSource> {
+        TaskLocalDataSourceImpl(Local.getInstance(androidApplication()).localDao)
+    }
+
     single<TaskRepository> {
-        TaskRepositoryImpl(TaskLocalDataSourceImpl(Local.getInstance(androidApplication()).localDao))
+        TaskRepositoryImpl(get())
     }
 
     viewModel { MainActivityViewModel(get()) }

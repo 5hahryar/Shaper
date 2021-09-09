@@ -16,13 +16,14 @@ class MainActivityViewModel(private val tasksRepository: TaskRepository) : ViewM
     /** Values **/
     private val weekIndex = Util.getWeekIndex(Calendar.getInstance())
 
-    private val tasks0 = tasksRepository.getTasks(weekIndex[0])
+    private val tasks0 = tasksRepository.getTasksUntil(weekIndex[0])
     private val tasks1 = tasksRepository.getTasks(weekIndex[1])
     private val tasks2 = tasksRepository.getTasks(weekIndex[2])
     private val tasks3 = tasksRepository.getTasks(weekIndex[3])
     private val tasks4 = tasksRepository.getTasks(weekIndex[4])
     private val tasks5 = tasksRepository.getTasks(weekIndex[5])
     private val tasks6 = tasksRepository.getTasks(weekIndex[6])
+
     private val liveDataList = listOf(tasks0, tasks1, tasks2, tasks3, tasks4, tasks5, tasks6)
     private val _liveDataMerger: MediatorLiveData<MutableList<Task>> = MediatorLiveData<MutableList<Task>>()
     val liveDataMerger: MediatorLiveData<MutableList<Task>>
@@ -93,7 +94,7 @@ class MainActivityViewModel(private val tasksRepository: TaskRepository) : ViewM
         }
     }
 
-    fun addTask(task: Task) {
+    private fun addTask(task: Task) {
         viewModelScope.launch {
             tasksRepository.addTask(task)
         }

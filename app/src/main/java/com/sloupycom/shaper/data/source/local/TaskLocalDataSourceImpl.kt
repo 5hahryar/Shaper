@@ -25,6 +25,10 @@ class TaskLocalDataSourceImpl(private val taskDao: LocalDao): TaskDataSource {
         return taskDao.getTasks(dateIndex)
     }
 
+    override fun getTasksUntil(dateIndex: String): LiveData<MutableList<Task>>? {
+        return taskDao.getTasksUntil(dateIndex)
+    }
+
     override fun getBusyDays(until: String): LiveData<List<String>>? {
         return taskDao.getBusyDaysOfWeek(until)
     }

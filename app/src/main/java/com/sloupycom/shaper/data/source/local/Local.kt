@@ -37,7 +37,7 @@ abstract class Local: RoomDatabase() {
                     //Clear Done tasks
                     GlobalScope.launch {
                         INSTANCE!!.localDao.removeOldDoneTasks(
-                            Util().getDateIndex(Calendar.getInstance())
+                            Util.getDateIndex(Calendar.getInstance())
                         )
                     }
                 }
