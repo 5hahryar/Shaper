@@ -21,6 +21,7 @@ class AddTaskViewModel(context: Context, private val taskRepository: TaskReposit
 
     /** Values **/
     @RequiresApi(Build.VERSION_CODES.N)
+    // TODO: Cannot write unit tests when getting an instance of calendar here
     private val mCalendar: Calendar = Calendar.getInstance()
     val textDate: ObservableField<String> = ObservableField(context.getString(R.string.today))
     val textError: ObservableField<String> = ObservableField()
@@ -66,7 +67,7 @@ class AddTaskViewModel(context: Context, private val taskRepository: TaskReposit
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun addTask(task: Task) {
+    private fun addTask(task: Task) {
         viewModelScope.launch {
             taskRepository.addTask(task)
         }
@@ -105,6 +106,7 @@ class AddTaskViewModel(context: Context, private val taskRepository: TaskReposit
         textRepetition = editable.toString()
     }
 
+    //TODO: Having separate functions for each onClick is probably better for testing
     fun onClick(view: View) {
         when (view.id) {
             R.id.textView_date -> {

@@ -9,7 +9,7 @@ class UtilTest {
 
     @Test
     fun util_getWeekIndex() {
-        val actual = Util().getWeekIndex(Calendar.getInstance())
+        val actual = Util.getWeekIndex(Calendar.getInstance())
         val expect = mutableListOf<String>()
         expect.add("20201021")
         expect.add("20201022")
@@ -24,7 +24,7 @@ class UtilTest {
 
     @Test
     fun addDayToDate() {
-        val actual = Util().addDayToDate("20210311", 20)
+        val actual = Util.addDayToDate("20210311", 20)
         val expect = "20210516"
 
         assertEquals(expect, actual)

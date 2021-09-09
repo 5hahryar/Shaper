@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
@@ -102,9 +103,11 @@ class MainActivityViewModel(private val tasksRepository: TaskRepository) : ViewM
 
     fun addNewTask() {
         _newTaskEvent.value = Event(Unit)
+        Log.d("EVENT", "new task event happened view model")
     }
 
     fun openSettings() {
         _openSettingsEvent.value = Event(Unit)
+        Log.d("EVENT", "open settings event happened view model")
     }
 }
