@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.utils
+package com.sloupycom.shaper.core.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,8 +9,9 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class Util @Inject constructor(){
+object Util{
+
+    //TODO: Move unrelated functions from this object
 
     /**Values**/
     private val mCalendar: Calendar = Calendar.getInstance()

@@ -17,24 +17,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.data.source.local.Local
 import com.sloupycom.shaper.databinding.BottomsheetAddTaskBinding
-import com.sloupycom.shaper.utils.TextInputFilter
+import com.sloupycom.shaper.core.util.TextInputFilter
 import com.sloupycom.shaper.viewmodel.AddTaskViewModel
 import kotlinx.android.synthetic.main.bottomsheet_add_task.*
+import org.koin.android.ext.android.inject
 
 
 class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
     /**Values**/
     private lateinit var mBinding: BottomsheetAddTaskBinding
-    private lateinit var viewModel: AddTaskViewModel
-    private var vibrator: Vibrator? = null
+    private val mViewModel: AddTaskViewModel by inject()
+    private var mVibrator: Vibrator? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AddTaskBottomSheet)
@@ -49,11 +48,9 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
     ): View {
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_add_task, container, false)
-        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
-        viewModel.mLocal = Local.getInstance(requireContext())
-        mBinding.viewModel = viewModel
+        mBinding.viewModel = mViewModel
 
-        vibrator = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+        mVibrator = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
 
         return mBinding.root
     }
@@ -62,51 +59,60 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setOnTaskAddedListener(object : AddTaskViewModel.OnTaskAddedListener {
-            override fun onTaskAdded() {
-                dismiss()
-                showSnackBar()
-            }
+        setupViews()
+        setupListeners()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun setupListeners() {
+
+        mViewModel.newTaskAddedEvent.observe(this, {
+            dismiss()
+            showSnackBar()
         })
 
-        viewModel.textError.addOnPropertyChangedCallback(object :
+        //TODO: Use two way data binding instead
+        mViewModel.textError.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 editTextLayout_title.error = (sender as ObservableField<String>).get()
             }
         })
 
-        //Set filter for repetition editText
-        editText_repetition.filters = arrayOf(TextInputFilter(1, 365))
-
-        toggleGroup.setOnSelectListener {
-            if (it.isSelected) {
-                expandable_layout.expand()
-                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
-                showSoftKeyboard(view.findViewById(R.id.editText_repetition))
-            }
-            else {
-                expandable_layout.collapse()
-                hideSoftKeyboard(view.findViewById(R.id.editText_repetition))
-            }
-        }
-
-        mBinding.textViewDate.setOnClickListener {
+        mViewModel.openDatePickerEvent.observe(this, {
             val picker = DatePickerDialog(requireContext())
             picker.datePicker.minDate = Calendar.getInstance().timeInMillis
             picker.show()
             picker.setOnDateSetListener { _, year, month, dayOfMonth ->
-                viewModel.onDateSelected(year, month, dayOfMonth)
+                mViewModel.onDateSelected(year, month, dayOfMonth)
+            }
+        })
+
+        toggleGroup.setOnSelectListener {
+            if (it.isSelected) {
+                expandable_layout.expand()
+                mVibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+                showSoftKeyboard(mBinding.root.findViewById(R.id.editText_repetition))
+            }
+            else {
+                expandable_layout.collapse()
+                hideSoftKeyboard(mBinding.root.findViewById(R.id.editText_repetition))
             }
         }
     }
 
+    private fun setupViews() {
+        //Set filter for repetition editText
+        editText_repetition.filters = arrayOf(TextInputFilter(1, 365))
+    }
+
     private fun showSnackBar() {
-        val fab: ExtendedFloatingActionButton = activity!!.findViewById(R.id.floatingActionButton)
+        val fab: ExtendedFloatingActionButton = requireActivity().findViewById(R.id.floatingActionButton)
         Snackbar.make(fab, getText(R.string.on_task_added), Snackbar.LENGTH_SHORT)
             .setAnchorView(fab)
-            .setBackgroundTint(activity!!.getColor(R.color.colorSecondary))
-            .setTextColor(activity!!.getColor(R.color.colorOnSecondary))
+            .setBackgroundTint(requireActivity().getColor(R.color.colorSecondary))
+            .setTextColor(requireActivity().getColor(R.color.colorOnSecondary))
             .show()
     }
 

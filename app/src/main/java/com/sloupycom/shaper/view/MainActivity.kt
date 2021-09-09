@@ -15,6 +15,7 @@ import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.SwipeToDeleteCallBack
 import com.sloupycom.shaper.model.adapter.TaskAdapter
+import com.sloupycom.shaper.core.util.Util
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,34 +35,32 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
         mBinding.viewModel = mViewModel
         mBinding.lifecycleOwner = this
 
-        //Setup DayBar listener
-        dayBar?.setOnDayChangedListener(this)
+        setupViews()
+        setupListeners()
+        observeData()
 
+    }
+
+    private fun observeData() {
+        mBinding.viewModel?.busyDays?.observe(this, {
+            dayBar.setIndicationByDay(Util.getBusyWeekDaysFromDateIndex(it))
+        })
+
+        //Observe liveData in order to update recyclerView
+        mBinding.viewModel?.liveDataMerger?.observe(this, {
+            it.let {
+                mTaskAdapter.data = it
+            }
+        })
+    }
+
+    private fun setupViews() {
         setupRecyclerView()
+    }
 
+    private fun setupListeners() {
+        dayBar?.setOnDayChangedListener(this)
         listenToEvents()
-
-//        mBinding.viewModel?.busyDays?.observe(this, {
-//            dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
-//        })
-
-    }
-
-    private fun listenToEvents() {
-        mViewModel.newTaskEvent.observe(this, {
-            AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
-        })
-
-        mViewModel.openSettingsEvent.observe(this, {
-            SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
-        })
-    }
-
-    private fun setupRecyclerView() {
-        recyclerView_todayDue.adapter = mTaskAdapter
-
-        //Setup on item swipe listener
-        ItemTouchHelper(SwipeToDeleteCallBack(mTaskAdapter)).attachToRecyclerView(recyclerView_todayDue)
 
         mTaskAdapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
             @RequiresApi(Build.VERSION_CODES.N)
@@ -76,13 +75,6 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
             override fun onTaskItemDeleteUndo(task: Task) {
                 mBinding.viewModel?.undoDeleteTaskItem(task)
-            }
-        })
-
-        //Observe liveData in order to update recyclerView
-        mBinding.viewModel?.liveDataMerger?.observe(this, {
-            it.let {
-                mTaskAdapter.data = it
             }
         })
 
@@ -103,6 +95,23 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
                 }
             }
         })
+    }
+
+    private fun listenToEvents() {
+        mViewModel.newTaskEvent.observe(this, {
+            AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
+        })
+
+        mViewModel.openSettingsEvent.observe(this, {
+            SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
+        })
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView_todayDue.adapter = mTaskAdapter
+
+        //Setup on item swipe listener
+        ItemTouchHelper(SwipeToDeleteCallBack(mTaskAdapter)).attachToRecyclerView(recyclerView_todayDue)
     }
 
     private fun showItemDeletedSnackBar() {

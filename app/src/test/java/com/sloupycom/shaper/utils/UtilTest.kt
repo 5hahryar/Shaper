@@ -1,5 +1,6 @@
 package com.sloupycom.shaper.utils
 
+import com.sloupycom.shaper.core.util.Util
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*

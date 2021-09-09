@@ -40,7 +40,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@{viewModel.textDate}"
-                android:textAppearance="@style/TextH5" />
+                android:textAppearance="@style/TextH5"
+                android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextLayout_title"

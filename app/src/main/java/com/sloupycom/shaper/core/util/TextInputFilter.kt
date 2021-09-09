@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.utils
+package com.sloupycom.shaper.core.util
 
 import android.text.InputFilter
 import android.text.Spanned

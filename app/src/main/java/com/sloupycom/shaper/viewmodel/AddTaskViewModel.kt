@@ -1,6 +1,7 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.icu.util.Calendar
 import android.os.Build
 import android.text.Editable
@@ -9,31 +10,31 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.data.source.local.Local
+import com.sloupycom.shaper.core.util.Event
+import com.sloupycom.shaper.data.repository.TaskRepository
 import com.sloupycom.shaper.model.Task
-import com.sloupycom.shaper.utils.Util
+import com.sloupycom.shaper.core.util.Util
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
-class AddTaskViewModel: ViewModel() {
+class AddTaskViewModel(context: Context, private val taskRepository: TaskRepository): ViewModel() {
 
     /** Values **/
     @RequiresApi(Build.VERSION_CODES.N)
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val mUtil = Util()
-    val textDate: ObservableField<String> = ObservableField("")
+    val textDate: ObservableField<String> = ObservableField(context.getString(R.string.today))
     val textError: ObservableField<String> = ObservableField()
 
     private var mDateIndex: List<String>? = null
-    private var onTaskAddedListener: OnTaskAddedListener? = null
     private var isRepetitionSelected: Boolean = false
     private var textRepetition: String = ""
-    lateinit var mLocal: Local
     var textTitle: String? = null
 
-    init {
-        textDate.set((R.string.today).toString())
-    }
+    private val _newTaskAddedEvent = MutableLiveData<Event<Unit>>()
+    val newTaskAddedEvent: LiveData<Event<Unit>> = _newTaskAddedEvent
+
+    private val _openDatePickerEvent = MutableLiveData<Event<Unit>>()
+    val openDatePickerEvent: LiveData<Event<Unit>> = _openDatePickerEvent
 
     /**
      * Build a Task object
@@ -41,7 +42,7 @@ class AddTaskViewModel: ViewModel() {
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     private fun buildTask(title: String): Task {
-        val creationDate = mUtil.getDate("yyyyMMdd", mCalendar.time)
+        val creationDate = Util.getDate("yyyyMMdd", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
                 SimpleDateFormat("dd").format(mCalendar.time),
@@ -67,7 +68,7 @@ class AddTaskViewModel: ViewModel() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun addTask(task: Task) {
         viewModelScope.launch {
-            mLocal.localDao.insert(task)
+            taskRepository.addTask(task)
         }
     }
 
@@ -89,7 +90,7 @@ class AddTaskViewModel: ViewModel() {
     fun onAddTask() {
         if (textTitle != null && textTitle != "") {
             textTitle?.let { addTask(buildTask(it)) }
-            onTaskAddedListener?.onTaskAdded()
+            _newTaskAddedEvent.value = Event(Unit)
         } else {
             textError.set(R.string.empty_title_error.toString())
             textError.notifyChange()
@@ -104,10 +105,11 @@ class AddTaskViewModel: ViewModel() {
         textRepetition = editable.toString()
     }
 
-    fun setOnTaskAddedListener(listener: OnTaskAddedListener) {
-        this.onTaskAddedListener = listener
-    }
-    interface OnTaskAddedListener{
-        fun onTaskAdded()
+    fun onClick(view: View) {
+        when (view.id) {
+            R.id.textView_date -> {
+                _openDatePickerEvent.value = Event(Unit)
+            }
+        }
     }
 }

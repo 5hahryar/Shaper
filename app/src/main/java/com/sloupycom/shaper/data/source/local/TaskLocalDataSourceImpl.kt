@@ -1,7 +1,7 @@
 package com.sloupycom.shaper.data.source.local
 
 import androidx.lifecycle.LiveData
-import com.sloupycom.shaper.data.TaskDataSource
+import com.sloupycom.shaper.data.source.TaskDataSource
 import com.sloupycom.shaper.model.Task
 
 class TaskLocalDataSourceImpl(private val taskDao: LocalDao): TaskDataSource {

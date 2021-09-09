@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.data.source.repository
+package com.sloupycom.shaper.data.repository
 
 import androidx.lifecycle.LiveData
 import com.sloupycom.shaper.data.source.local.TaskLocalDataSourceImpl

@@ -1,25 +1,12 @@
 package com.sloupycom.shaper.viewmodel
 
-import android.app.*
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
-import android.widget.TimePicker
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.ObservableField
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.utils.Constant
-import com.sloupycom.shaper.utils.ReminderBroadCast
-import com.sloupycom.shaper.utils.Util
-import com.sloupycom.shaper.view.SupportDialog
-import java.util.*
+import com.sloupycom.shaper.core.util.Event
 
 
 class SettingsViewModel: ViewModel() {
@@ -28,4 +15,26 @@ class SettingsViewModel: ViewModel() {
     var nightMode: ObservableField<String> = ObservableField()
     var reminder: ObservableField<String> = ObservableField()
 
+    private val _supportButtonClickedEvent = MutableLiveData<Event<Unit>>()
+    val supportButtonClickedEvent: LiveData<Event<Unit>> = _supportButtonClickedEvent
+
+    private val _reminderButtonClickedEvent = MutableLiveData<Event<Unit>>()
+    val reminderButtonClickedEvent: LiveData<Event<Unit>> = _reminderButtonClickedEvent
+
+    private val _nightModeButtonClickedEvent = MutableLiveData<Event<Unit>>()
+    val nightModeButtonClickedEvent: LiveData<Event<Unit>> = _nightModeButtonClickedEvent
+
+    fun onClick(view: View) {
+        when (view.id) {
+            R.id.supportButton -> {
+                _supportButtonClickedEvent.value = Event(Unit)
+            }
+            R.id.textView_reminder -> {
+                _reminderButtonClickedEvent.value = Event(Unit)
+            }
+            R.id.textView_nightMode -> {
+                _nightModeButtonClickedEvent.value = Event(Unit)
+            }
+        }
+    }
 }

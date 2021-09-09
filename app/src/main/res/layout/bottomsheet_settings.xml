@@ -60,7 +60,8 @@
                     android:focusable="true"
                     android:foreground="@drawable/ripple_effect"
                     android:textColor="@color/colorOnPrimaryAlpha"
-                    tools:ignore="RelativeOverlap" />
+                    tools:ignore="RelativeOverlap"
+                    android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
             </RelativeLayout>
 
@@ -90,7 +91,8 @@
                     android:textSize="18sp"
                     android:clickable="true"
                     android:focusable="true"
-                    tools:ignore="RelativeOverlap" />
+                    tools:ignore="RelativeOverlap"
+                    android:onClick="@{(view) -> viewModel.onClick(view)}"/>
 
             </RelativeLayout>
 
@@ -119,7 +121,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="@drawable/ripple_effect"
-                android:gravity="center">
+                android:gravity="center"
+                android:onClick="@{(view) -> viewModel.onClick(view)}">
 
                 <ImageView
                     android:layout_width="30dp"

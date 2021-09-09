@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.ItemTaskBinding
 import com.sloupycom.shaper.model.Task
-import com.sloupycom.shaper.utils.Util
+import com.sloupycom.shaper.core.util.Util
 import net.igenius.customcheckbox.CustomCheckBox
 
 class TaskAdapter(
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val mUtil: Util = Util()
+    //TODO: Is it ok to have an instance of context in here?
+
     private var listener: TaskStateListener? = null
     private var recentDeletedItemPosition: Int? = null
     private var recentDeletedItem: Task? = null
@@ -51,7 +52,7 @@ class TaskAdapter(
                 holder.binding.cardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
                 holder.binding.checkbox.isChecked = true
             }
-            mUtil.isDateBeforeToday(data[position].next_due) -> {
+            Util.isDateBeforeToday(data[position].next_due) -> {
                 holder.binding.cardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
                 holder.binding.cardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
                 holder.binding.cardView.alpha = 1f

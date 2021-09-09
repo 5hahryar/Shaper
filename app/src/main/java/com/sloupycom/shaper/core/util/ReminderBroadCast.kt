@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.utils
+package com.sloupycom.shaper.core.util
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -32,7 +32,7 @@ class ReminderBroadCast: BroadcastReceiver() {
             val job = GlobalScope.launch {
                 data = Local.getInstance(context!!)
                     .localDao
-                    .getReminderTasks(Util().getDateIndex(Calendar.getInstance()))
+                    .getReminderTasks(Util.getDateIndex(Calendar.getInstance()))
             }
 
             job.join()
@@ -50,7 +50,8 @@ class ReminderBroadCast: BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotification(contentText: String) {
         val intent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, Constant.RC_MAIN_ACTIVITY, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(context,
+            Constant.RC_MAIN_ACTIVITY, intent, PendingIntent.FLAG_ONE_SHOT)
         val notification = Notification.Builder(context, Constant.ID_NOTIFICATION_CHANNEL)
             .setContentTitle("Today's Tasks")
             .setSmallIcon(R.drawable.ic_shaper)
