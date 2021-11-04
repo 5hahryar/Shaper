@@ -11,12 +11,13 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="220dp">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/round_bottom_sheet_background"
+            android:paddingBottom="5dp"
             tools:context=".view.AddTaskBottomSheet">
 
             <ImageView
@@ -148,18 +149,18 @@
 
                 </net.cachapa.expandablelayout.ExpandableLayout>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/button_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:onClick="@{() -> viewModel.onAddTask()}"
                     android:text="@string/add"
                     android:textAppearance="@style/TextButton"
                     android:textColor="@color/colorOnSecondary"
-                    app:backgroundTint="@color/colorSecondary"
-                    app:cornerRadius="30dp"
-                    android:onClick="@{() -> viewModel.onAddTask()}"/>
+                    app:backgroundTint="@color/colorSecondary" />
 
             </RelativeLayout>
         </RelativeLayout>

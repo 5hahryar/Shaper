@@ -58,8 +58,8 @@
                 android:backgroundTint="@color/colorSecondary"
                 android:onClick="@{() -> viewModel.openSettings()}"
                 android:padding="5dp"
-                android:tint="@color/colorSecondary"
-                app:srcCompat="@drawable/ic_settings_24px" />
+                app:srcCompat="@drawable/ic_settings_24px"
+                app:tint="@color/colorSecondary" />
 
         </RelativeLayout>
 

@@ -86,12 +86,12 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
                 if (dy > 0) {
                     // Scroll Down
                     if (floatingActionButton.isShown) {
-                        floatingActionButton.hide()
+                        floatingActionButton.shrink()
                     }
                 } else if (dy < 0) {
                     // Scroll Up
                     if (!floatingActionButton.isShown) {
-                        floatingActionButton.show()
+                        floatingActionButton.extend()
                     }
                 }
             }

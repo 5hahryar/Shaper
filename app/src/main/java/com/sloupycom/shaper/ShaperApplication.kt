@@ -19,7 +19,6 @@ open class ShaperApplication: Application() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
-
         startKoin{
             androidLogger()
             androidContext(applicationContext)

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sloupycom.shaper.R
 import com.sloupycom.shaper.databinding.BottomsheetSettingsBinding
 import com.sloupycom.shaper.core.util.Constant
