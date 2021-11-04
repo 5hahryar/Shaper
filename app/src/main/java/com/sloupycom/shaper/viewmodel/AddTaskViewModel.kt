@@ -1,38 +1,41 @@
 package com.sloupycom.shaper.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.DatePickerDialog
+import android.content.Context
 import android.icu.util.Calendar
 import android.os.Build
+import android.text.Editable
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.sloupycom.shaper.R
-import com.sloupycom.shaper.database.Local
+import com.sloupycom.shaper.core.util.Event
+import com.sloupycom.shaper.data.repository.TaskRepository
 import com.sloupycom.shaper.model.Task
-import com.sloupycom.shaper.utils.Util
+import com.sloupycom.shaper.core.util.Util
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
-class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activity.application) {
+class AddTaskViewModel(context: Context, private val taskRepository: TaskRepository): ViewModel() {
 
     /** Values **/
     @RequiresApi(Build.VERSION_CODES.N)
+    // TODO: Cannot write unit tests when getting an instance of calendar here
     private val mCalendar: Calendar = Calendar.getInstance()
-    private val mUtil = Util()
-
-    private var mDateIndex: List<String>? = null
-    private var onTaskAddedListener: OnTaskAddedListener? = null
-    val textDate: ObservableField<String> = ObservableField("")
-    var textTitle: String? = null
+    val textDate: ObservableField<String> = ObservableField(context.getString(R.string.today))
     val textError: ObservableField<String> = ObservableField()
 
-    private val mLocal = Local.getInstance(activity)
+    private var mDateIndex: List<String>? = null
+    private var isRepetitionSelected: Boolean = false
+    private var textRepetition: String = ""
+    var textTitle: String? = null
 
-    init {
-        textDate.set(activity.getString(R.string.today))
-    }
+    private val _newTaskAddedEvent = MutableLiveData<Event<Unit>>()
+    val newTaskAddedEvent: LiveData<Event<Unit>> = _newTaskAddedEvent
+
+    private val _openDatePickerEvent = MutableLiveData<Event<Unit>>()
+    val openDatePickerEvent: LiveData<Event<Unit>> = _openDatePickerEvent
 
     /**
      * Build a Task object
@@ -40,7 +43,7 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     private fun buildTask(title: String): Task {
-        val creationDate = mUtil.getDate("EEE MMM dd yyyy", mCalendar.time)
+        val creationDate = Util.getDate("yyyyMMdd", mCalendar.time)
         if (mDateIndex == null) {
             mDateIndex = listOf(
                 SimpleDateFormat("dd").format(mCalendar.time),
@@ -55,31 +58,32 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
         } else {
             "ONGOING"
         }
-        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state)
+        var repetition: Int? = null
+        if (isRepetitionSelected) {
+            repetition = if (textRepetition.isNotEmpty()) textRepetition.toInt() else 1
+        }
+
+        return Task(title = title, creation_date = creationDate, next_due = nextDue, state = state, repetition = repetition)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun addTask(task: Task) {
+    private fun addTask(task: Task) {
         viewModelScope.launch {
-            mLocal.localDao.insert(task)
+            taskRepository.addTask(task)
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.N)
-    fun onChooseDate() {
-        val picker = DatePickerDialog(activity)
-        picker.datePicker.minDate = Calendar.getInstance().timeInMillis
-        picker.show()
-        picker.setOnDateSetListener { _, year, month, dayOfMonth ->
-            val date = Calendar.getInstance()
-            date.set(year, month, dayOfMonth)
-            textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
-            this.mDateIndex = listOf(
-                SimpleDateFormat("dd").format(date.time),
-                SimpleDateFormat("MM").format(date.time),
-                SimpleDateFormat("yyyy").format(date.time))
-        }
+    fun onDateSelected(year: Int, month: Int, dayOfMonth: Int) {
+        val date = Calendar.getInstance()
+        date.set(year, month, dayOfMonth)
+        textDate.set(SimpleDateFormat("EEEE, MMM dd").format(date.time))
+        this.mDateIndex = listOf(
+            SimpleDateFormat("dd").format(date.time),
+            SimpleDateFormat("MM").format(date.time),
+            SimpleDateFormat("yyyy").format(date.time)
+        )
     }
 
 
@@ -87,17 +91,27 @@ class AddTaskViewModel(private val activity: Activity): AndroidViewModel(activit
     fun onAddTask() {
         if (textTitle != null && textTitle != "") {
             textTitle?.let { addTask(buildTask(it)) }
-            onTaskAddedListener?.onTaskAdded()
+            _newTaskAddedEvent.value = Event(Unit)
         } else {
-            textError.set(activity.getString(R.string.empty_title_error))
+            textError.set(R.string.empty_title_error.toString())
             textError.notifyChange()
         }
     }
 
-    fun setOnTaskAddedListener(listener: OnTaskAddedListener) {
-        this.onTaskAddedListener = listener
+    fun onRepetitionClick(view: View) {
+        isRepetitionSelected = view.isSelected
     }
-    interface OnTaskAddedListener{
-        fun onTaskAdded()
+
+    fun afterTextRepetitionChanged(editable: Editable) {
+        textRepetition = editable.toString()
+    }
+
+    //TODO: Having separate functions for each onClick is probably better for testing
+    fun onClick(view: View) {
+        when (view.id) {
+            R.id.textView_date -> {
+                _openDatePickerEvent.value = Event(Unit)
+            }
+        }
     }
 }

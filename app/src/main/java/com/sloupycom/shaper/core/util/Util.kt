@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.utils
+package com.sloupycom.shaper.core.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,8 +9,9 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class Util @Inject constructor(){
+object Util{
+
+    //TODO: Move unrelated functions from this object
 
     /**Values**/
     private val mCalendar: Calendar = Calendar.getInstance()
@@ -144,6 +145,18 @@ class Util @Inject constructor(){
             }
         }
         return days
+    }
+
+    fun addDayToDate(date: String, day: Int): String {
+        val dateCal = Calendar.getInstance()
+        dateCal.set(
+            date.substring(0..3).toInt(),
+            date.substring(4..5).toInt()-1,
+            date.substring(6).toInt()
+        )
+        dateCal.add(Calendar.DAY_OF_MONTH, day)
+
+        return getDate("yyyyMMdd", dateCal.time)
     }
 
 }

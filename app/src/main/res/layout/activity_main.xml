@@ -4,16 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="com.sloupycom.shaper.viewmodel.MainActivityViewModel" />
-
-        <variable
-            name="adapter"
-            type="com.sloupycom.shaper.model.adapter.TaskAdapter" />
     </data>
 
     <RelativeLayout
@@ -62,10 +56,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorSecondary"
-                android:onClick="onClick"
+                android:onClick="@{() -> viewModel.openSettings()}"
                 android:padding="5dp"
-                android:tint="@color/colorSecondary"
-                app:srcCompat="@drawable/ic_settings_24px" />
+                app:srcCompat="@drawable/ic_settings_24px"
+                app:tint="@color/colorSecondary" />
 
         </RelativeLayout>
 
@@ -99,14 +93,6 @@
             android:textColor="@color/colorOnPrimaryAlpha"
             android:visibility="@{viewModel.liveDataMerger.isEmpty() ? View.VISIBLE : View.GONE}" />
 
-<!--        <ProgressBar-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            style="?android:attr/progressBarStyle"-->
-<!--            android:indeterminateTint="@color/colorOnPrimary"-->
-<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>-->
-
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
@@ -116,7 +102,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_end"
             android:layout_marginBottom="30dp"
-            android:onClick="onClick"
+            android:onClick="@{() -> viewModel.addNewTask()}"
             android:text="@string/add_task"
             android:textAppearance="@style/TextButton"
             android:textColor="@color/colorOnSecondary"

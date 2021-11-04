@@ -1,7 +1,9 @@
 package com.sloupycom.shaper.view
 
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,62 +16,66 @@ import com.sloupycom.shaper.databinding.ActivityMainBinding
 import com.sloupycom.shaper.model.Task
 import com.sloupycom.shaper.model.adapter.SwipeToDeleteCallBack
 import com.sloupycom.shaper.model.adapter.TaskAdapter
-import com.sloupycom.shaper.utils.Util
+import com.sloupycom.shaper.core.util.Util
 import com.sloupycom.shaper.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
 
     /**Values**/
-    private var mBinding: ActivityMainBinding? = null
-    private val adapter = TaskAdapter(this)
+    private lateinit var mBinding: ActivityMainBinding
+    private val mViewModel: MainActivityViewModel by viewModel()
+    private val mTaskAdapter = TaskAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Data binding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mBinding?.viewModel = MainActivityViewModel(application)
-        mBinding?.lifecycleOwner = this
+        mBinding.viewModel = mViewModel
+        mBinding.lifecycleOwner = this
 
-        //Setup DayBar listener
-        dayBar?.setOnDayChangedListener(this)
-
-        setupRecyclerView()
-
-        mBinding?.viewModel?.busyDays?.observe(this, {
-            dayBar.setIndicationByDay(Util().getBusyWeekDaysFromDateIndex(it))
-            //TODO: issue -> Indication is not removed when busyDay is removed
-        })
+        setupViews()
+        setupListeners()
+        observeData()
 
     }
 
-    private fun setupRecyclerView() {
-        recyclerView_todayDue.adapter = adapter
+    private fun observeData() {
+        mBinding.viewModel?.busyDays?.observe(this, {
+            dayBar.setIndicationByDay(Util.getBusyWeekDaysFromDateIndex(it))
+        })
 
-        //Setup on item swipe listener
-        ItemTouchHelper(SwipeToDeleteCallBack(adapter)).attachToRecyclerView(recyclerView_todayDue)
+        //Observe liveData in order to update recyclerView
+        mBinding.viewModel?.liveDataMerger?.observe(this, {
+            it.let {
+                mTaskAdapter.data = it
+            }
+        })
+    }
 
-        adapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
+    private fun setupViews() {
+        setupRecyclerView()
+    }
+
+    private fun setupListeners() {
+        dayBar?.setOnDayChangedListener(this)
+        listenToEvents()
+
+        mTaskAdapter.setOnTaskStateListener(object : TaskAdapter.TaskStateListener {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onTaskStateChanged(task: Task) {
-                mBinding?.viewModel?.onTaskStateChanged(task)
+                mBinding.viewModel?.onTaskStateChanged(task)
             }
 
             override fun onTaskItemDeleted(task: Task) {
-                mBinding?.viewModel?.deleteTaskItem(task)
+                mBinding.viewModel?.deleteTaskItem(task)
                 showItemDeletedSnackBar()
             }
 
             override fun onTaskItemDeleteUndo(task: Task) {
-                mBinding?.viewModel?.undoDeleteTaskItem(task)
-            }
-        })
-
-        //Observe liveData in order to update recyclerView
-        mBinding?.viewModel?.liveDataMerger?.observe(this, {
-            it.let {
-                adapter.data = it
+                mBinding.viewModel?.undoDeleteTaskItem(task)
             }
         })
 
@@ -80,30 +86,35 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
                 if (dy > 0) {
                     // Scroll Down
                     if (floatingActionButton.isShown) {
-                        floatingActionButton.hide()
+                        floatingActionButton.shrink()
                     }
                 } else if (dy < 0) {
                     // Scroll Up
                     if (!floatingActionButton.isShown) {
-                        floatingActionButton.show()
+                        floatingActionButton.extend()
                     }
                 }
             }
         })
     }
 
-    /**
-     * Set onClick method for buttons
-     */
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.floatingActionButton -> {
-                AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
-            }
-            R.id.imageButton_settings -> {
-                SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
-            }
-        }
+    private fun listenToEvents() {
+        mViewModel.newTaskEvent.observe(this, {
+            Log.d("EVENT", "new task event happened")
+            AddTaskBottomSheet().show(supportFragmentManager, "AddTaskBottomSheet")
+        })
+
+        mViewModel.openSettingsEvent.observe(this, {
+            Log.d("EVENT", "open settings event happened")
+            SettingsBottomSheet().show(supportFragmentManager, "SettingsBottomSheet")
+        })
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView_todayDue.adapter = mTaskAdapter
+
+        //Setup on item swipe listener
+        ItemTouchHelper(SwipeToDeleteCallBack(mTaskAdapter)).attachToRecyclerView(recyclerView_todayDue)
     }
 
     private fun showItemDeletedSnackBar() {
@@ -111,7 +122,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
             .setAnchorView(floatingActionButton)
             .setBackgroundTint(getColor(R.color.colorSecondary))
             .setTextColor(getColor(R.color.colorOnSecondary))
-            .setAction(getString(R.string.undo)) { adapter.undoRemove() }
+            .setAction(getString(R.string.undo)) { mTaskAdapter.undoRemove() }
             .setActionTextColor(getColor(R.color.colorOnSecondary))
             .show()
     }
@@ -120,7 +131,7 @@ class MainActivity : AppCompatActivity(), DayBar.OnDayChangedListener {
      * Called when selected day from DayBar changes
      */
     override fun onSelectedDayChanged(index: Int, date: HashMap<String, String>, chip: DayBarChip) {
-        mBinding?.viewModel?.dayChanged(index)
+        mBinding.viewModel?.dayChanged(index)
     }
 
 }

@@ -10,6 +10,11 @@ import kotlinx.android.synthetic.main.dialog_support.view.*
 
 class SupportDialog : DialogFragment() {
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         return activity?.let {

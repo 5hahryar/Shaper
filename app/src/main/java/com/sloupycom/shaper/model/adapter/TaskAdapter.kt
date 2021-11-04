@@ -3,24 +3,23 @@ package com.sloupycom.shaper.model.adapter
 import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import com.sloupycom.shaper.R
+import com.sloupycom.shaper.databinding.ItemTaskBinding
 import com.sloupycom.shaper.model.Task
-import com.sloupycom.shaper.utils.Util
+import com.sloupycom.shaper.core.util.Util
 import net.igenius.customcheckbox.CustomCheckBox
 
 class TaskAdapter(
     private val activityContext: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val mUtil: Util = Util()
+    //TODO: Is it ok to have an instance of context in here?
+
     private var listener: TaskStateListener? = null
-    private var recentDeletedItemPostition: Int? = null
+    private var recentDeletedItemPosition: Int? = null
     private var recentDeletedItem: Task? = null
 
     var data: MutableList<Task> = mutableListOf()
@@ -30,10 +29,7 @@ class TaskAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_task, parent, false)
-        )
+        return TaskViewHolder(ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -45,49 +41,42 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.mTitle.text = data[position].title
+
+        holder.binding.textViewTitle.text = data[position].title
 
 //        Change item colors based on state
         when {
             data[position].state == "DONE" -> {
-                holder.mTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
-                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
-                holder.mCheckBox.isChecked = true
+                holder.binding.textViewTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                holder.binding.cardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_done))
+                holder.binding.cardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_done)
+                holder.binding.checkbox.isChecked = true
             }
-            mUtil.isDateBeforeToday(data[position].next_due) -> {
-                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
-                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
-                holder.mCardView.alpha = 1f
-                holder.mCheckBox.isChecked = false
+            Util.isDateBeforeToday(data[position].next_due) -> {
+                holder.binding.cardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_overdue))
+                holder.binding.cardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_overdue)
+                holder.binding.cardView.alpha = 1f
+                holder.binding.checkbox.isChecked = false
             }
             else -> {
-                holder.mCheckBox.isChecked = false
-                holder.mTitle.paintFlags = holder.mTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.mCardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_due))
-                holder.mCardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_due)
-                holder.mCardView.alpha = 1f
+                holder.binding.checkbox.isChecked = false
+                holder.binding.textViewTitle.paintFlags = holder.itemView.findViewById<TextView?>(R.id.textView_title).paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                holder.binding.cardView.setCardBackgroundColor(activityContext.getColor(R.color.task_item_background_due))
+                holder.binding.cardView.strokeColor = activityContext.getColor(R.color.task_item_stroke_due)
+                holder.binding.cardView.alpha = 1f
             }
         }
 
-        holder.mCheckBox.setOnClickListener {
+        holder.itemView.findViewById<CustomCheckBox?>(R.id.checkbox).setOnClickListener {
             listener?.onTaskStateChanged(data[position])
         }
 
     }
 
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var mCardView: MaterialCardView
-        var mRelativeLayout: RelativeLayout
-        var mTitle: TextView
-        var mCheckBox: CustomCheckBox
+    class TaskViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             setIsRecyclable(false)
-            mCardView = itemView.findViewById(R.id.cardView)
-            mRelativeLayout = itemView.findViewById(R.id.relativeLayout)
-            mTitle = itemView.findViewById(R.id.textView_title)
-            mCheckBox = itemView.findViewById(R.id.checkbox)
         }
 
     }
@@ -98,16 +87,16 @@ class TaskAdapter(
 
     fun deleteItem(position: Int) {
         recentDeletedItem = data[position]
-        recentDeletedItemPostition = position
+        recentDeletedItemPosition = position
         listener?.onTaskItemDeleted(recentDeletedItem!!)
-        data.drop(recentDeletedItemPostition!!)
-        notifyItemRemoved(recentDeletedItemPostition!!)
+        data.drop(recentDeletedItemPosition!!)
+        notifyItemRemoved(recentDeletedItemPosition!!)
     }
 
     fun undoRemove() {
         listener?.onTaskItemDeleteUndo(recentDeletedItem!!)
-        data.add(recentDeletedItemPostition!!, recentDeletedItem!!)
-        notifyItemInserted(recentDeletedItemPostition!!)
+        data.add(recentDeletedItemPosition!!, recentDeletedItem!!)
+        notifyItemInserted(recentDeletedItemPosition!!)
     }
 
     interface TaskStateListener {

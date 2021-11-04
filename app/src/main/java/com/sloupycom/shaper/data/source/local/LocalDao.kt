@@ -1,4 +1,4 @@
-package com.sloupycom.shaper.database
+package com.sloupycom.shaper.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -19,8 +19,14 @@ interface LocalDao {
     @Query ("SELECT * FROM task_table")
     fun getAllTasks(): LiveData<MutableList<Task>>?
 
-    @Query ("SELECT * FROM task_table WHERE next_due <= :todayDateIndex")
-    fun getTodayTasks(todayDateIndex: String): LiveData<MutableList<Task>>?
+    @Query ("SELECT * FROM task_table")
+    fun getTasks(): LiveData<List<Task>>?
+
+    @Query ("SELECT * FROM task_table WHERE next_due = :dateIndex")
+    fun getTasks(dateIndex: String): LiveData<MutableList<Task>>?
+
+    @Query ("SELECT * FROM task_table WHERE next_due <= :dateIndex")
+    fun getTasksUntil(dateIndex: String): LiveData<MutableList<Task>>?
 
     @Query ("SELECT * FROM task_table WHERE next_due = :dateIndex")
     fun getDayTasks(dateIndex: String): LiveData<MutableList<Task>>?

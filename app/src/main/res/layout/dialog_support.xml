@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/colorPrimary"
+    android:layout_margin="25dp"
+    android:background="@drawable/support_dialog_background"
     android:padding="30dp">
 
     <TextView
